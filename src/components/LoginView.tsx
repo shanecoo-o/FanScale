@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Flame, 
   Phone, 
@@ -26,8 +26,9 @@ interface LoginViewProps {
   onLoginSuccess: (user: AuthUser) => void;
   onClose?: () => void;
   isModal?: boolean;
-  initialMode?: 'login' | 'register';
+  initialMode?: 'login' | 'register' | 'forgot' | 'otp';
   initialRole?: UserRole;
+  onModeChange?: (mode: 'login' | 'register' | 'forgot' | 'otp') => void;
 }
 
 export const LoginView: React.FC<LoginViewProps> = ({
@@ -36,6 +37,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
   isModal = false,
   initialMode = 'login',
   initialRole = 'fan',
+  onModeChange,
 }) => {
   const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot' | 'otp'>(initialMode);
   const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('phone');
@@ -65,6 +67,26 @@ export const LoginView: React.FC<LoginViewProps> = ({
   const [otpCountdown, setOtpCountdown] = useState(45);
   const [sentToPhone, setSentToPhone] = useState('+258 84 765 4321');
   const [successToast, setSuccessToast] = useState('');
+
+  useEffect(() => {
+    setAuthMode(initialMode);
+  }, [initialMode]);
+
+  useEffect(() => {
+    setSelectedRole(initialRole);
+  }, [initialRole]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById('auth-flow-heading')?.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [authMode]);
+
+  const selectAuthMode = (mode: 'login' | 'register' | 'forgot' | 'otp') => {
+    setAuthMode(mode);
+    onModeChange?.(mode);
+  };
 
   // Quick Demo Accounts
   const demoAccounts: { label: string; role: UserRole; user: AuthUser; desc: string }[] = [
@@ -166,7 +188,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
   const triggerOtpSubmission = (phoneNum: string) => {
     setSentToPhone(phoneNum.startsWith('+258') ? phoneNum : `+258 ${phoneNum}`);
-    setAuthMode('otp');
+    selectAuthMode('otp');
     setOtpDigits(['5', '8', '2', '', '', '']);
     setOtpCountdown(45);
   };
@@ -239,7 +261,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
   };
 
   return (
-    <div className={`relative w-full ${isModal ? 'max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white border border-pink-100' : 'min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-gradient-to-b from-pink-50/40 via-white to-stone-50'}`}>
+    <div className={`relative w-full ${isModal ? 'max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white border border-pink-100' : 'flex min-h-[calc(100dvh-4rem)] items-center justify-center bg-gradient-to-b from-pink-50/40 via-white to-stone-50 p-3 sm:p-6 lg:p-8'}`}>
       
       {/* Close button if Modal */}
       {isModal && onClose && (
@@ -252,7 +274,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         </button>
       )}
 
-      <div className="grid w-full grid-cols-1 lg:grid-cols-12 overflow-hidden">
+      <div className={`grid w-full grid-cols-1 overflow-hidden lg:grid-cols-12 ${isModal ? '' : 'max-w-5xl rounded-3xl border border-pink-100 bg-white shadow-sm'}`}>
         
         {/* Left Side: Brand Value & Mozambique Proof Showcase (Desktop) */}
         <div className="relative hidden lg:flex lg:col-span-5 flex-col justify-between bg-gradient-to-br from-stone-950 via-stone-900 to-pink-950 p-8 text-white">
@@ -367,7 +389,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               <div className="max-w-md mx-auto animate-in fade-in duration-200">
                 <button
                   type="button"
-                  onClick={() => setAuthMode('login')}
+                  onClick={() => selectAuthMode('login')}
                   className="flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-pink-600 mb-6 transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -378,7 +400,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
                     <Smartphone className="h-7 w-7" />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-stone-900">
+                  <h3 id="auth-flow-heading" tabIndex={-1} className="font-display text-xl font-bold text-stone-900">
                     Código de Verificação SMS
                   </h3>
                   <p className="text-xs text-stone-500 mt-1.5">
@@ -444,7 +466,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               <div className="max-w-md mx-auto animate-in fade-in duration-200">
                 <button
                   type="button"
-                  onClick={() => setAuthMode('login')}
+                  onClick={() => selectAuthMode('login')}
                   className="flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-pink-600 mb-6 transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -455,7 +477,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-100 text-pink-600 mb-3">
                     <KeyRound className="h-6 w-6" />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-stone-900">
+                  <h3 id="auth-flow-heading" tabIndex={-1} className="font-display text-xl font-bold text-stone-900">
                     Recuperar Acesso à Conta
                   </h3>
                   <p className="text-xs text-stone-500 mt-1">
@@ -495,11 +517,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
               /* Standard Login & Register Views */
               <div>
                 {/* Mode Tabs: Entrar vs Registar */}
-                <div className="flex rounded-2xl bg-stone-100 p-1.5 mb-6 max-w-sm">
+                <div className="mb-6 flex max-w-sm rounded-2xl bg-stone-100 p-1.5" aria-label="Modo de autenticação">
                   <button
                     id="tab-login-mode"
                     type="button"
-                    onClick={() => setAuthMode('login')}
+                    onClick={() => selectAuthMode('login')}
+                    aria-current={authMode === 'login' ? 'page' : undefined}
                     className={`flex-1 rounded-xl py-2 text-xs font-bold transition-all ${
                       authMode === 'login'
                         ? 'bg-white text-stone-900 shadow-sm'
@@ -511,7 +534,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   <button
                     id="tab-register-mode"
                     type="button"
-                    onClick={() => setAuthMode('register')}
+                    onClick={() => selectAuthMode('register')}
+                    aria-current={authMode === 'register' ? 'page' : undefined}
                     className={`flex-1 rounded-xl py-2 text-xs font-bold transition-all ${
                       authMode === 'register'
                         ? 'bg-white text-pink-600 shadow-sm'
@@ -524,7 +548,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                 {/* Title */}
                 <div className="mb-6">
-                  <h1 className="font-display text-2xl font-black text-stone-900 tracking-tight">
+                  <h1 id="auth-flow-heading" tabIndex={-1} className="font-display text-2xl font-black text-stone-900 tracking-tight">
                     {authMode === 'login' ? 'Bem-vindo de volta!' : 'Junta-te à FanScale Moçambique'}
                   </h1>
                   <p className="text-xs text-stone-500 mt-1">
@@ -537,10 +561,15 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 {/* Role Switcher during Registration */}
                 {authMode === 'register' && (
                   <div className="mb-6">
+                    <ol aria-label="Etapas para ativar uma conta" className="mb-4 flex flex-wrap items-center gap-2 text-[11px] font-semibold text-stone-500">
+                      <li aria-current="step" className="rounded-full bg-pink-100 px-3 py-1 text-pink-700">1. Criar conta</li>
+                      <li className="rounded-full bg-stone-100 px-3 py-1">2. Completar perfil</li>
+                      <li className="rounded-full bg-stone-100 px-3 py-1">3. Verificação de criador</li>
+                    </ol>
                     <label className="block text-xs font-bold text-stone-700 mb-2">
                       Como pretendes usar a FanScale?
                     </label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2">
                       <button
                         type="button"
                         onClick={() => setSelectedRole('fan')}
@@ -668,7 +697,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                             </label>
                             <button
                               type="button"
-                              onClick={() => setAuthMode('forgot')}
+                              onClick={() => selectAuthMode('forgot')}
                               className="text-[11px] font-semibold text-pink-600 hover:text-pink-700"
                             >
                               Esqueceu a senha?
@@ -718,7 +747,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                         Ainda não tens uma conta?{' '}
                         <button
                           type="button"
-                          onClick={() => setAuthMode('register')}
+                          onClick={() => selectAuthMode('register')}
                           className="font-bold text-pink-600 hover:underline"
                         >
                           Criar Conta (Cadastro)
@@ -750,7 +779,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3 min-[760px]:grid-cols-2">
                       <div>
                         <label className="block text-xs font-bold text-stone-700 mb-1">
                           {selectedRole === 'creator' ? 'Nome Artístico / Criativo' : 'Nome Completo'}
@@ -787,7 +816,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                     {/* Creator specific: Category, Province and Monthly Subscription Price */}
                     {selectedRole === 'creator' && (
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-2xl bg-stone-50 border border-stone-200/80">
+                      <div className="grid grid-cols-1 gap-2.5 rounded-2xl border border-stone-200/80 bg-stone-50 p-3 min-[760px]:grid-cols-3">
                         <div>
                           <label className="block text-[11px] font-bold text-stone-700 mb-1">
                             Categoria
@@ -892,7 +921,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3 min-[760px]:grid-cols-2">
                       <div>
                         <label className="block text-xs font-bold text-stone-700 mb-1">
                           Palavra-passe
@@ -967,7 +996,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                         Já tens uma conta?{' '}
                         <button
                           type="button"
-                          onClick={() => setAuthMode('login')}
+                          onClick={() => selectAuthMode('login')}
                           className="font-bold text-pink-600 hover:underline"
                         >
                           Iniciar Sessão (Entrar)
@@ -995,7 +1024,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       Entrar Rápido com Contas de Teste:
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 min-[430px]:grid-cols-2">
                     {demoAccounts.map((account) => (
                       <button
                         key={account.user.id}

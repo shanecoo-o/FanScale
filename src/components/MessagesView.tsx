@@ -20,8 +20,9 @@ import { Conversation, ChatMessage } from '../types';
 
 interface MessagesViewProps {
   conversations: Conversation[];
-  activeConversationId: string;
+  activeConversationId?: string;
   onSelectConversation: (id: string) => void;
+  onBackToList: () => void;
   onSendMessage: (conversationId: string, text: string) => void;
   onUnlockPpvMessage: (conversationId: string, messageId: string, priceMT: number) => void;
   onOpenTipModal: (creatorId: string, creatorName: string) => void;
@@ -31,13 +32,14 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
   conversations,
   activeConversationId,
   onSelectConversation,
+  onBackToList,
   onSendMessage,
   onUnlockPpvMessage,
   onOpenTipModal,
 }) => {
   const [inputText, setInputText] = useState('');
   const [isPlayingAudio, setIsPlayingAudio] = useState<string | null>(null);
-  const [mobileThreadOpen, setMobileThreadOpen] = useState(false);
+  const mobileThreadOpen = Boolean(activeConversationId);
 
   const activeConversation = 
     conversations.find((c) => c.id === activeConversationId) || conversations[0];
@@ -76,7 +78,6 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                 key={conv.id}
                 onClick={() => {
                   onSelectConversation(conv.id);
-                  setMobileThreadOpen(true);
                 }}
                 className={`flex w-full min-w-0 items-center gap-3 p-3.5 text-left transition-colors ${
                   conv.id === activeConversation?.id
@@ -135,7 +136,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
               <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                 <button
                   type="button"
-                  onClick={() => setMobileThreadOpen(false)}
+                  onClick={onBackToList}
                   aria-label="Voltar à lista de conversas"
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-stone-600 transition-colors hover:bg-stone-100 md:hidden"
                 >

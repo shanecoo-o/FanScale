@@ -16,6 +16,7 @@ import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface KycModalProps {
   onClose: () => void;
+  presentation?: 'dialog' | 'page';
   onSubmitKyc: (data: {
     fullName: string;
     publicName: string;
@@ -30,7 +31,7 @@ interface KycModalProps {
   }) => void;
 }
 
-export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
+export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presentation = 'dialog' }) => {
   const [legalFullName, setLegalFullName] = useState('Nádia Silva Cassamo');
   const [publicName, setPublicName] = useState('Luna Moz (@luna_exclusive)');
   const [dateOfBirth, setDateOfBirth] = useState('2001-05-14');
@@ -77,14 +78,8 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
     }, 1200);
   };
 
-  return (
-    <ResponsiveDialog
-      ariaLabel="Verificação de criador maior de 18 anos"
-      onClose={onClose}
-      closeOnBackdrop
-      overlayClassName="p-0 sm:p-6"
-      panelClassName="max-w-xl rounded-none bg-white p-4 shadow-2xl space-y-5 sm:rounded-3xl sm:border sm:border-pink-100 sm:p-7"
-    >
+  const content = (
+    <>
         <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white shadow-md shadow-pink-500/20">
@@ -92,9 +87,9 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-display text-base font-bold text-stone-900">
+                <h1 id="kyc-page-title" className="font-display text-base font-bold text-stone-900">
                   Verificação de Criador 18+ (KYC)
-                </h3>
+                </h1>
                 <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-black text-pink-700">
                   18+ Obrigatório
                 </span>
@@ -124,6 +119,11 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 text-xs text-stone-800">
+            <ol aria-label="Progresso da verificação" className="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-stone-500">
+              <li aria-current="step" className="rounded-full bg-pink-100 px-3 py-1 text-pink-700">1. Identidade</li>
+              <li className="rounded-full bg-stone-100 px-3 py-1">2. Documentos</li>
+              <li className="rounded-full bg-stone-100 px-3 py-1">3. Pagamento e consentimento</li>
+            </ol>
             
             {/* Privacy Badge */}
             <div className="flex items-start gap-2.5 rounded-2xl bg-pink-50/70 border border-pink-100 p-3 text-stone-700">
@@ -135,7 +135,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
             </div>
 
             {/* Public vs Private Name */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-2">
               <div className="space-y-1">
                 <label className="block font-bold text-stone-700">
                   Nome Legal Completo <span className="text-pink-600 font-normal">(Confidencial)</span>
@@ -166,7 +166,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
             </div>
 
             {/* Date of Birth & Document Type */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-2">
               <div className="space-y-1">
                 <label className="block font-bold text-stone-700">
                   Data de Nascimento <span className="text-rose-600 font-bold">(+18)</span>
@@ -196,7 +196,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
             </div>
 
             {/* Document Number & NUIT */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-2">
               <div className="space-y-1">
                 <label className="block font-bold text-stone-700">Número do Documento</label>
                 <input
@@ -227,7 +227,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
               <label className="block font-bold text-stone-700">
                 Fotos do Documento & Selfie de Validação Facial
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-2 min-[480px]:grid-cols-3">
                 <div 
                   onClick={() => setDocFrontUploaded(!docFrontUploaded)}
                   className={`cursor-pointer rounded-2xl border p-3 text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
@@ -278,7 +278,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
             {/* Payout Information */}
             <div className="space-y-1.5 pt-1">
               <label className="block font-bold text-stone-700">Telemóvel M-Pesa / e-Mola para Levantamento (80% Receita Líquida)</label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 min-[720px]:grid-cols-2">
                 <input
                   type="tel"
                   required
@@ -288,7 +288,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
                   className="w-full rounded-xl border border-stone-200 bg-stone-50 p-2.5 font-semibold text-stone-900 focus:border-pink-500 focus:bg-white focus:outline-none"
                 />
 
-                <div className="grid grid-cols-3 gap-1.5">
+                <div className="grid grid-cols-1 gap-1.5 min-[480px]:grid-cols-3">
                   <button
                     type="button"
                     onClick={() => setPayoutMethod('mpesa')}
@@ -370,6 +370,28 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
 
           </form>
         )}
+    </>
+  );
+
+  if (presentation === 'page') {
+    return (
+      <section aria-labelledby="kyc-page-title" className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-6 sm:py-8 lg:px-8">
+        <div className="space-y-5 rounded-3xl border border-pink-100 bg-white p-4 shadow-sm sm:p-7">
+          {content}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <ResponsiveDialog
+      ariaLabel="Verificação de criador maior de 18 anos"
+      onClose={onClose}
+      closeOnBackdrop
+      overlayClassName="p-0 sm:p-6"
+      panelClassName="max-w-xl rounded-none bg-white p-4 shadow-2xl space-y-5 sm:rounded-3xl sm:border sm:border-pink-100 sm:p-7"
+    >
+      {content}
     </ResponsiveDialog>
   );
 };

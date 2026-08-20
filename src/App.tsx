@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
+import { useNavigate } from 'react-router-dom';
 import { 
   MOCK_CREATORS, 
   MOCK_POSTS, 
@@ -31,28 +32,33 @@ import {
 
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
-import { Feed } from './components/Feed';
-import { ExplorePage } from './components/ExplorePage';
-import { CreatorProfileView } from './components/CreatorProfileView';
-import { CreatorStudio } from './components/CreatorStudio';
-import { WalletView } from './components/WalletView';
-import { MessagesView } from './components/MessagesView';
-import { NotificationsView } from './components/NotificationsView';
-import { AdminDashboard } from './components/AdminDashboard';
-import { ResponsiveDialog } from './components/ui/ResponsiveDialog';
-import { LandingView } from './components/LandingView';
-import { LoginView } from './components/LoginView';
 import { StoryViewerModal } from './components/StoryViewerModal';
 import { SubscriptionModal } from './components/SubscriptionModal';
 import { PaymentPromptModal } from './components/PaymentPromptModal';
 import { TipModal } from './components/TipModal';
 import { CreatePostModal } from './components/CreatePostModal';
-import { KycModal } from './components/KycModal';
 import { RateCreatorModal } from './components/RateCreatorModal';
 import { LiveRoomModal } from './components/LiveRoomModal';
 import { AgeGateModal } from './components/AgeGateModal';
+import { LogoutConfirmModal } from './components/LogoutConfirmModal';
+import { ResourceNotFound } from './components/ResourceNotFound';
+import { FanScaleRoutes } from './app/router';
+import { routes } from './app/routes';
+
+const Feed = React.lazy(() => import('./components/Feed').then((module) => ({ default: module.Feed })));
+const ExplorePage = React.lazy(() => import('./components/ExplorePage').then((module) => ({ default: module.ExplorePage })));
+const CreatorProfileView = React.lazy(() => import('./components/CreatorProfileView').then((module) => ({ default: module.CreatorProfileView })));
+const CreatorStudio = React.lazy(() => import('./components/CreatorStudio').then((module) => ({ default: module.CreatorStudio })));
+const WalletView = React.lazy(() => import('./components/WalletView').then((module) => ({ default: module.WalletView })));
+const MessagesView = React.lazy(() => import('./components/MessagesView').then((module) => ({ default: module.MessagesView })));
+const NotificationsView = React.lazy(() => import('./components/NotificationsView').then((module) => ({ default: module.NotificationsView })));
+const AdminDashboard = React.lazy(() => import('./components/AdminDashboard').then((module) => ({ default: module.AdminDashboard })));
+const LandingView = React.lazy(() => import('./components/LandingView').then((module) => ({ default: module.LandingView })));
+const LoginView = React.lazy(() => import('./components/LoginView').then((module) => ({ default: module.LoginView })));
+const KycModal = React.lazy(() => import('./components/KycModal').then((module) => ({ default: module.KycModal })));
 
 export default function App() {
+  const navigate = useNavigate();
   // Authentication & Current User State
   const [currentUser, setCurrentUser] = useState<AuthUser | null>({
     id: 'u_fan_1',
@@ -67,29 +73,15 @@ export default function App() {
     bio: 'Amante de música marrabenta e lifestyle moçambicano 🇲🇿',
     location: 'Maputo'
   });
-  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
-  const [loginModalMode, setLoginModalMode] = useState<'login' | 'register'>('login');
-  const [loginModalRole, setLoginModalRole] = useState<UserRole>('fan');
-
-  const handleOpenAuth = (mode: 'login' | 'register' = 'login', role: UserRole = 'fan') => {
-    setLoginModalMode(mode);
-    setLoginModalRole(role);
-    setShowLoginModal(true);
-  };
-
   // Navigation & Role State
   const [userRole, setUserRole] = useState<UserRole>('fan');
-  const [currentTab, setCurrentTab] = useState<string>('feed');
-  const [isLandingPage, setIsLandingPage] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedCreatorId, setSelectedCreatorId] = useState<string>('c1');
 
   // Core Data State
   const [creators, setCreators] = useState<CreatorProfile[]>(MOCK_CREATORS);
   const [posts, setPosts] = useState<Post[]>(MOCK_POSTS);
   const [stories, setStories] = useState<Story[]>(MOCK_STORIES);
   const [conversations, setConversations] = useState<Conversation[]>(MOCK_CONVERSATIONS);
-  const [activeConversationId, setActiveConversationId] = useState<string>('conv-1');
   const [notifications, setNotifications] = useState<NotificationItem[]>(MOCK_NOTIFICATIONS);
   const [transactions, setTransactions] = useState<WalletTransaction[]>(MOCK_WALLET_TRANSACTIONS);
   const [walletBalanceMT, setWalletBalanceMT] = useState<number>(2500);
@@ -103,7 +95,7 @@ export default function App() {
   const [subscribingCreator, setSubscribingCreator] = useState<CreatorProfile | null>(null);
   const [tippingCreator, setTippingCreator] = useState<{ id: string; name: string } | null>(null);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
-  const [showKycModal, setShowKycModal] = useState<boolean>(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState<boolean>(false);
   const [ratingModalCreator, setRatingModalCreator] = useState<CreatorProfile | null>(null);
   const [ratingModalLiveId, setRatingModalLiveId] = useState<string | undefined>(undefined);
   const [activeLiveSession, setActiveLiveSession] = useState<LiveSession | null>(null);
@@ -293,28 +285,28 @@ export default function App() {
     setCurrentUser(user);
     setUserRole(user.role);
     setWalletBalanceMT(user.walletBalanceMT);
-    setShowLoginModal(false);
     if (user.role === 'creator') {
-      setSelectedCreatorId(user.id.startsWith('c') ? user.id : 'c1');
-      setCurrentTab('studio');
+      navigate(routes.creatorStudio());
     } else if (user.role === 'admin') {
-      setCurrentTab('admin');
+      navigate(routes.admin());
     } else {
-      setCurrentTab('feed');
+      navigate(routes.feed());
     }
-    setIsLandingPage(false);
     confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
     showToast(`Bem-vindo, ${user.name}! Sessão iniciada com sucesso.`);
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
+    setShowLogoutConfirm(false);
     showToast('Sessão terminada. Até breve!');
-    setIsLandingPage(true);
+    navigate(routes.home());
   };
 
   // Current logged in creator view (for studio/profile when role is creator)
-  const currentCreatorProfile = creators.find((c) => c.id === selectedCreatorId) || creators[0];
+  const currentCreatorProfile = creators.find(
+    (creator) => creator.id === currentUser?.id || creator.username === currentUser?.username,
+  ) || creators[0];
 
   // ----------------------------------------------------
   // Interactions: Like, Save, Comment, Tip
@@ -667,8 +659,8 @@ export default function App() {
     };
 
     setPosts((prev) => [newPost, ...prev]);
-    setCurrentTab('feed');
-    setIsLandingPage(false);
+    setShowCreateModal(false);
+    navigate(routes.feed());
     showToast('🚀 O teu novo conteúdo foi publicado com sucesso no FanScale Moçambique!');
   };
 
@@ -777,153 +769,133 @@ export default function App() {
   };
 
   return (
-    <div className="app-shell bg-stone-50 text-stone-900 font-sans flex flex-col antialiased selection:bg-pink-500 selection:text-white">
-      <a href="#main-content" className="skip-link">Saltar para o conteúdo principal</a>
-      
-      {/* Toast Feedback Notification */}
+    <>
       {toastMessage && (
-        <div role="status" aria-live="polite" className="fixed top-20 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 rounded-2xl sm:rounded-full bg-stone-900/95 text-white px-5 py-2.5 text-xs font-bold shadow-2xl backdrop-blur-md border border-stone-800 animate-fade-in flex items-center justify-center gap-2 text-center">
+        <div role="status" aria-live="polite" className="fixed left-4 right-4 top-[max(5rem,calc(env(safe-area-inset-top)+4.5rem))] z-[70] flex items-center justify-center gap-2 rounded-2xl border border-stone-800 bg-stone-900/95 px-5 py-2.5 text-center text-xs font-bold text-white shadow-2xl backdrop-blur-md sm:left-1/2 sm:right-auto sm:-translate-x-1/2 sm:rounded-full">
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Header */}
-      <Header
-        currentTab={currentTab}
-        onTabChange={(tab) => {
-          setCurrentTab(tab);
-          setIsLandingPage(false);
-        }}
-        userRole={userRole}
-        onRoleChange={(role) => {
-          setUserRole(role);
-          if (role === 'creator') setCurrentTab('studio');
-          else if (role === 'admin') setCurrentTab('admin');
-          else setCurrentTab('feed');
-          showToast(`Modo alterado para: ${role.toUpperCase()}`);
-        }}
-        isLandingPage={isLandingPage}
-        onToggleLandingPage={(show) => setIsLandingPage(show)}
-        walletBalanceMT={walletBalanceMT}
-        unreadNotificationsCount={unreadNotificationsCount}
-        unreadMessagesCount={unreadMessagesCount}
-        onOpenCreateModal={() => setShowCreateModal(true)}
-        onOpenWallet={() => {
-          setCurrentTab('wallet');
-          setIsLandingPage(false);
-        }}
-        onOpenKycModal={() => setShowKycModal(true)}
-        searchQuery={searchQuery}
-        onSearchChange={(q) => {
-          setSearchQuery(q);
-          if (q.trim()) {
-            setCurrentTab('explore');
-            setIsLandingPage(false);
-          }
-        }}
-        currentUser={currentUser}
-        onOpenLogin={() => handleOpenAuth('login')}
-        onOpenRegister={() => handleOpenAuth('register')}
-        onLogout={handleLogout}
-      />
-
-      {/* Main App Content Viewport */}
-      <main id="main-content" tabIndex={-1} className="app-main flex-1">
-        
-        {/* If Landing Page mode is active */}
-        {isLandingPage ? (
-          <LandingView
-            onStartExploring={() => {
-              setIsLandingPage(false);
-              setCurrentTab('explore');
+      <FanScaleRoutes
+        header={(
+          <Header
+            userRole={userRole}
+            onRoleChange={(role) => {
+              setUserRole(role);
+              showToast(`Modo alterado para: ${role.toUpperCase()}`);
             }}
-            onBecomeCreator={() => {
-              handleOpenAuth('register', 'creator');
-            }}
-            onOpenLogin={() => handleOpenAuth('login')}
-            onOpenRegister={() => handleOpenAuth('register')}
+            walletBalanceMT={walletBalanceMT}
+            unreadNotificationsCount={unreadNotificationsCount}
+            unreadMessagesCount={unreadMessagesCount}
+            onOpenCreateModal={() => setShowCreateModal(true)}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            currentUser={currentUser}
+            profileUsername={currentCreatorProfile.username}
+            onLogout={() => setShowLogoutConfirm(true)}
           />
-        ) : (
-          <>
-            {/* 0. Dedicated Login Tab */}
-            {currentTab === 'login' && (
-              <LoginView
-                initialMode={loginModalMode}
-                initialRole={loginModalRole}
-                onLoginSuccess={handleLoginSuccess}
-                onClose={() => setCurrentTab('feed')}
-              />
-            )}
-
-            {/* 1. Feed Tab */}
-            {currentTab === 'feed' && (
-              <Feed
-                posts={posts}
-                stories={stories}
-                creators={creators}
-                walletBalanceMT={walletBalanceMT}
-                onLikePost={handleToggleLike}
-                onSavePost={handleToggleSave}
-                onAddComment={handleAddComment}
-                onSelectStory={(index) => setActiveStoryIndex(index)}
-                onOpenCreateStory={() => setShowCreateModal(true)}
-                onOpenCreateModal={() => setShowCreateModal(true)}
-                onOpenSubscribeModal={handleOpenSubscribeModal}
-                onOpenPpvUnlockModal={(post) => handleUnlockPpv(post.id, post.priceMT || 100)}
-                onOpenTipModal={handleOpenTipModal}
-                onSelectCreatorProfile={(id) => {
-                  setSelectedCreatorId(id);
-                  setCurrentTab('profile');
-                }}
-                onReportPost={(post) => {
-                  handleResolveReport(post.id, 'keep');
-                  showToast('Denúncia enviada para a equipa de moderação.');
-                }}
-                onOpenKycModal={() => setShowKycModal(true)}
-                onOpenWallet={() => {
-                  setCurrentTab('wallet');
-                  setIsLandingPage(false);
-                }}
-              />
-            )}
-
-            {/* 2. Explore Tab */}
-            {currentTab === 'explore' && (
-              <ExplorePage
-                creators={creators}
-                posts={posts}
-                liveSessions={liveSessions}
-                onSelectCreator={(id) => {
-                  setSelectedCreatorId(id);
-                  setCurrentTab('profile');
-                }}
-                onOpenSubscribeModal={handleOpenSubscribeModal}
-                onOpenPpvUnlockModal={(post) => handleUnlockPpv(post.id, post.priceMT || 100)}
-                onLikePost={handleToggleLike}
-                onOpenLiveRoom={handleOpenLiveRoom}
-                onOpenRateModal={handleOpenRateModal}
-              />
-            )}
-
-            {/* 3. Creator Profile Tab */}
-            {currentTab === 'profile' && (
+        )}
+        bottomNavigation={(
+          <BottomNav
+            onOpenCreateModal={() => setShowCreateModal(true)}
+            unreadMessagesCount={unreadMessagesCount}
+            profileUsername={currentCreatorProfile.username}
+          />
+        )}
+        render={{
+          landing: () => (
+            <LandingView
+              onStartExploring={() => navigate(routes.explore())}
+              onBecomeCreator={() => navigate(routes.register('creator'))}
+              onOpenLogin={() => navigate(routes.login())}
+              onOpenRegister={() => navigate(routes.register())}
+            />
+          ),
+          auth: (mode, role) => (
+            <LoginView
+              initialMode={mode}
+              initialRole={role}
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate(routes.home())}
+              onModeChange={(nextMode) => {
+                if (nextMode === 'login') navigate(routes.login());
+                else if (nextMode === 'register') navigate(routes.register(role === 'creator' ? 'creator' : undefined));
+                else if (nextMode === 'forgot') navigate(routes.recover());
+                else navigate(routes.verifyOtp());
+              }}
+            />
+          ),
+          feed: () => (
+            <Feed
+              posts={posts}
+              stories={stories}
+              creators={creators}
+              walletBalanceMT={walletBalanceMT}
+              onLikePost={handleToggleLike}
+              onSavePost={handleToggleSave}
+              onAddComment={handleAddComment}
+              onSelectStory={(index) => setActiveStoryIndex(index)}
+              onOpenCreateStory={() => setShowCreateModal(true)}
+              onOpenCreateModal={() => setShowCreateModal(true)}
+              onOpenSubscribeModal={handleOpenSubscribeModal}
+              onOpenPpvUnlockModal={(post) => handleUnlockPpv(post.id, post.priceMT || 100)}
+              onOpenTipModal={handleOpenTipModal}
+              onSelectCreatorProfile={(id) => {
+                const creator = creators.find((item) => item.id === id);
+                if (creator) navigate(routes.creator(creator.username));
+              }}
+              onReportPost={(post) => {
+                handleResolveReport(post.id, 'keep');
+                showToast('Denúncia enviada para a equipa de moderação.');
+              }}
+              onOpenKycModal={() => navigate(routes.creatorKyc())}
+              onOpenWallet={() => navigate(routes.wallet())}
+            />
+          ),
+          explore: () => (
+            <ExplorePage
+              creators={creators}
+              posts={posts}
+              liveSessions={liveSessions}
+              onSelectCreator={(id) => {
+                const creator = creators.find((item) => item.id === id);
+                if (creator) navigate(routes.creator(creator.username));
+              }}
+              onOpenSubscribeModal={handleOpenSubscribeModal}
+              onOpenPpvUnlockModal={(post) => handleUnlockPpv(post.id, post.priceMT || 100)}
+              onLikePost={handleToggleLike}
+              onOpenLiveRoom={handleOpenLiveRoom}
+              onOpenRateModal={handleOpenRateModal}
+            />
+          ),
+          creator: (username) => {
+            const creator = creators.find((item) => item.username.toLowerCase() === username.toLowerCase());
+            if (!creator) {
+              return (
+                <ResourceNotFound
+                  title="Criador não encontrado"
+                  description="Não encontrámos um perfil com este endereço. Explora os criadores disponíveis na FanScale."
+                  actionLabel="Explorar criadores"
+                  actionTo={routes.explore()}
+                />
+              );
+            }
+            return (
               <CreatorProfileView
-                creator={currentCreatorProfile}
-                posts={posts.filter((p) => p.creatorId === currentCreatorProfile?.id)}
+                creator={creator}
+                posts={posts.filter((post) => post.creatorId === creator.id)}
                 reviews={reviews}
                 liveSessions={liveSessions}
-                onBack={() => setCurrentTab('feed')}
+                onBack={() => navigate(-1)}
                 onFollowToggle={(id) => {
-                  setCreators((prev) =>
-                    prev.map((c) => (c.id === id ? { ...c, isFollowing: !c.isFollowing } : c))
-                  );
+                  setCreators((prev) => prev.map((item) => item.id === id ? { ...item, isFollowing: !item.isFollowing } : item));
                   showToast('Preferência de criador atualizada!');
                 }}
                 onOpenSubscribeModal={handleOpenSubscribeModal}
                 onOpenTipModal={handleOpenTipModal}
                 onOpenMessageWithCreator={(id) => {
-                  setSelectedCreatorId(id);
-                  setCurrentTab('messages');
+                  const conversation = conversations.find((item) => item.participantId === id);
+                  navigate(conversation ? routes.conversation(conversation.id) : routes.messages());
                 }}
                 onLikePost={handleToggleLike}
                 onSavePost={handleToggleSave}
@@ -937,90 +909,90 @@ export default function App() {
                 onLikeReview={handleLikeReview}
                 onOpenLiveRoom={handleOpenLiveRoom}
               />
-            )}
-
-            {/* 4. Creator Studio Tab (Painel de Monetização) */}
-            {currentTab === 'studio' && (
-              <CreatorStudio
-                creator={currentCreatorProfile}
-                posts={posts.filter((p) => p.creatorId === currentCreatorProfile.id)}
-                reviews={reviews}
-                onOpenCreateModal={() => setShowCreateModal(true)}
-                onRequestPayout={handleRequestPayout}
-                onUpdatePricing={(monthlyMT, quarterlyMT) => {
-                  setCreators((prev) =>
-                    prev.map((c) =>
-                      c.id === currentCreatorProfile.id
-                        ? { ...c, subscriptionPriceMonthly: monthlyMT, subscriptionPriceQuarterly: quarterlyMT }
-                        : c
-                    )
-                  );
-                  showToast('Preços de subscrição atualizados com sucesso!');
-                }}
-              />
-            )}
-
-            {/* 5. Wallet Tab (Carteira Digital M-Pesa / e-Mola) */}
-            {currentTab === 'wallet' && (
-              <WalletView
-                userRole={userRole}
-                walletBalanceMT={walletBalanceMT}
-                transactions={transactions}
-                onDeposit={handleDepositToWallet}
-                onRequestPayout={handleRequestPayout}
-              />
-            )}
-
-            {/* 6. Messages Tab */}
-            {currentTab === 'messages' && (
+            );
+          },
+          messages: (conversationId) => {
+            if (conversationId && !conversations.some((item) => item.id === conversationId)) {
+              return (
+                <ResourceNotFound
+                  title="Conversa não encontrada"
+                  description="Esta conversa não existe nos dados atuais ou já não está disponível."
+                  actionLabel="Ver mensagens"
+                  actionTo={routes.messages()}
+                />
+              );
+            }
+            return (
               <MessagesView
                 conversations={conversations}
-                activeConversationId={activeConversationId}
-                onSelectConversation={setActiveConversationId}
+                activeConversationId={conversationId}
+                onSelectConversation={(id) => navigate(routes.conversation(id))}
+                onBackToList={() => navigate(routes.messages())}
                 onSendMessage={handleSendMessage}
                 onUnlockPpvMessage={handleUnlockPpvMessage}
                 onOpenTipModal={handleOpenTipModal}
               />
-            )}
-
-            {/* 7. Notifications Tab */}
-            {currentTab === 'notifications' && (
-              <NotificationsView
-                notifications={notifications}
-                onMarkAllAsRead={() => {
-                  setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-                  showToast('Todas as notificações foram marcadas como lidas.');
-                }}
-                onSelectNotification={(item) => {
-                  if (item.targetPostId) {
-                    setCurrentTab('feed');
-                  }
-                }}
-              />
-            )}
-
-            {/* 8. Admin Dashboard Tab */}
-            {currentTab === 'admin' && (
-              <AdminDashboard
-                reports={reports}
-                kycRequests={kycRequests}
-                onResolveReport={handleResolveReport}
-                onResolveKyc={handleResolveKyc}
-              />
-            )}
-          </>
-        )}
-      </main>
-
-      {/* Mobile Bottom Navigation */}
-      <BottomNav
-        currentTab={currentTab}
-        onTabChange={(tab) => {
-          setCurrentTab(tab);
-          setIsLandingPage(false);
+            );
+          },
+          notifications: () => (
+            <NotificationsView
+              notifications={notifications}
+              onMarkAllAsRead={() => {
+                setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
+                showToast('Todas as notificações foram marcadas como lidas.');
+              }}
+              onSelectNotification={(item) => {
+                if (item.targetPostId) navigate(routes.feed());
+              }}
+            />
+          ),
+          wallet: (role) => (
+            <WalletView
+              userRole={role ?? userRole}
+              walletBalanceMT={walletBalanceMT}
+              transactions={transactions}
+              onDeposit={handleDepositToWallet}
+              onRequestPayout={handleRequestPayout}
+            />
+          ),
+          creatorStudio: () => (
+            <CreatorStudio
+              creator={currentCreatorProfile}
+              posts={posts.filter((post) => post.creatorId === currentCreatorProfile.id)}
+              reviews={reviews}
+              onOpenCreateModal={() => setShowCreateModal(true)}
+              onRequestPayout={handleRequestPayout}
+              onUpdatePricing={(monthlyMT, quarterlyMT) => {
+                setCreators((prev) => prev.map((creator) => creator.id === currentCreatorProfile.id
+                  ? { ...creator, subscriptionPriceMonthly: monthlyMT, subscriptionPriceQuarterly: quarterlyMT }
+                  : creator));
+                showToast('Preços de subscrição atualizados com sucesso!');
+              }}
+            />
+          ),
+          creatorKyc: () => (
+            <KycModal
+              presentation="page"
+              onClose={() => navigate(routes.creatorStudio())}
+              onSubmitKyc={handleSubmitKyc}
+            />
+          ),
+          admin: (tab) => (
+            <AdminDashboard
+              reports={reports}
+              kycRequests={kycRequests}
+              onResolveReport={handleResolveReport}
+              onResolveKyc={handleResolveKyc}
+              onLogout={() => setShowLogoutConfirm(true)}
+              initialTab={tab}
+              onTabChange={(nextTab) => {
+                if (nextTab === 'kyc') navigate(routes.adminKyc());
+                else if (nextTab === 'reports') navigate(routes.adminReports());
+                else navigate(routes.admin());
+              }}
+            />
+          ),
         }}
-        onOpenCreateModal={() => setShowCreateModal(true)}
-        unreadMessagesCount={unreadMessagesCount}
       />
 
       {/* ------------------------------------------- */}
@@ -1069,14 +1041,6 @@ export default function App() {
         />
       )}
 
-      {/* KYC Creator Verification Modal */}
-      {showKycModal && (
-        <KycModal
-          onClose={() => setShowKycModal(false)}
-          onSubmitKyc={handleSubmitKyc}
-        />
-      )}
-
       {/* Mobile USSD Payment Prompt (M-Pesa / e-Mola / mKesh Simulation) */}
       {paymentPrompt && paymentPrompt.isOpen && (
         <PaymentPromptModal
@@ -1090,24 +1054,6 @@ export default function App() {
           }}
           onCancel={() => setPaymentPrompt(null)}
         />
-      )}
-
-      {/* Login & Register Modal */}
-      {showLoginModal && (
-        <ResponsiveDialog
-          ariaLabel={loginModalMode === 'register' ? 'Criar conta FanScale' : 'Entrar na FanScale'}
-          onClose={() => setShowLoginModal(false)}
-          closeOnBackdrop
-          panelClassName="max-w-4xl"
-        >
-          <LoginView
-            isModal={true}
-            initialMode={loginModalMode}
-            initialRole={loginModalRole}
-            onLoginSuccess={handleLoginSuccess}
-            onClose={() => setShowLoginModal(false)}
-          />
-        </ResponsiveDialog>
       )}
 
       {/* Rate Creator / Live Stream Modal */}
@@ -1139,6 +1085,13 @@ export default function App() {
         />
       )}
 
+      <LogoutConfirmModal
+        isOpen={showLogoutConfirm}
+        user={currentUser}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={handleLogout}
+      />
+
       {/* 18+ Age Gate Modal */}
       <AgeGateModal
         isOpen={showAgeGate}
@@ -1155,6 +1108,6 @@ export default function App() {
         }}
       />
 
-    </div>
+    </>
   );
 }

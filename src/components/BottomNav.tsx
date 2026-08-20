@@ -1,47 +1,45 @@
 import React from 'react';
 import { Home, Compass, PlusCircle, MessageCircle, User } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import { routes } from '../app/routes';
 
 interface BottomNavProps {
-  currentTab: string;
-  onTabChange: (tab: string) => void;
   onOpenCreateModal: () => void;
   unreadMessagesCount: number;
+  profileUsername: string;
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({
-  currentTab,
-  onTabChange,
   onOpenCreateModal,
   unreadMessagesCount,
+  profileUsername,
 }) => {
   return (
     <nav aria-label="Navegação principal móvel" className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t border-pink-100 bg-white/95 backdrop-blur-md px-1 lg:hidden">
       
       {/* Início */}
-      <button
+      <NavLink
         id="mobile-nav-feed"
-        onClick={() => onTabChange('feed')}
-        aria-current={currentTab === 'feed' ? 'page' : undefined}
-        className={`flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
-          currentTab === 'feed' ? 'text-pink-600 font-bold' : 'text-stone-500 hover:text-stone-800'
+        to={routes.feed()}
+        className={({ isActive }) => `flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
+          isActive ? 'font-bold text-pink-600' : 'text-stone-500 hover:text-stone-800'
         }`}
       >
-        <Home className={`h-5 w-5 ${currentTab === 'feed' ? 'stroke-[2.5]' : 'stroke-2'}`} />
+        <Home className="h-5 w-5" />
         <span className="text-[10px]">Início</span>
-      </button>
+      </NavLink>
 
       {/* Explorar */}
-      <button
+      <NavLink
         id="mobile-nav-explore"
-        onClick={() => onTabChange('explore')}
-        aria-current={currentTab === 'explore' ? 'page' : undefined}
-        className={`flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
-          currentTab === 'explore' ? 'text-pink-600 font-bold' : 'text-stone-500 hover:text-stone-800'
+        to={routes.explore()}
+        className={({ isActive }) => `flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
+          isActive ? 'font-bold text-pink-600' : 'text-stone-500 hover:text-stone-800'
         }`}
       >
-        <Compass className={`h-5 w-5 ${currentTab === 'explore' ? 'stroke-[2.5]' : 'stroke-2'}`} />
+        <Compass className="h-5 w-5" />
         <span className="text-[10px]">Explorar</span>
-      </button>
+      </NavLink>
 
       {/* + Criar (Center Pink Glow Button) */}
       <button
@@ -54,35 +52,33 @@ export const BottomNav: React.FC<BottomNavProps> = ({
       </button>
 
       {/* Mensagens */}
-      <button
+      <NavLink
         id="mobile-nav-messages"
-        onClick={() => onTabChange('messages')}
-        aria-current={currentTab === 'messages' ? 'page' : undefined}
-        className={`relative flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
-          currentTab === 'messages' ? 'text-pink-600 font-bold' : 'text-stone-500 hover:text-stone-800'
+        to={routes.messages()}
+        className={({ isActive }) => `relative flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
+          isActive ? 'font-bold text-pink-600' : 'text-stone-500 hover:text-stone-800'
         }`}
       >
-        <MessageCircle className={`h-5 w-5 ${currentTab === 'messages' ? 'stroke-[2.5]' : 'stroke-2'}`} />
+        <MessageCircle className="h-5 w-5" />
         {unreadMessagesCount > 0 && (
           <span className="absolute right-3 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-[9px] font-bold text-white">
             {unreadMessagesCount}
           </span>
         )}
         <span className="text-[10px]">Mensagens</span>
-      </button>
+      </NavLink>
 
       {/* Perfil */}
-      <button
+      <NavLink
         id="mobile-nav-profile"
-        onClick={() => onTabChange('profile')}
-        aria-current={currentTab === 'profile' ? 'page' : undefined}
-        className={`flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
-          currentTab === 'profile' ? 'text-pink-600 font-bold' : 'text-stone-500 hover:text-stone-800'
+        to={routes.creator(profileUsername)}
+        className={({ isActive }) => `flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-1 transition-colors ${
+          isActive ? 'font-bold text-pink-600' : 'text-stone-500 hover:text-stone-800'
         }`}
       >
-        <User className={`h-5 w-5 ${currentTab === 'profile' ? 'stroke-[2.5]' : 'stroke-2'}`} />
+        <User className="h-5 w-5" />
         <span className="text-[10px]">Perfil</span>
-      </button>
+      </NavLink>
     </nav>
   );
 };

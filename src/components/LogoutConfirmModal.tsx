@@ -30,7 +30,7 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
         <button
           onClick={onClose}
           aria-label="Fechar confirmação de saída"
-          className="absolute right-4 top-4 rounded-full p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
+          className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-700"
           title="Fechar"
         >
           <X className="h-5 w-5" />
@@ -82,7 +82,7 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
               id="cancel-logout-btn"
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-full border border-stone-200 bg-white py-2.5 text-xs font-bold text-stone-700 hover:bg-stone-50 transition-colors"
+              className="min-h-11 flex-1 rounded-full border border-stone-200 bg-white py-2.5 text-xs font-bold text-stone-700 hover:bg-stone-50 transition-colors"
             >
               Cancelar
             </button>
@@ -93,7 +93,7 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
                 onConfirm();
                 onClose();
               }}
-              className="flex-1 rounded-full bg-rose-600 py-2.5 text-xs font-bold text-white shadow-md shadow-rose-600/30 hover:bg-rose-700 transition-all flex items-center justify-center gap-1.5"
+              className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-full bg-rose-600 py-2.5 text-xs font-bold text-white shadow-md shadow-rose-600/30 transition-colors hover:bg-rose-700"
             >
               <LogOut className="h-4 w-4" />
               <span>Sim, Sair da Conta</span>

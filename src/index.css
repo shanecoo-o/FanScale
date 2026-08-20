@@ -51,6 +51,10 @@
   padding-bottom: calc(var(--fanscale-bottom-nav-height) + env(safe-area-inset-bottom) + 1rem);
 }
 
+.app-main.public-main {
+  padding-bottom: 0;
+}
+
 .skip-link {
   position: fixed;
   left: var(--fanscale-page-gutter);

@@ -428,7 +428,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
       </div>
 
       {/* Payment Methods Supported Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <div className="rounded-2xl border border-pink-100 bg-white p-3.5 text-center space-y-1 shadow-sm">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white font-black text-xs mx-auto">
             M
@@ -468,7 +468,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
       <div className="rounded-3xl border border-pink-100 bg-white p-5 sm:p-7 shadow-sm space-y-6">
         
         {/* Header & Main Search Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-stone-100">
+        <div className="flex flex-col justify-between gap-4 border-b border-stone-100 pb-2 lg:flex-row lg:items-center">
           <div>
             <div className="flex items-center gap-2">
               <h2 className="font-display text-lg font-bold text-stone-900">
@@ -523,9 +523,9 @@ export const WalletView: React.FC<WalletViewProps> = ({
         </div>
 
         {/* Real-time Search and Flow Quick Tabs */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
           {/* Search Input (7 cols) */}
-          <div className="md:col-span-7 relative">
+          <div className="relative lg:col-span-7">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
             <input
               type="text"
@@ -547,7 +547,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
           </div>
 
           {/* Quick Flow Pills (Credit / Debit) (5 cols) */}
-          <div className="md:col-span-5 flex items-center justify-between sm:justify-end gap-1.5 bg-stone-100 p-1 rounded-2xl border border-stone-200">
+          <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-stone-200 bg-stone-100 p-1 sm:justify-end lg:col-span-5">
             <button
               onClick={() => setFilterFlow('all')}
               className={`flex-1 sm:flex-none rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${

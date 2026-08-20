@@ -18,48 +18,40 @@ import {
   LogIn
 } from 'lucide-react';
 import { UserRole, AuthUser } from '../types';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { destinationForPath, routes } from '../app/routes';
 
 interface HeaderProps {
-  currentTab: string;
-  onTabChange: (tab: string) => void;
   userRole: UserRole;
   onRoleChange: (role: UserRole) => void;
-  isLandingPage: boolean;
-  onToggleLandingPage: (show: boolean) => void;
   walletBalanceMT: number;
   unreadNotificationsCount: number;
   unreadMessagesCount: number;
   onOpenCreateModal: () => void;
-  onOpenWallet: () => void;
-  onOpenKycModal: () => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
   currentUser?: AuthUser | null;
-  onOpenLogin: () => void;
-  onOpenRegister?: () => void;
+  profileUsername: string;
   onLogout: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  currentTab,
-  onTabChange,
   userRole,
   onRoleChange,
-  isLandingPage,
-  onToggleLandingPage,
   walletBalanceMT = 0,
   unreadNotificationsCount,
   unreadMessagesCount,
   onOpenCreateModal,
-  onOpenWallet,
-  onOpenKycModal,
   searchQuery,
   onSearchChange,
   currentUser,
-  onOpenLogin,
-  onOpenRegister,
+  profileUsername,
   onLogout,
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const activeDestination = destinationForPath(location.pathname);
+  const isPublicRoute = ['home', 'login', 'register', 'recover', 'verifyOtp', 'notFound'].includes(activeDestination);
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -72,10 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex min-w-0 items-center gap-2 sm:gap-6">
           <button 
             id="brand-logo-btn"
-            onClick={() => {
-              onToggleLandingPage(false);
-              onTabChange('feed');
-            }}
+            onClick={() => navigate(isPublicRoute ? routes.home() : routes.feed())}
             aria-label="Ir para o início da FanScale"
             className="group flex min-w-0 items-center gap-2 text-left focus-visible:ring-2 focus-visible:ring-pink-600 focus-visible:ring-offset-2"
           >
@@ -105,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="hidden lg:flex items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50/70 px-3 py-1.5 text-xs font-semibold text-pink-900 hover:bg-pink-100/80 transition-colors"
             >
               <span className="h-2 w-2 rounded-full bg-pink-500 animate-pulse" />
-              {isLandingPage ? (
+              {isPublicRoute ? (
                 <span>🌐 Página Inicial</span>
               ) : userRole === 'fan' ? (
                 <span>📱 Modo Fã</span>
@@ -128,11 +117,11 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   onClick={() => {
-                    onToggleLandingPage(true);
+                    navigate(routes.home());
                     setShowRoleMenu(false);
                   }}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
-                    isLandingPage ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
+                    activeDestination === 'home' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
                   }`}
                 >
                   <Globe className="h-4 w-4 text-pink-600" />
@@ -141,12 +130,12 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   onClick={() => {
-                    onToggleLandingPage(false);
                     onRoleChange('fan');
+                    navigate(routes.feed());
                     setShowRoleMenu(false);
                   }}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
-                    !isLandingPage && userRole === 'fan' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
+                    !isPublicRoute && userRole === 'fan' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
                   }`}
                 >
                   <Sparkles className="h-4 w-4 text-pink-600" />
@@ -155,12 +144,12 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   onClick={() => {
-                    onToggleLandingPage(false);
                     onRoleChange('creator');
+                    navigate(routes.creatorStudio());
                     setShowRoleMenu(false);
                   }}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
-                    !isLandingPage && userRole === 'creator' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
+                    !isPublicRoute && userRole === 'creator' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
                   }`}
                 >
                   <LayoutDashboard className="h-4 w-4 text-pink-600" />
@@ -169,12 +158,12 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   onClick={() => {
-                    onToggleLandingPage(false);
                     onRoleChange('admin');
+                    navigate(routes.admin());
                     setShowRoleMenu(false);
                   }}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
-                    !isLandingPage && userRole === 'admin' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
+                    !isPublicRoute && userRole === 'admin' ? 'bg-pink-50 text-pink-700 font-semibold' : 'text-stone-700 hover:bg-stone-50'
                   }`}
                 >
                   <ShieldCheck className="h-4 w-4 text-pink-600" />
@@ -185,7 +174,7 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   onClick={() => {
-                    onOpenLogin();
+                    navigate(routes.login());
                     setShowRoleMenu(false);
                   }}
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-pink-600 hover:bg-pink-50 transition-colors"
@@ -210,7 +199,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Center: Search Bar */}
-        {!isLandingPage && (
+        {!isPublicRoute && (
           <div className="hidden xl:flex flex-1 max-w-md mx-5">
             <div className="relative w-full">
               <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors ${
@@ -220,7 +209,10 @@ export const Header: React.FC<HeaderProps> = ({
                 id="header-search-input"
                 type="text"
                 value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
+                onChange={(e) => {
+                  onSearchChange(e.target.value);
+                  if (e.target.value.trim()) navigate(routes.explore());
+                }}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 placeholder="Pesquisar criadores moçambicanos, tags, marrabenta..."
@@ -243,28 +235,25 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right: Actions & Navigation Buttons */}
         <div className="flex shrink-0 items-center gap-1 sm:gap-2 xl:gap-3">
           
-          {isLandingPage ? (
+          {isPublicRoute ? (
             <div className="flex items-center gap-2">
               <button
                 id="landing-explore-btn"
-                onClick={() => {
-                  onToggleLandingPage(false);
-                  onTabChange('explore');
-                }}
+                onClick={() => navigate(routes.explore())}
                 className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-stone-700 hover:bg-stone-100 transition-colors hidden sm:inline-flex"
               >
                 Explorar Criadores
               </button>
               <button
                 id="landing-login-btn"
-                onClick={onOpenLogin}
+                onClick={() => navigate(routes.login())}
                 className="hidden min-[390px]:inline-flex rounded-full border border-pink-500 bg-white px-3.5 py-2 text-xs font-bold text-pink-600 hover:bg-pink-50 transition-colors"
               >
                 Entrar
               </button>
               <button
                 id="landing-register-btn"
-                onClick={onOpenRegister || onOpenLogin}
+                onClick={() => navigate(routes.register())}
                 className="inline-flex min-h-11 items-center rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-3 py-2 text-xs font-bold text-white shadow-md shadow-pink-500/20 hover:from-pink-700 hover:to-rose-600 transition-colors sm:px-4"
               >
                 <span className="sm:hidden">Criar</span><span className="hidden sm:inline">Criar Conta</span>
@@ -276,9 +265,10 @@ export const Header: React.FC<HeaderProps> = ({
               <nav className="hidden lg:flex items-center gap-1">
                 <button
                   id="nav-feed-btn"
-                  onClick={() => onTabChange('feed')}
+                  onClick={() => navigate(routes.feed())}
+                  aria-current={activeDestination === 'feed' ? 'page' : undefined}
                   className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    currentTab === 'feed'
+                    activeDestination === 'feed'
                       ? 'bg-pink-100 text-pink-700'
                       : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                   }`}
@@ -289,9 +279,10 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   id="nav-explore-btn"
-                  onClick={() => onTabChange('explore')}
+                  onClick={() => navigate(routes.explore())}
+                  aria-current={activeDestination === 'explore' ? 'page' : undefined}
                   className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    currentTab === 'explore'
+                    activeDestination === 'explore'
                       ? 'bg-pink-100 text-pink-700'
                       : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                   }`}
@@ -315,10 +306,11 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Messages with Badge */}
               <button
                 id="header-messages-btn"
-                onClick={() => onTabChange('messages')}
+                onClick={() => navigate(routes.messages())}
+                aria-current={activeDestination === 'messages' ? 'page' : undefined}
                 aria-label={`Mensagens${unreadMessagesCount > 0 ? `, ${unreadMessagesCount} não lidas` : ''}`}
                 className={`relative hidden h-11 w-11 items-center justify-center rounded-full transition-colors lg:flex ${
-                  currentTab === 'messages'
+                  activeDestination === 'messages'
                     ? 'bg-pink-100 text-pink-700'
                     : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                 }`}
@@ -334,10 +326,11 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Notifications with Badge */}
               <button
                 id="header-notifications-btn"
-                onClick={() => onTabChange('notifications')}
+                onClick={() => navigate(routes.notifications())}
+                aria-current={activeDestination === 'notifications' ? 'page' : undefined}
                 aria-label={`Notificações${unreadNotificationsCount > 0 ? `, ${unreadNotificationsCount} não lidas` : ''}`}
                 className={`relative flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
-                  currentTab === 'notifications'
+                  activeDestination === 'notifications'
                     ? 'bg-pink-100 text-pink-700'
                     : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                 }`}
@@ -353,7 +346,8 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Wallet Button with Balance in Meticais */}
               <button
                 id="header-wallet-btn"
-                onClick={onOpenWallet}
+                onClick={() => navigate(routes.wallet())}
+                aria-current={activeDestination === 'wallet' ? 'page' : undefined}
                 className="hidden min-h-11 items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-xs font-bold text-stone-800 hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 transition-colors md:flex"
                 title="Carteira Digital FanScale"
               >
@@ -365,7 +359,7 @@ export const Header: React.FC<HeaderProps> = ({
               {userRole === 'fan' ? (
                 <button
                   id="become-creator-cta-btn"
-                  onClick={onOpenKycModal}
+                  onClick={() => navigate(routes.creatorKyc())}
                   className="hidden sm:flex items-center gap-1.5 rounded-full border border-pink-500 bg-white px-3.5 py-1.5 text-xs font-bold text-pink-600 hover:bg-pink-500 hover:text-white transition-all shadow-sm"
                 >
                   <Sparkles className="h-3.5 w-3.5" />
@@ -374,9 +368,10 @@ export const Header: React.FC<HeaderProps> = ({
               ) : (
                 <button
                   id="creator-studio-shortcut-btn"
-                  onClick={() => onTabChange('studio')}
+                  onClick={() => navigate(routes.creatorStudio())}
+                  aria-current={activeDestination === 'creatorStudio' ? 'page' : undefined}
                   className={`hidden sm:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-all ${
-                    currentTab === 'studio'
+                    activeDestination === 'creatorStudio'
                       ? 'bg-stone-900 text-white shadow-sm'
                       : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                   }`}
@@ -433,7 +428,7 @@ export const Header: React.FC<HeaderProps> = ({
 
                     <button
                       onClick={() => {
-                        onTabChange('profile');
+                        navigate(routes.creator(profileUsername));
                         setShowUserMenu(false);
                       }}
                       className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-medium text-stone-700 hover:bg-pink-50 hover:text-pink-700 transition-colors"
@@ -444,7 +439,7 @@ export const Header: React.FC<HeaderProps> = ({
 
                     <button
                       onClick={() => {
-                        onOpenWallet();
+                        navigate(routes.wallet());
                         setShowUserMenu(false);
                       }}
                       className="flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-xs font-medium text-stone-700 hover:bg-pink-50 hover:text-pink-700 transition-colors"
@@ -461,7 +456,7 @@ export const Header: React.FC<HeaderProps> = ({
                     {userRole === 'creator' && (
                       <button
                         onClick={() => {
-                          onTabChange('studio');
+                          navigate(routes.creatorStudio());
                           setShowUserMenu(false);
                         }}
                         className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-medium text-stone-700 hover:bg-pink-50 hover:text-pink-700 transition-colors"
@@ -476,7 +471,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <button
                       id="menu-switch-account-btn"
                       onClick={() => {
-                        onOpenLogin();
+                        navigate(routes.login());
                         setShowUserMenu(false);
                       }}
                       className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors"
@@ -488,8 +483,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <button
                       id="menu-register-account-btn"
                       onClick={() => {
-                        if (onOpenRegister) onOpenRegister();
-                        else onOpenLogin();
+                        navigate(routes.register());
                         setShowUserMenu(false);
                       }}
                       className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-medium text-pink-600 hover:bg-pink-50 transition-colors"

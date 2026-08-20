@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   ShieldCheck, 
   Users, 
@@ -21,6 +21,8 @@ interface AdminDashboardProps {
   onResolveReport: (reportId: string, action: 'keep' | 'remove') => void;
   onResolveKyc: (kycId: string, action: 'approve' | 'reject') => void;
   onLogout?: () => void;
+  initialTab?: 'metrics' | 'reports' | 'kyc';
+  onTabChange?: (tab: 'metrics' | 'reports' | 'kyc') => void;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -29,8 +31,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onResolveReport,
   onResolveKyc,
   onLogout,
+  initialTab = 'metrics',
+  onTabChange,
 }) => {
-  const [adminTab, setAdminTab] = useState<'metrics' | 'reports' | 'kyc'>('metrics');
+  const [adminTab, setAdminTab] = useState<'metrics' | 'reports' | 'kyc'>(initialTab);
+
+  useEffect(() => {
+    setAdminTab(initialTab);
+  }, [initialTab]);
+
+  const selectAdminTab = (tab: 'metrics' | 'reports' | 'kyc') => {
+    setAdminTab(tab);
+    onTabChange?.(tab);
+  };
 
   const safeReports = reports || [];
   const safeKyc = kycRequests || [];
@@ -128,10 +141,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       </div>
 
       {/* Admin Nav Tabs */}
-      <div className="flex items-center gap-2 border-b border-pink-100 pb-2">
+      <div className="flex items-center gap-2 overflow-x-auto border-b border-pink-100 pb-2" aria-label="Secções administrativas">
         <button
-          onClick={() => setAdminTab('metrics')}
-          className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          onClick={() => selectAdminTab('metrics')}
+          aria-current={adminTab === 'metrics' ? 'page' : undefined}
+          className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             adminTab === 'metrics'
               ? 'bg-pink-600 text-white shadow-sm'
               : 'text-stone-600 hover:bg-pink-50'
@@ -141,8 +155,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </button>
 
         <button
-          onClick={() => setAdminTab('kyc')}
-          className={`relative rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          onClick={() => selectAdminTab('kyc')}
+          aria-current={adminTab === 'kyc' ? 'page' : undefined}
+          className={`relative shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             adminTab === 'kyc'
               ? 'bg-pink-600 text-white shadow-sm'
               : 'text-stone-600 hover:bg-pink-50'
@@ -157,8 +172,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </button>
 
         <button
-          onClick={() => setAdminTab('reports')}
-          className={`relative rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          onClick={() => selectAdminTab('reports')}
+          aria-current={adminTab === 'reports' ? 'page' : undefined}
+          className={`relative shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             adminTab === 'reports'
               ? 'bg-pink-600 text-white shadow-sm'
               : 'text-stone-600 hover:bg-pink-50'
@@ -187,7 +203,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <div className="divide-y divide-stone-100">
             {kycRequests.map((req) => (
-              <div key={req.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div key={req.id} className="flex flex-col justify-between gap-4 py-4 lg:flex-row lg:items-center">
                 <div className="flex min-w-0 items-start gap-3">
                   <img
                     src={req.creatorAvatar}
@@ -261,7 +277,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <div className="divide-y divide-stone-100">
             {reports.map((rep) => (
-              <div key={rep.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div key={rep.id} className="flex flex-col justify-between gap-4 py-4 lg:flex-row lg:items-center">
                 <div className="min-w-0 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-700">
