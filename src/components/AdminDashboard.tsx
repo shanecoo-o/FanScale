@@ -47,7 +47,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 space-y-8">
+    <div className="mx-auto max-w-7xl min-w-0 space-y-6 px-3 py-4 sm:space-y-8 sm:px-6 sm:py-6 lg:px-8">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-3xl bg-stone-900 p-6 sm:p-8 text-white shadow-xl">
@@ -175,8 +175,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {/* Tab: KYC Verifications */}
       {adminTab === 'kyc' && (
-        <div className="rounded-3xl border border-pink-100 bg-white p-6 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="rounded-3xl border border-pink-100 bg-white p-4 shadow-sm space-y-4 sm:p-6">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="font-display text-base font-bold text-stone-900">
               Solicitações de Verificação de Identidade (Moçambique 🇲🇿)
             </h3>
@@ -188,14 +188,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="divide-y divide-stone-100">
             {kycRequests.map((req) => (
               <div key={req.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-start gap-3">
                   <img
                     src={req.creatorAvatar}
                     alt={req.creatorName}
                     className="h-12 w-12 rounded-full object-cover ring-2 ring-pink-500/20"
                   />
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="font-bold text-xs text-stone-900">
                         {req.creatorName}
                       </span>
@@ -213,7 +213,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       </span>
                     </div>
 
-                    <div className="text-[11px] text-stone-500 space-x-3 mt-1">
+                    <div className="mt-1 flex flex-col gap-1 break-words text-[11px] text-stone-500 min-[430px]:flex-row min-[430px]:flex-wrap min-[430px]:gap-x-3">
                       <span>Doc: <strong>{req.idDocumentType}</strong> ({req.documentNumber})</span>
                       <span>NUÍT: <strong>{req.nuitNumber}</strong></span>
                       <span>Telemóvel: <strong>{req.phone}</strong></span>
@@ -222,7 +222,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 {req.status === 'pending' ? (
-                  <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
                     <button
                       onClick={() => onResolveKyc(req.id, 'approve')}
                       className="rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
@@ -249,8 +249,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {/* Tab: Content Reports */}
       {adminTab === 'reports' && (
-        <div className="rounded-3xl border border-pink-100 bg-white p-6 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="rounded-3xl border border-pink-100 bg-white p-4 shadow-sm space-y-4 sm:p-6">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="font-display text-base font-bold text-stone-900">
               Fila de Moderação e Denúncias de Conteúdo
             </h3>
@@ -262,8 +262,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="divide-y divide-stone-100">
             {reports.map((rep) => (
               <div key={rep.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                <div className="min-w-0 space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-700">
                       Motivo: {rep.reason.toUpperCase()}
                     </span>
@@ -280,7 +280,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 {rep.status === 'pending' ? (
-                  <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
                     <button
                       onClick={() => onResolveReport(rep.id, 'keep')}
                       className="rounded-full bg-stone-100 px-4 py-1.5 text-xs font-bold text-stone-700 hover:bg-stone-200"

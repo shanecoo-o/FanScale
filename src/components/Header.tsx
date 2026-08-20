@@ -65,28 +65,29 @@ export const Header: React.FC<HeaderProps> = ({
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-pink-100 bg-white/90 backdrop-blur-md transition-all">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-pink-100 bg-white/90 backdrop-blur-md transition-colors">
+      <div className="mx-auto flex h-16 max-w-7xl min-w-0 items-center justify-between gap-2 px-3 sm:px-6 lg:px-8">
         
         {/* Left: Brand Logo & Mode Badge */}
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-6">
           <button 
             id="brand-logo-btn"
             onClick={() => {
               onToggleLandingPage(false);
               onTabChange('feed');
             }}
-            className="group flex items-center gap-2 text-left focus:outline-none"
+            aria-label="Ir para o início da FanScale"
+            className="group flex min-w-0 items-center gap-2 text-left focus-visible:ring-2 focus-visible:ring-pink-600 focus-visible:ring-offset-2"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-pink-600 via-rose-500 to-pink-400 text-white shadow-md shadow-pink-500/25 transition-transform group-hover:scale-105">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-pink-600 via-rose-500 to-pink-400 text-white shadow-md shadow-pink-500/25 transition-transform group-hover:scale-105 sm:h-10 sm:w-10">
               <Flame className="h-6 w-6 fill-white stroke-none" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="font-display text-xl font-bold tracking-tight text-stone-900 group-hover:text-pink-600 transition-colors">
+                <span className="font-display text-lg font-bold tracking-tight text-stone-900 group-hover:text-pink-600 transition-colors sm:text-xl">
                   Fan<span className="text-pink-600">Scale</span>
                 </span>
-                <span className="rounded-full bg-pink-100 px-1.5 py-0.5 text-[10px] font-bold text-pink-700">
+                <span className="hidden min-[390px]:inline-flex rounded-full bg-pink-100 px-1.5 py-0.5 text-[10px] font-bold text-pink-700">
                   MZ 🇲🇿
                 </span>
               </div>
@@ -210,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Center: Search Bar */}
         {!isLandingPage && (
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
+          <div className="hidden xl:flex flex-1 max-w-md mx-5">
             <div className="relative w-full">
               <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors ${
                 isSearchFocused ? 'text-pink-600' : 'text-stone-400'
@@ -223,11 +224,13 @@ export const Header: React.FC<HeaderProps> = ({
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 placeholder="Pesquisar criadores moçambicanos, tags, marrabenta..."
+                aria-label="Pesquisar criadores, tags e conteúdo"
                 className="w-full rounded-full border border-stone-200 bg-stone-50/80 py-2 pl-10 pr-4 text-xs text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-500/20 transition-all"
               />
               {searchQuery && (
                 <button
                   onClick={() => onSearchChange('')}
+                  aria-label="Limpar pesquisa"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-stone-400 hover:text-stone-600"
                 >
                   ✕
@@ -238,7 +241,7 @@ export const Header: React.FC<HeaderProps> = ({
         )}
 
         {/* Right: Actions & Navigation Buttons */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2 xl:gap-3">
           
           {isLandingPage ? (
             <div className="flex items-center gap-2">
@@ -255,16 +258,16 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="landing-login-btn"
                 onClick={onOpenLogin}
-                className="rounded-full border border-pink-500 bg-white px-3.5 py-1.5 text-xs font-bold text-pink-600 hover:bg-pink-50 transition-all"
+                className="hidden min-[390px]:inline-flex rounded-full border border-pink-500 bg-white px-3.5 py-2 text-xs font-bold text-pink-600 hover:bg-pink-50 transition-colors"
               >
                 Entrar
               </button>
               <button
                 id="landing-register-btn"
                 onClick={onOpenRegister || onOpenLogin}
-                className="rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-pink-500/20 hover:from-pink-700 hover:to-rose-600 transition-all hover:scale-[1.02]"
+                className="inline-flex min-h-11 items-center rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-3 py-2 text-xs font-bold text-white shadow-md shadow-pink-500/20 hover:from-pink-700 hover:to-rose-600 transition-colors sm:px-4"
               >
-                Criar Conta
+                <span className="sm:hidden">Criar</span><span className="hidden sm:inline">Criar Conta</span>
               </button>
             </div>
           ) : (
@@ -302,7 +305,8 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="header-create-post-btn"
                 onClick={onOpenCreateModal}
-                className="flex items-center gap-1.5 rounded-full bg-pink-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-sm shadow-pink-500/30 hover:bg-pink-600 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                aria-label="Criar publicação"
+                className="flex h-11 w-11 items-center justify-center gap-1.5 rounded-full bg-pink-500 text-xs font-bold text-white shadow-sm shadow-pink-500/30 hover:bg-pink-600 transition-[background-color,transform] active:scale-[0.98] sm:h-auto sm:w-auto sm:px-3.5 sm:py-2"
               >
                 <PlusCircle className="h-4 w-4" />
                 <span className="hidden sm:inline">Criar</span>
@@ -312,12 +316,12 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="header-messages-btn"
                 onClick={() => onTabChange('messages')}
-                className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                aria-label={`Mensagens${unreadMessagesCount > 0 ? `, ${unreadMessagesCount} não lidas` : ''}`}
+                className={`relative hidden h-11 w-11 items-center justify-center rounded-full transition-colors lg:flex ${
                   currentTab === 'messages'
                     ? 'bg-pink-100 text-pink-700'
                     : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                 }`}
-                title="Mensagens"
               >
                 <MessageCircle className="h-4 w-4" />
                 {unreadMessagesCount > 0 && (
@@ -331,12 +335,12 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="header-notifications-btn"
                 onClick={() => onTabChange('notifications')}
-                className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                aria-label={`Notificações${unreadNotificationsCount > 0 ? `, ${unreadNotificationsCount} não lidas` : ''}`}
+                className={`relative flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
                   currentTab === 'notifications'
                     ? 'bg-pink-100 text-pink-700'
                     : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
                 }`}
-                title="Notificações"
               >
                 <Bell className="h-4 w-4" />
                 {unreadNotificationsCount > 0 && (
@@ -350,7 +354,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 id="header-wallet-btn"
                 onClick={onOpenWallet}
-                className="flex items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-3 py-1.5 text-xs font-bold text-stone-800 hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 transition-colors"
+                className="hidden min-h-11 items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-xs font-bold text-stone-800 hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 transition-colors md:flex"
                 title="Carteira Digital FanScale"
               >
                 <Wallet className="h-4 w-4 text-pink-600" />
@@ -370,9 +374,9 @@ export const Header: React.FC<HeaderProps> = ({
               ) : (
                 <button
                   id="creator-studio-shortcut-btn"
-                  onClick={() => onTabChange('creator_studio')}
+                  onClick={() => onTabChange('studio')}
                   className={`hidden sm:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-all ${
-                    currentTab === 'creator_studio'
+                    currentTab === 'studio'
                       ? 'bg-stone-900 text-white shadow-sm'
                       : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                   }`}
@@ -387,8 +391,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="header-profile-btn"
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="group relative flex h-9 w-9 items-center justify-center rounded-full ring-2 ring-pink-500/20 hover:ring-pink-500 transition-all overflow-hidden focus:outline-none"
-                  title="Menu do Utilizador"
+                  aria-label="Abrir menu do utilizador"
+                  aria-expanded={showUserMenu}
+                  className="group relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full ring-2 ring-pink-500/20 transition-shadow hover:ring-pink-500 focus-visible:ring-2 focus-visible:ring-pink-600 focus-visible:ring-offset-2"
                 >
                   <img
                     src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
@@ -456,7 +461,7 @@ export const Header: React.FC<HeaderProps> = ({
                     {userRole === 'creator' && (
                       <button
                         onClick={() => {
-                          onTabChange('creator_studio');
+                          onTabChange('studio');
                           setShowUserMenu(false);
                         }}
                         className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-medium text-stone-700 hover:bg-pink-50 hover:text-pink-700 transition-colors"

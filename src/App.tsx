@@ -39,6 +39,7 @@ import { WalletView } from './components/WalletView';
 import { MessagesView } from './components/MessagesView';
 import { NotificationsView } from './components/NotificationsView';
 import { AdminDashboard } from './components/AdminDashboard';
+import { ResponsiveDialog } from './components/ui/ResponsiveDialog';
 import { LandingView } from './components/LandingView';
 import { LoginView } from './components/LoginView';
 import { StoryViewerModal } from './components/StoryViewerModal';
@@ -776,11 +777,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col antialiased selection:bg-pink-500 selection:text-white">
+    <div className="app-shell bg-stone-50 text-stone-900 font-sans flex flex-col antialiased selection:bg-pink-500 selection:text-white">
+      <a href="#main-content" className="skip-link">Saltar para o conteúdo principal</a>
       
       {/* Toast Feedback Notification */}
       {toastMessage && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 rounded-full bg-stone-900/95 text-white px-5 py-2.5 text-xs font-bold shadow-2xl backdrop-blur-md border border-stone-800 animate-fade-in flex items-center gap-2">
+        <div role="status" aria-live="polite" className="fixed top-20 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 rounded-2xl sm:rounded-full bg-stone-900/95 text-white px-5 py-2.5 text-xs font-bold shadow-2xl backdrop-blur-md border border-stone-800 animate-fade-in flex items-center justify-center gap-2 text-center">
           <span>{toastMessage}</span>
         </div>
       )}
@@ -826,7 +828,7 @@ export default function App() {
       />
 
       {/* Main App Content Viewport */}
-      <main className="flex-1 pb-20 lg:pb-10">
+      <main id="main-content" tabIndex={-1} className="app-main flex-1">
         
         {/* If Landing Page mode is active */}
         {isLandingPage ? (
@@ -1092,7 +1094,12 @@ export default function App() {
 
       {/* Login & Register Modal */}
       {showLoginModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+        <ResponsiveDialog
+          ariaLabel={loginModalMode === 'register' ? 'Criar conta FanScale' : 'Entrar na FanScale'}
+          onClose={() => setShowLoginModal(false)}
+          closeOnBackdrop
+          panelClassName="max-w-4xl"
+        >
           <LoginView
             isModal={true}
             initialMode={loginModalMode}
@@ -1100,7 +1107,7 @@ export default function App() {
             onLoginSuccess={handleLoginSuccess}
             onClose={() => setShowLoginModal(false)}
           />
-        </div>
+        </ResponsiveDialog>
       )}
 
       {/* Rate Creator / Live Stream Modal */}

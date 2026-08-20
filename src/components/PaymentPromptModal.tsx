@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Smartphone, CheckCircle, ShieldCheck, X, Loader2, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PaymentProvider } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface PaymentPromptModalProps {
   provider: PaymentProvider;
@@ -66,11 +67,12 @@ export const PaymentPromptModal: React.FC<PaymentPromptModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-      <div 
-        className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-stone-900 text-white shadow-2xl border border-stone-800 p-6 space-y-5"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel={`Confirmar pagamento com ${providerName}`}
+      onClose={onCancel}
+      role="alertdialog"
+      panelClassName="relative max-w-sm overflow-y-auto rounded-3xl bg-stone-900 text-white shadow-2xl border border-stone-800 p-5 sm:p-6 space-y-5"
+    >
         {/* Top Provider Bar */}
         <div className="flex items-center justify-between border-b border-stone-800 pb-3">
           <div className="flex items-center gap-2">
@@ -83,7 +85,8 @@ export const PaymentPromptModal: React.FC<PaymentPromptModalProps> = ({
           </div>
           <button
             onClick={onCancel}
-            className="text-stone-400 hover:text-white transition-colors"
+            aria-label="Cancelar pagamento"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-800 hover:text-white transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -109,7 +112,7 @@ export const PaymentPromptModal: React.FC<PaymentPromptModalProps> = ({
             </div>
 
             {/* PIN keypad simulation */}
-            <div className="space-y-2">
+            <div className="space-y-2" aria-label="PIN de pagamento">
               <div className="flex justify-center gap-2">
                 {[0, 1, 2, 3].map((i) => (
                   <div
@@ -184,7 +187,6 @@ export const PaymentPromptModal: React.FC<PaymentPromptModalProps> = ({
           </div>
         )}
 
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

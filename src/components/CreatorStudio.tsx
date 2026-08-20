@@ -33,6 +33,7 @@ import {
 } from 'recharts';
 import { CREATOR_ANALYTICS_DATA } from '../data/mockData';
 import { CreatorProfile, Post, CreatorReview } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface CreatorStudioProps {
   creator: CreatorProfile;
@@ -114,7 +115,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 space-y-8">
+    <div className="mx-auto max-w-7xl min-w-0 space-y-6 px-3 py-4 sm:space-y-8 sm:px-6 sm:py-6 lg:px-8">
       
       {/* Studio Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-3xl bg-stone-900 p-6 sm:p-8 text-white shadow-xl">
@@ -166,7 +167,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         
         {/* Saldo Disponível */}
         <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-2">
@@ -229,7 +230,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
       </div>
 
       {/* Studio Nav Tabs */}
-      <div className="flex items-center gap-2 border-b border-pink-100 pb-2 overflow-x-auto scrollbar-none">
+      <div className="flex min-w-0 items-center gap-2 overflow-x-auto border-b border-pink-100 pb-2 scrollbar-none">
         <button
           onClick={() => setActiveStudioTab('overview')}
           className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
@@ -402,10 +403,10 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
       {/* Tab: Overview / Revenue Analytics */}
       {activeStudioTab === 'overview' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-12 lg:gap-8">
           
           {/* Main Revenue Chart (8 cols) */}
-          <div className="lg:col-span-8 rounded-3xl border border-pink-100 bg-white p-6 shadow-sm space-y-4">
+          <div className="min-w-0 space-y-4 overflow-hidden rounded-3xl border border-pink-100 bg-white p-4 shadow-sm sm:p-6 lg:col-span-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <h3 className="font-display text-base font-bold text-stone-900">
@@ -424,7 +425,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
               </div>
             </div>
 
-            <div className="h-64 sm:h-72 w-full pt-4">
+            <div className="h-56 w-full min-w-0 pt-4 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={CREATOR_ANALYTICS_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
@@ -784,18 +785,20 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
       {/* Payout Modal */}
       {showPayoutModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div 
-            className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-pink-100 space-y-5"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <ResponsiveDialog
+          ariaLabel="Pedir levantamento de saldo"
+          onClose={() => setShowPayoutModal(false)}
+          closeOnBackdrop
+          panelClassName="max-w-md rounded-3xl bg-white p-5 sm:p-6 shadow-2xl border border-pink-100 space-y-5"
+        >
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <h3 className="font-display text-base font-bold text-stone-900">
                 Pedir Levantamento de Saldo 🇲🇿
               </h3>
               <button
                 onClick={() => setShowPayoutModal(false)}
-                className="text-stone-400 hover:text-stone-700"
+                aria-label="Fechar pedido de levantamento"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700"
               >
                 ✕
               </button>
@@ -825,7 +828,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
                 <label className="block text-xs font-bold text-stone-700">
                   Método de Recebimento
                 </label>
-                <div className="grid grid-cols-3 gap-2 text-xs font-bold">
+                <div className="grid grid-cols-1 gap-2 text-xs font-bold min-[390px]:grid-cols-3">
                   <button
                     type="button"
                     onClick={() => setPayoutMethod('mpesa')}
@@ -875,8 +878,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
                 Confirmar Pedido de Levantamento ({payoutAmount} MT)
               </button>
             </form>
-          </div>
-        </div>
+        </ResponsiveDialog>
       )}
 
     </div>

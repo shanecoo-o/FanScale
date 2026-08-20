@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { CreatorProfile, CreatorReview, LiveSession } from '../types';
 import confetti from 'canvas-confetti';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface RateCreatorModalProps {
   creator: CreatorProfile;
@@ -129,11 +130,12 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-      <div 
-        className="w-full max-w-xl rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-pink-100 space-y-5 my-8 max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel={`Avaliar ${creator.name}`}
+      onClose={onClose}
+      closeOnBackdrop
+      panelClassName="max-w-xl rounded-3xl bg-white p-5 sm:p-7 shadow-2xl border border-pink-100 space-y-5"
+    >
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-stone-100 pb-4">
           <div className="flex items-center gap-3">
@@ -164,7 +166,9 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
           </div>
 
           <button 
+            type="button"
             onClick={onClose} 
+            aria-label="Fechar avaliação"
             className="rounded-full p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
           >
             <X className="h-5 w-5" />
@@ -243,6 +247,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
                   onClick={() => setRating(star)}
+                  aria-label={`Dar ${star} ${star === 1 ? 'estrela' : 'estrelas'}`}
                   className="p-1 transition-transform hover:scale-125 focus:outline-none"
                 >
                   <Star
@@ -277,6 +282,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     type="button"
                     key={s}
                     onClick={() => setContentQuality(s)}
+                    aria-label={`Qualidade do conteúdo: ${s} de 5`}
                     className="p-0.5"
                   >
                     <Star className={`h-4 w-4 ${contentQuality >= s ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
@@ -294,6 +300,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     type="button"
                     key={s}
                     onClick={() => setInteraction(s)}
+                    aria-label={`Interação: ${s} de 5`}
                     className="p-0.5"
                   >
                     <Star className={`h-4 w-4 ${interaction >= s ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
@@ -311,6 +318,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     type="button"
                     key={s}
                     onClick={() => setLivePerformance(s)}
+                    aria-label={`Performance em live: ${s} de 5`}
                     className="p-0.5"
                   >
                     <Star className={`h-4 w-4 ${livePerformance >= s ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
@@ -394,7 +402,6 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
           </button>
 
         </form>
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

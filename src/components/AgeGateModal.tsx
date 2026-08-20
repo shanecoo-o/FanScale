@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldAlert, CheckCircle2, Lock, Flame } from 'lucide-react';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface AgeGateModalProps {
   isOpen: boolean;
@@ -15,11 +16,13 @@ export const AgeGateModal: React.FC<AgeGateModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md animate-fade-in">
-      <div 
-        className="w-full max-w-md rounded-3xl bg-stone-900 border border-pink-500/30 p-6 sm:p-8 text-white shadow-2xl text-center space-y-6"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel="Confirmação de maioridade"
+      dismissible={false}
+      role="alertdialog"
+      overlayClassName="z-[100] bg-black/90"
+      panelClassName="max-w-md rounded-3xl bg-stone-900 border border-pink-500/30 p-6 sm:p-8 text-white shadow-2xl text-center space-y-6"
+    >
         {/* 18+ Badge Icon */}
         <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-pink-600 to-rose-500 text-white shadow-lg shadow-pink-500/40">
           <span className="font-display text-2xl font-black tracking-tight">18+</span>
@@ -80,7 +83,6 @@ export const AgeGateModal: React.FC<AgeGateModalProps> = ({
         <p className="text-[10px] text-stone-500">
           Ao prosseguir, declaras sob tua responsabilidade que tens 18+ anos e concordas com as Políticas de Conteúdo e Moderação da FanScale.
         </p>
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

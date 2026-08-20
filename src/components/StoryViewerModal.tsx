@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Heart, Send, CheckCircle, Flame } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Heart, Send, CheckCircle, Flame, Pause, Play } from 'lucide-react';
 import { Story } from '../types';
 import confetti from 'canvas-confetti';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface StoryViewerModalProps {
   stories: Story[];
@@ -86,23 +87,30 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
   if (!currentStory) return null;
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-0 sm:p-4 select-none"
-      onClick={() => setIsPaused(!isPaused)}
+    <ResponsiveDialog
+      ariaLabel={`Story de ${currentStory.creator.name}`}
+      onClose={onClose}
+      overlayClassName="p-0 sm:p-4 bg-black/90"
+      panelClassName="story-dialog-panel relative flex max-w-md select-none flex-col justify-between overflow-hidden bg-stone-900 shadow-2xl sm:rounded-3xl"
     >
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md hover:bg-white/40 transition-colors"
+        aria-label="Fechar story"
+        className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-50 flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md hover:bg-black/60 transition-colors"
       >
         <X className="h-5 w-5" />
       </button>
 
-      {/* Main Story Container */}
-      <div 
-        className="relative flex h-full w-full max-w-md flex-col justify-between overflow-hidden sm:rounded-3xl bg-stone-900 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
+      <button
+        type="button"
+        onClick={() => setIsPaused((paused) => !paused)}
+        aria-label={isPaused ? 'Continuar story' : 'Pausar story'}
+        className="absolute left-[max(1rem,env(safe-area-inset-left))] top-[max(1rem,env(safe-area-inset-top))] z-50 flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-colors hover:bg-black/60"
       >
+        {isPaused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
+      </button>
+
         {/* Story Background Image */}
         <img
           src={currentStory.mediaUrl}
@@ -156,15 +164,16 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
         </div>
 
         {/* Tap areas for Prev / Next */}
-        <div className="absolute inset-y-16 inset-x-0 z-10 flex">
-          <div className="w-1/2 h-full cursor-pointer" onClick={handlePrev} />
-          <div className="w-1/2 h-full cursor-pointer" onClick={() => handleNext()} />
+        <div className="absolute inset-x-0 inset-y-16 z-10 flex">
+          <button type="button" aria-label="Story anterior" className="h-full w-1/2" onClick={handlePrev} />
+          <button type="button" aria-label="Story seguinte" className="h-full w-1/2" onClick={() => handleNext()} />
         </div>
 
         {/* Nav arrows on desktop */}
         <button
           onClick={handlePrev}
           disabled={currentIndex === 0}
+          aria-label="Story anterior"
           className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 hidden sm:flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-opacity ${
             currentIndex === 0 ? 'opacity-0' : 'opacity-100 hover:bg-black/60'
           }`}
@@ -174,6 +183,7 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
 
         <button
           onClick={() => handleNext()}
+          aria-label="Story seguinte"
           className="absolute right-2 top-1/2 -translate-y-1/2 z-30 hidden sm:flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm hover:bg-black/60 transition-opacity"
         >
           <ChevronRight className="h-5 w-5" />
@@ -193,12 +203,14 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
               placeholder={`Enviar mensagem a @${currentStory.creator.username}...`}
+              aria-label={`Enviar mensagem a @${currentStory.creator.username}`}
               className="flex-1 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-xs text-white placeholder:text-white/60 focus:border-pink-500 focus:bg-white/20 focus:outline-none backdrop-blur-md"
             />
 
             <button
               type="button"
               onClick={handleReaction}
+              aria-label={isLiked ? 'Story marcado como favorito' : 'Gostar do story'}
               className={`flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-md transition-transform active:scale-90 ${
                 isLiked ? 'text-pink-500 bg-white' : 'text-white'
               }`}
@@ -209,6 +221,7 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
             {replyText.trim() && (
               <button
                 type="submit"
+                aria-label="Enviar resposta ao story"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-pink-600 text-white shadow-md hover:bg-pink-500 transition-colors"
               >
                 <Send className="h-4 w-4" />
@@ -217,7 +230,6 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
           </form>
         </div>
 
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

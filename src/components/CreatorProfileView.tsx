@@ -101,7 +101,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+    <div className="mx-auto max-w-5xl space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
       
       {/* Back button */}
       <button
@@ -113,10 +113,10 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
       </button>
 
       {/* Header Profile Card */}
-      <div className="overflow-hidden rounded-3xl border border-pink-100 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm sm:rounded-3xl">
         
         {/* Cover Photo */}
-        <div className="relative h-44 sm:h-64 w-full bg-stone-200">
+        <div className="relative h-40 w-full bg-stone-200 sm:h-64">
           <img
             src={creator.coverImage}
             alt={creator.name}
@@ -147,17 +147,17 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
         </div>
 
         {/* Profile Details Bar */}
-        <div className="p-6 pt-0 space-y-6">
+        <div className="space-y-6 p-4 pt-0 sm:p-6 sm:pt-0">
           
           {/* Top row: Avatar & Action Buttons */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-16 sm:-mt-20">
+          <div className="-mt-14 flex flex-col justify-between gap-4 sm:-mt-20 sm:flex-row sm:items-end">
             
             {/* Avatar */}
             <div className="relative inline-block">
               <img
                 src={creator.avatar}
                 alt={creator.name}
-                className="h-28 w-28 sm:h-36 sm:w-36 rounded-full border-4 border-white object-cover ring-4 ring-pink-500/20 shadow-xl bg-white"
+                className="h-24 w-24 rounded-full border-4 border-white bg-white object-cover shadow-xl ring-4 ring-pink-500/20 sm:h-36 sm:w-36"
               />
               {creator.verified && (
                 <CheckCircle className="absolute bottom-2 right-2 h-7 w-7 fill-pink-600 text-white shadow-md rounded-full" />
@@ -165,12 +165,12 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-2.5">
+            <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:gap-2.5">
               
               {/* Avaliar Criador Button */}
               <button
                 onClick={() => onOpenRateModal(creator)}
-                className="flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs font-bold text-amber-900 hover:bg-amber-100 transition-colors shadow-sm"
+                className="flex min-w-0 items-center justify-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-2.5 text-xs font-bold text-amber-900 hover:bg-amber-100 transition-colors shadow-sm sm:px-4"
               >
                 <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
                 <span>Avaliar com Estrelas</span>
@@ -179,7 +179,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Seguir Button */}
               <button
                 onClick={() => onFollowToggle(creator.id)}
-                className={`rounded-full px-5 py-2.5 text-xs font-bold transition-all ${
+                className={`rounded-full px-4 py-2.5 text-xs font-bold transition-colors sm:px-5 ${
                   creator.isFollowing
                     ? 'border border-stone-300 bg-stone-100 text-stone-700 hover:bg-stone-200'
                     : 'border border-pink-500 bg-pink-50 text-pink-700 hover:bg-pink-100'
@@ -191,7 +191,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Mensagem Button */}
               <button
                 onClick={() => onOpenMessageWithCreator(creator.id)}
-                className="flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-stone-700 hover:bg-stone-50 transition-colors"
+                className="flex items-center justify-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-2.5 text-xs font-bold text-stone-700 hover:bg-stone-50 transition-colors sm:px-4"
               >
                 <Send className="h-3.5 w-3.5" />
                 <span>Mensagem</span>
@@ -200,7 +200,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Gorjeta Button */}
               <button
                 onClick={() => onOpenTipModal(creator.id, creator.name)}
-                className="flex items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-4 py-2.5 text-xs font-bold text-pink-700 hover:bg-pink-100 transition-colors"
+                className="flex items-center justify-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-3 py-2.5 text-xs font-bold text-pink-700 hover:bg-pink-100 transition-colors sm:px-4"
               >
                 <Coins className="h-3.5 w-3.5 text-pink-600" />
                 <span>Dar Gorjeta</span>
@@ -209,10 +209,10 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Subscrever Button */}
               <button
                 onClick={() => onOpenSubscribeModal(creator.id)}
-                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-pink-500/30 hover:from-pink-700 hover:to-rose-600 transition-all hover:scale-105 active:scale-95"
+                className="col-span-2 flex min-w-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 px-4 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-pink-500/30 transition-[background-color,transform] hover:from-pink-700 hover:to-rose-600 active:scale-95 sm:col-auto sm:px-6"
               >
                 <Lock className="h-3.5 w-3.5" />
-                <span>
+                <span className="min-w-0 break-words">
                   {creator.isSubscribed
                     ? 'Subscrito VIP ✓'
                     : `Subscrever — ${creator.subscriptionPriceMonthly} MT/mês`}
@@ -276,7 +276,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 border-y border-stone-100 py-4 text-center sm:text-left">
+          <div className="grid grid-cols-2 gap-3 border-y border-stone-100 py-4 text-center min-[390px]:grid-cols-3 sm:grid-cols-5 sm:gap-4 sm:text-left">
             <div>
               <span className="block font-display text-lg font-black text-stone-900">
                 {creator.postsCount}
@@ -343,8 +343,8 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
       </div>
 
       {/* Tabs & View Switcher */}
-      <div className="flex items-center justify-between border-b border-pink-100 pb-2">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+      <div className="flex min-w-0 flex-col gap-2 border-b border-pink-100 pb-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex w-full min-w-0 items-center gap-2 overflow-x-auto pb-1 scrollbar-none sm:w-auto">
           <button
             onClick={() => setActiveTab('all')}
             className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${

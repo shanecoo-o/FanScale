@@ -12,6 +12,7 @@ import {
   CheckCircle2, 
   UserCheck 
 } from 'lucide-react';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface KycModalProps {
   onClose: () => void;
@@ -77,11 +78,13 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-      <div 
-        className="w-full max-w-xl rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-pink-100 space-y-5 my-8 max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel="Verificação de criador maior de 18 anos"
+      onClose={onClose}
+      closeOnBackdrop
+      overlayClassName="p-0 sm:p-6"
+      panelClassName="max-w-xl rounded-none bg-white p-4 shadow-2xl space-y-5 sm:rounded-3xl sm:border sm:border-pink-100 sm:p-7"
+    >
         <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white shadow-md shadow-pink-500/20">
@@ -102,7 +105,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
             </div>
           </div>
 
-          <button onClick={onClose} className="rounded-full p-1.5 text-stone-400 hover:bg-stone-100 hover:text-stone-700">
+          <button onClick={onClose} aria-label="Fechar verificação de criador" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -367,8 +370,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc }) => {
 
           </form>
         )}
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };
 

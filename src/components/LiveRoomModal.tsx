@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { LiveSession, CreatorProfile } from '../types';
 import confetti from 'canvas-confetti';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface LiveRoomModalProps {
   session: LiveSession;
@@ -90,11 +91,15 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-0 sm:p-4">
-      <div className="relative h-full sm:h-[90vh] w-full max-w-4xl overflow-hidden rounded-none sm:rounded-3xl bg-stone-950 text-white shadow-2xl flex flex-col md:flex-row border border-stone-800">
+    <ResponsiveDialog
+      ariaLabel={`Transmissão ao vivo: ${session.title}`}
+      onClose={onClose}
+      overlayClassName="p-0 sm:p-4 bg-black/90"
+      panelClassName="live-dialog-panel relative flex max-w-4xl flex-col overflow-hidden bg-stone-950 text-white shadow-2xl sm:rounded-3xl sm:border sm:border-stone-800 md:flex-row"
+    >
         
         {/* Left Side: Live Video Player Stream Simulation */}
-        <div className="relative flex-1 bg-stone-900 flex items-center justify-center overflow-hidden min-h-[320px]">
+        <div className="relative flex h-[42dvh] min-h-60 shrink-0 items-center justify-center overflow-hidden bg-stone-900 md:h-auto md:min-h-0 md:flex-1">
           <img
             src={session.coverImage}
             alt={session.title}
@@ -138,7 +143,8 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
 
               <button
                 onClick={onClose}
-                className="rounded-full bg-black/50 p-2 text-white/80 hover:bg-white/20 hover:text-white transition-colors backdrop-blur-md"
+                aria-label="Fechar transmissão ao vivo"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white/80 hover:bg-white/20 hover:text-white transition-colors backdrop-blur-md"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -190,6 +196,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
                       key={star}
                       type="button"
                       onClick={() => handleQuickStarSubmit(star)}
+                      aria-label={`Avaliar live com ${star} ${star === 1 ? 'estrela' : 'estrelas'}`}
                       className="p-1 hover:scale-125 transition-transform focus:outline-none"
                     >
                       <Star
@@ -223,7 +230,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
         </div>
 
         {/* Right Side: Live Chat & Real-Time Fan Reactions */}
-        <div className="w-full md:w-80 h-64 md:h-auto bg-stone-900 border-t md:border-t-0 md:border-l border-stone-800 flex flex-col justify-between p-4">
+        <div className="flex min-h-0 w-full flex-1 flex-col justify-between border-t border-stone-800 bg-stone-900 p-4 md:h-auto md:w-80 md:flex-none md:border-l md:border-t-0">
           
           {/* Live Chat Header */}
           <div className="flex items-center justify-between border-b border-stone-800 pb-2.5">
@@ -269,10 +276,12 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Comentar na live..."
-                className="flex-1 rounded-full bg-stone-800 border border-stone-700 px-3.5 py-2 text-xs text-white placeholder:text-stone-500 focus:outline-none focus:border-pink-500"
+                aria-label="Comentar na transmissão ao vivo"
+                className="min-w-0 flex-1 rounded-full bg-stone-800 border border-stone-700 px-3.5 py-2 text-xs text-white placeholder:text-stone-500 focus:outline-none focus:border-pink-500"
               />
               <button
                 type="submit"
+                aria-label="Enviar comentário"
                 className="rounded-full bg-pink-600 p-2 text-white hover:bg-pink-700 transition-colors"
               >
                 <Send className="h-3.5 w-3.5" />
@@ -280,6 +289,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
               <button
                 type="button"
                 onClick={handleSendHeart}
+                aria-label="Enviar coração"
                 className="rounded-full bg-rose-600/30 border border-rose-500/40 p-2 text-rose-400 hover:bg-rose-600 hover:text-white transition-all active:scale-125"
                 title="Enviar Coração"
               >
@@ -290,7 +300,6 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
 
         </div>
 
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

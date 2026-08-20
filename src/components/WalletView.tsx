@@ -27,6 +27,7 @@ import {
   TrendingDown
 } from 'lucide-react';
 import { WalletTransaction, PaymentProvider, UserRole } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface WalletViewProps {
   userRole: UserRole;
@@ -314,7 +315,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8 space-y-8">
+    <div className="mx-auto max-w-5xl min-w-0 space-y-6 px-3 py-4 sm:space-y-8 sm:px-6 sm:py-6 lg:px-8">
       
       {/* Toast Notification */}
       {exportFeedbackToast && (
@@ -331,8 +332,8 @@ export const WalletView: React.FC<WalletViewProps> = ({
             <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-pink-100 text-pink-600 shadow-sm">
               <Wallet className="h-5 w-5" />
             </div>
-            <div>
-              <h1 className="font-display text-2xl font-extrabold text-stone-900">
+            <div className="min-w-0">
+              <h1 className="break-words font-display text-xl font-extrabold text-stone-900 sm:text-2xl">
                 Carteira Digital FanScale 🇲🇿
               </h1>
               <p className="text-xs text-stone-500">
@@ -371,7 +372,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-6 sm:p-8 text-white shadow-xl">
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-pink-500/20 px-3 py-1 text-[11px] font-bold text-pink-400 border border-pink-500/30">
                 {activeWalletMode === 'fan' ? 'Saldo para Subscrições & PPV' : 'Saldo Disponível para Levantamento'}
               </span>
@@ -397,12 +398,12 @@ export const WalletView: React.FC<WalletViewProps> = ({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
             {activeWalletMode === 'fan' ? (
               <>
                 <button
                   onClick={() => setShowDepositModal(true)}
-                  className="rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-6 py-3 text-xs font-bold text-white shadow-lg shadow-pink-500/30 hover:from-pink-700 hover:to-rose-600 transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-6 py-3 text-xs font-bold text-white shadow-lg shadow-pink-500/30 transition-[background-color,transform] hover:from-pink-700 hover:to-rose-600 active:scale-95 sm:w-auto"
                 >
                   <PlusCircle className="h-4 w-4" />
                   <span>Adicionar Fundos (M-Pesa)</span>
@@ -412,7 +413,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
               <>
                 <button
                   onClick={() => setShowWithdrawModal(true)}
-                  className="rounded-full bg-emerald-600 px-6 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 transition-[background-color,transform] hover:bg-emerald-700 active:scale-95 sm:w-auto"
                 >
                   <Download className="h-4 w-4" />
                   <span>Levantar para M-Pesa</span>
@@ -535,7 +536,9 @@ export const WalletView: React.FC<WalletViewProps> = ({
             />
             {searchQuery && (
               <button
+                type="button"
                 onClick={() => setSearchQuery('')}
+                aria-label="Limpar pesquisa"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
               >
                 <X className="h-3.5 w-3.5" />
@@ -894,10 +897,11 @@ export const WalletView: React.FC<WalletViewProps> = ({
             </div>
           ) : (
             filteredTransactions.map((tx) => (
-              <div 
+              <button
+                type="button"
                 key={tx.id} 
                 onClick={() => setSelectedTransaction(tx)}
-                className="group py-3.5 px-2.5 rounded-2xl hover:bg-pink-50/40 transition-all cursor-pointer flex items-center justify-between gap-4"
+                className="group flex w-full min-w-0 flex-col items-stretch gap-3 rounded-2xl px-2.5 py-3.5 text-left transition-colors hover:bg-pink-50/40 min-[430px]:flex-row min-[430px]:items-center min-[430px]:justify-between min-[430px]:gap-4"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div
@@ -930,7 +934,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                   </div>
                 </div>
 
-                <div className="text-right flex-shrink-0 space-y-0.5">
+                <div className="flex flex-shrink-0 items-end justify-between gap-3 pl-14 text-left min-[430px]:block min-[430px]:space-y-0.5 min-[430px]:pl-0 min-[430px]:text-right">
                   <span
                     className={`font-display text-sm sm:text-base font-black block ${
                       tx.isCredit ? 'text-emerald-600' : 'text-stone-900'
@@ -946,7 +950,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                     ✓ Concluído
                   </span>
                 </div>
-              </div>
+              </button>
             ))
           )}
         </div>
@@ -957,11 +961,12 @@ export const WalletView: React.FC<WalletViewProps> = ({
       {/* TRANSACTION RECEIPT & DETAIL MODAL */}
       {/* ======================================================== */}
       {selectedTransaction && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div 
-            className="w-full max-w-md rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-pink-100 space-y-5 animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <ResponsiveDialog
+          ariaLabel="Comprovativo de transação"
+          onClose={() => setSelectedTransaction(null)}
+          closeOnBackdrop
+          panelClassName="max-w-md rounded-3xl bg-white p-5 sm:p-7 shadow-2xl border border-pink-100 space-y-5"
+        >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <div className="flex items-center gap-2">
@@ -977,7 +982,8 @@ export const WalletView: React.FC<WalletViewProps> = ({
               </div>
               <button
                 onClick={() => setSelectedTransaction(null)}
-                className="rounded-full p-1.5 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
+                aria-label="Fechar comprovativo"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -1000,9 +1006,9 @@ export const WalletView: React.FC<WalletViewProps> = ({
 
             {/* Details Grid */}
             <div className="space-y-2.5 text-xs">
-              <div className="flex items-center justify-between py-1.5 border-b border-stone-100">
+              <div className="flex min-w-0 items-start justify-between gap-3 py-1.5 border-b border-stone-100">
                 <span className="text-stone-500">Título do Serviço:</span>
-                <span className="font-bold text-stone-900 text-right">{selectedTransaction.title}</span>
+                <span className="min-w-0 break-words font-bold text-stone-900 text-right">{selectedTransaction.title}</span>
               </div>
 
               <div className="flex items-center justify-between py-1.5 border-b border-stone-100">
@@ -1055,23 +1061,24 @@ export const WalletView: React.FC<WalletViewProps> = ({
                 }}
                 className="rounded-full border border-stone-200 bg-white p-2.5 text-stone-700 hover:bg-stone-50 transition-colors"
                 title="Partilhar Comprovativo"
+                aria-label="Partilhar comprovativo"
               >
                 <Share2 className="h-4 w-4" />
               </button>
             </div>
-          </div>
-        </div>
+        </ResponsiveDialog>
       )}
 
       {/* ======================================================== */}
       {/* DEPOSIT MODAL (RECARREGAR CARTEIRA M-PESA) */}
       {/* ======================================================== */}
       {showDepositModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div 
-            className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-pink-100 space-y-5"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <ResponsiveDialog
+          ariaLabel="Recarregar carteira FanScale"
+          onClose={() => setShowDepositModal(false)}
+          closeOnBackdrop
+          panelClassName="max-w-md rounded-3xl bg-white p-5 sm:p-6 shadow-2xl border border-pink-100 space-y-5"
+        >
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <div>
                 <h3 className="font-display text-base font-bold text-stone-900">
@@ -1081,7 +1088,8 @@ export const WalletView: React.FC<WalletViewProps> = ({
               </div>
               <button
                 onClick={() => setShowDepositModal(false)}
-                className="text-stone-400 hover:text-stone-700 p-1"
+                aria-label="Fechar recarga de carteira"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700"
               >
                 ✕
               </button>
@@ -1119,7 +1127,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                 <label className="block text-xs font-bold text-stone-700">
                   Método de Recarga Móvel
                 </label>
-                <div className="grid grid-cols-3 gap-2 text-xs font-bold">
+                <div className="grid grid-cols-1 gap-2 text-xs font-bold min-[390px]:grid-cols-3">
                   <button
                     type="button"
                     onClick={() => setDepositProvider('mpesa')}
@@ -1169,26 +1177,28 @@ export const WalletView: React.FC<WalletViewProps> = ({
                 Continuar para Confirmação no Telemóvel
               </button>
             </form>
-          </div>
-        </div>
+        </ResponsiveDialog>
       )}
 
       {/* ======================================================== */}
       {/* WITHDRAW MODAL FOR CREATOR */}
       {/* ======================================================== */}
       {showWithdrawModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div 
-            className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-pink-100 space-y-5"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <ResponsiveDialog
+          ariaLabel="Levantar rendimento de criador"
+          onClose={() => setShowWithdrawModal(false)}
+          closeOnBackdrop
+          role="alertdialog"
+          panelClassName="max-w-md rounded-3xl bg-white p-5 sm:p-6 shadow-2xl border border-pink-100 space-y-5"
+        >
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <h3 className="font-display text-base font-bold text-stone-900">
                 Levantar Rendimento de Criador 🇲🇿
               </h3>
               <button
                 onClick={() => setShowWithdrawModal(false)}
-                className="text-stone-400 hover:text-stone-700"
+                aria-label="Fechar levantamento"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700"
               >
                 ✕
               </button>
@@ -1208,8 +1218,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                 Confirmar Levantamento de 15.000 MT via M-Pesa
               </button>
             </div>
-          </div>
-        </div>
+        </ResponsiveDialog>
       )}
 
     </div>

@@ -13,7 +13,8 @@ import {
   Phone,
   Video,
   MoreVertical,
-  ShieldCheck
+  ShieldCheck,
+  ArrowLeft
 } from 'lucide-react';
 import { Conversation, ChatMessage } from '../types';
 
@@ -36,6 +37,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [isPlayingAudio, setIsPlayingAudio] = useState<string | null>(null);
+  const [mobileThreadOpen, setMobileThreadOpen] = useState(false);
 
   const activeConversation = 
     conversations.find((c) => c.id === activeConversationId) || conversations[0];
@@ -53,11 +55,11 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
-      <div className="overflow-hidden rounded-3xl border border-pink-100 bg-white shadow-sm grid grid-cols-1 md:grid-cols-12 h-[calc(100vh-140px)] min-h-[550px]">
+    <div className="mx-auto max-w-6xl px-0 py-0 sm:px-6 sm:py-6 lg:px-8">
+      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border md:grid-cols-12">
         
         {/* Left: Conversations List (4 cols) */}
-        <div className="md:col-span-4 border-r border-stone-100 flex flex-col h-full bg-stone-50/50">
+        <div className={`${mobileThreadOpen ? 'hidden md:flex' : 'flex'} min-h-0 min-w-0 flex-col bg-stone-50/50 md:col-span-4 md:border-r md:border-stone-100`}>
           <div className="p-4 border-b border-stone-100 bg-white flex items-center justify-between">
             <h2 className="font-display text-base font-bold text-stone-900">
               Mensagens Diretas
@@ -69,10 +71,14 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
           <div className="flex-1 overflow-y-auto divide-y divide-stone-100/80">
             {conversations.map((conv) => (
-              <div
+              <button
+                type="button"
                 key={conv.id}
-                onClick={() => onSelectConversation(conv.id)}
-                className={`p-3.5 flex items-center gap-3 cursor-pointer transition-colors ${
+                onClick={() => {
+                  onSelectConversation(conv.id);
+                  setMobileThreadOpen(true);
+                }}
+                className={`flex w-full min-w-0 items-center gap-3 p-3.5 text-left transition-colors ${
                   conv.id === activeConversation?.id
                     ? 'bg-pink-50/80 border-r-2 border-pink-600'
                     : 'hover:bg-stone-100/70'
@@ -115,26 +121,34 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                     {conv.unreadCount}
                   </span>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </div>
 
         {/* Right: Active Chat Window (8 cols) */}
         {activeConversation ? (
-          <div className="md:col-span-8 flex flex-col h-full bg-white">
+          <div className={`${mobileThreadOpen ? 'flex' : 'hidden md:flex'} min-h-0 min-w-0 flex-col bg-white md:col-span-8`}>
             
             {/* Chat Top Bar */}
             <div className="p-4 border-b border-stone-100 flex items-center justify-between bg-white z-10">
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                <button
+                  type="button"
+                  onClick={() => setMobileThreadOpen(false)}
+                  aria-label="Voltar à lista de conversas"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-stone-600 transition-colors hover:bg-stone-100 md:hidden"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                </button>
                 <img
                   src={activeConversation.participantAvatar}
                   alt={activeConversation.participantName}
                   className="h-10 w-10 rounded-full object-cover ring-2 ring-pink-500/20"
                 />
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h3 className="font-display text-xs sm:text-sm font-bold text-stone-900">
+                    <h3 className="truncate font-display text-xs font-bold text-stone-900 sm:text-sm">
                       {activeConversation.participantName}
                     </h3>
                     {activeConversation.participantVerified && (
@@ -242,12 +256,13 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
             </div>
 
             {/* Chat Input Bar */}
-            <form onSubmit={handleSend} className="p-3.5 border-t border-stone-100 bg-white flex items-center gap-2">
+            <form onSubmit={handleSend} className="flex min-w-0 items-center gap-1.5 border-t border-stone-100 bg-white p-2.5 sm:gap-2 sm:p-3.5">
               <button
                 type="button"
                 onClick={handleSendSampleAudio}
                 className="flex h-9 w-9 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
                 title="Gravar Áudio"
+                aria-label="Gravar áudio"
               >
                 <Mic className="h-4 w-4" />
               </button>
@@ -259,6 +274,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                 }}
                 className="flex h-9 w-9 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
                 title="Enviar Imagem"
+                aria-label="Enviar imagem"
               >
                 <ImageIcon className="h-4 w-4" />
               </button>
@@ -268,12 +284,14 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder={`Mensagem para @${activeConversation.participantHandle}...`}
-                className="flex-1 rounded-full border border-stone-200 bg-stone-50 px-4 py-2 text-xs text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-500/20"
+                aria-label={`Mensagem para @${activeConversation.participantHandle}`}
+                className="min-w-0 flex-1 rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-xs text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-500/20 sm:px-4"
               />
 
               <button
                 type="submit"
                 disabled={!inputText.trim()}
+                aria-label="Enviar mensagem"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-pink-600 text-white shadow-md hover:bg-pink-700 disabled:opacity-40 transition-all"
               >
                 <Send className="h-4 w-4" />

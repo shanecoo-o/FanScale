@@ -1,6 +1,7 @@
 import React from 'react';
 import { LogOut, X, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { AuthUser } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface LogoutConfirmModalProps {
   isOpen: boolean;
@@ -18,14 +19,17 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in duration-200">
-      <div 
-        className="relative w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-stone-100 animate-in zoom-in-95 duration-200"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel="Confirmar saída da conta"
+      onClose={onClose}
+      closeOnBackdrop
+      role="alertdialog"
+      panelClassName="relative max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-stone-100"
+    >
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label="Fechar confirmação de saída"
           className="absolute right-4 top-4 rounded-full p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
           title="Fechar"
         >
@@ -96,7 +100,6 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

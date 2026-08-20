@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Coins, Sparkles, Heart } from 'lucide-react';
 import { PaymentProvider } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface TipModalProps {
   creatorId: string;
@@ -32,11 +33,12 @@ export const TipModal: React.FC<TipModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div 
-        className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl border border-pink-100 p-6 space-y-5"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel={`Enviar gorjeta a ${creatorName}`}
+      onClose={onClose}
+      closeOnBackdrop
+      panelClassName="relative max-w-md overflow-y-auto rounded-3xl bg-white shadow-2xl border border-pink-100 p-5 sm:p-6 space-y-5"
+    >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-pink-100 pb-3">
           <div className="flex items-center gap-2">
@@ -55,7 +57,8 @@ export const TipModal: React.FC<TipModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-stone-400 hover:text-stone-700"
+            aria-label="Fechar envio de gorjeta"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700"
           >
             <X className="h-4 w-4" />
           </button>
@@ -68,7 +71,7 @@ export const TipModal: React.FC<TipModalProps> = ({
             <label className="block text-xs font-bold text-stone-700">
               Escolhe o Valor da Gorjeta
             </label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
               {presetAmounts.map((amt) => (
                 <button
                   key={amt}
@@ -130,7 +133,7 @@ export const TipModal: React.FC<TipModalProps> = ({
             <label className="block text-xs font-bold text-stone-700">
               Forma de Pagamento
             </label>
-            <div className="grid grid-cols-3 gap-2 text-xs font-semibold">
+            <div className="grid grid-cols-1 gap-2 text-xs font-semibold min-[390px]:grid-cols-3">
               <button
                 type="button"
                 onClick={() => setProvider('mpesa')}
@@ -178,7 +181,6 @@ export const TipModal: React.FC<TipModalProps> = ({
           </button>
 
         </form>
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

@@ -18,7 +18,12 @@ export const StoriesReel: React.FC<StoriesReelProps> = ({
       <div className="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-none">
         
         {/* Your Story button */}
-        <div className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer" onClick={onOpenCreateStory}>
+        <button
+          type="button"
+          className="flex flex-shrink-0 flex-col items-center gap-1.5 rounded-xl"
+          onClick={onOpenCreateStory}
+          aria-label="Criar story"
+        >
           <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-pink-300 bg-pink-50/60 p-0.5 hover:border-pink-500 transition-colors">
             <img
               src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80"
@@ -32,7 +37,7 @@ export const StoriesReel: React.FC<StoriesReelProps> = ({
           <span className="max-w-[70px] truncate text-[11px] font-semibold text-stone-700">
             O teu story
           </span>
-        </div>
+        </button>
 
         {/* Stories from creators */}
         {stories.map((story, index) => (

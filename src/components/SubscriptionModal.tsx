@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle, ShieldCheck, Sparkles, Lock, CreditCard, Wallet, Smartphone } from 'lucide-react';
 import { CreatorProfile, PaymentProvider } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface SubscriptionModalProps {
   creator: CreatorProfile;
@@ -37,16 +38,18 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div 
-        className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl border border-pink-100 my-8"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel={`Subscrever ${creator.name}`}
+      onClose={onClose}
+      closeOnBackdrop
+      panelClassName="relative max-w-lg overflow-y-auto rounded-3xl bg-white shadow-2xl border border-pink-100"
+    >
         {/* Top Header Banner */}
         <div className="relative bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-6 text-white">
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+            aria-label="Fechar subscrição"
+            className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors sm:right-4 sm:top-4"
           >
             <X className="h-4 w-4" />
           </button>
@@ -110,9 +113,10 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
             <div className="grid grid-cols-2 gap-3">
               
               {/* Monthly */}
-              <div
+              <button
+                type="button"
                 onClick={() => setSelectedPlan('monthly')}
-                className={`cursor-pointer rounded-2xl border p-3.5 transition-all text-left ${
+                className={`rounded-2xl border p-3.5 transition-all text-left ${
                   selectedPlan === 'monthly'
                     ? 'border-pink-600 bg-pink-50/50 ring-2 ring-pink-500/20'
                     : 'border-stone-200 hover:border-pink-200'
@@ -125,12 +129,13 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                   {creator.subscriptionPriceMonthly} <span className="text-xs">MT/mês</span>
                 </div>
                 <span className="text-[10px] text-stone-400">Cancela a qualquer momento</span>
-              </div>
+              </button>
 
               {/* Quarterly */}
-              <div
+              <button
+                type="button"
                 onClick={() => setSelectedPlan('quarterly')}
-                className={`relative cursor-pointer rounded-2xl border p-3.5 transition-all text-left ${
+                className={`relative rounded-2xl border p-3.5 transition-all text-left ${
                   selectedPlan === 'quarterly'
                     ? 'border-pink-600 bg-pink-50/50 ring-2 ring-pink-500/20'
                     : 'border-stone-200 hover:border-pink-200'
@@ -146,7 +151,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                   {creator.subscriptionPriceQuarterly} <span className="text-xs">MT</span>
                 </div>
                 <span className="text-[10px] text-stone-400">Apenas {Math.round(creator.subscriptionPriceQuarterly / 3)} MT/mês</span>
-              </div>
+              </button>
 
             </div>
           </div>
@@ -288,7 +293,6 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
 
         </form>
 
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

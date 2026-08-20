@@ -12,6 +12,7 @@ import {
   Flame
 } from 'lucide-react';
 import { PostVisibility, Post } from '../types';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface CreatePostModalProps {
   onClose: () => void;
@@ -70,11 +71,13 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
-      <div 
-        className="relative w-full max-w-xl overflow-hidden rounded-3xl bg-white shadow-2xl border border-pink-100 my-8"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ResponsiveDialog
+      ariaLabel="Criar novo conteúdo FanScale"
+      onClose={onClose}
+      closeOnBackdrop
+      overlayClassName="p-0 sm:p-6"
+      panelClassName="relative max-w-xl overflow-y-auto rounded-none bg-white shadow-2xl border-pink-100 sm:rounded-3xl sm:border"
+    >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-pink-100 p-4 sm:p-5 bg-stone-50/50">
           <div className="flex items-center gap-2">
@@ -88,7 +91,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-stone-400 hover:text-stone-700"
+            aria-label="Fechar criação de conteúdo"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700"
           >
             <X className="h-5 w-5" />
           </button>
@@ -290,7 +294,6 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           </button>
 
         </form>
-      </div>
-    </div>
+    </ResponsiveDialog>
   );
 };

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { CreatorProfile, Post, LiveSession } from '../types';
 import { CATEGORIES } from '../data/mockData';
+import { ResponsiveDialog } from './ui/ResponsiveDialog';
 
 interface ExplorePageProps {
   creators: CreatorProfile[];
@@ -518,14 +519,12 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
       {/* Quick Post Preview Modal */}
       {selectedPostPreview && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-          onClick={() => setSelectedPostPreview(null)}
+        <ResponsiveDialog
+          ariaLabel="Pré-visualização da publicação"
+          onClose={() => setSelectedPostPreview(null)}
+          closeOnBackdrop
+          panelClassName="relative max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl"
         >
-          <div 
-            className="relative w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
             <div className="grid grid-cols-1 sm:grid-cols-2">
               <div className="relative aspect-square sm:aspect-auto bg-stone-900">
                 <img
@@ -538,12 +537,13 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
               <div className="p-6 flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div 
+                    <button
+                      type="button"
                       onClick={() => {
                         onSelectCreator(selectedPostPreview.creatorId);
                         setSelectedPostPreview(null);
                       }}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex min-w-0 items-center gap-2 text-left"
                     >
                       <img
                         src={selectedPostPreview.creator.avatar}
@@ -558,11 +558,12 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
                           @{selectedPostPreview.creator.username}
                         </span>
                       </div>
-                    </div>
+                    </button>
 
                     <button
                       onClick={() => setSelectedPostPreview(null)}
-                      className="text-stone-400 hover:text-stone-700"
+                      aria-label="Fechar pré-visualização"
+                      className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700"
                     >
                       ✕
                     </button>
@@ -618,8 +619,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
               </div>
             </div>
-          </div>
-        </div>
+        </ResponsiveDialog>
       )}
 
     </div>
