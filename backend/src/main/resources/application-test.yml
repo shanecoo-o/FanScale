@@ -1,0 +1,18 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+fanscale:
+  environment: test
+  cors:
+    allowed-origins: http://localhost:3000

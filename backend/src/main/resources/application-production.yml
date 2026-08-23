@@ -1,0 +1,19 @@
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: jdbc:postgresql://${FANSCALE_DB_HOST}:${FANSCALE_DB_PORT:5432}/${FANSCALE_DB_NAME:fanscale}
+    username: ${FANSCALE_DB_USERNAME}
+    password: ${FANSCALE_DB_PASSWORD}
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+fanscale:
+  environment: production
+  cors:
+    allowed-origins: ${FANSCALE_CORS_ALLOWED_ORIGINS}

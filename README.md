@@ -2,17 +2,22 @@
 
 ## Current status
 
-FanScale currently represents a React/Vite frontend prototype. Product flows such as authentication, creator verification, payments, subscriptions, wallet activity, messaging, and administration use mock data or local component state; there is no production backend or database in this repository.
+FanScale contains a React/Vite frontend prototype and the production-oriented foundation for a Java Spring Boot modular-monolith backend. Product flows such as authentication, creator verification, payments, subscriptions, wallet activity, messaging, and administration still use frontend mocks; the backend currently implements infrastructure and health proofs only.
 
 ## Requirements
 
-The baseline was verified on Windows with:
+Frontend development requires:
 
 - Git 2.53.0
 - Node.js 24.13.0
 - Bun 1.3.14
 
-Use current supported releases of Git and Node.js and Bun 1.3 or newer. Java and Docker are not required for the current frontend.
+Backend development additionally requires:
+
+- Java 21 LTS
+- Docker with Compose v2
+
+Use current supported releases of Git and Node.js and Bun 1.3 or newer. Maven is supplied through `backend/mvnw` and `backend/mvnw.cmd`.
 
 ## Setup
 
@@ -35,9 +40,9 @@ The Vite development server listens on `http://localhost:3000` and is exposed on
 
 ## Environment
 
-`.env.example` documents the legacy Google AI Studio variables `GEMINI_API_KEY` and `APP_URL`. The current frontend source does not read either variable, so no `.env.local` is required for local startup.
+`.env.example` documents frontend API mode, local backend/PostgreSQL variables, CORS/OpenAPI switches, and legacy Google AI Studio placeholders. Local Compose defaults are explicitly non-production; staging and production secrets must come from managed environment configuration.
 
-If environment variables become necessary, copy only documented keys to `.env.local` and provide local values there. Never commit `.env`, `.env.local`, credentials, or API tokens. The repository's `.gitignore` excludes `.env*` while retaining `.env.example`.
+Copy only documented keys into an ignored `.env` or `.env.local` as appropriate. Never commit either file, credentials, or API tokens. The repository's `.gitignore` excludes `.env*` while retaining `.env.example`.
 
 ## Validation
 
@@ -45,6 +50,22 @@ If environment variables become necessary, copy only documented keys to `.env.lo
 bun run lint
 bun run build
 ```
+
+Backend validation, from `backend/`, requires Java 21 and running Docker because integration tests use PostgreSQL Testcontainers:
+
+```powershell
+.\mvnw.cmd clean verify
+```
+
+Start the local PostgreSQL service from the repository root, then run the backend with the local profile:
+
+```powershell
+docker compose up -d postgres
+cd backend
+.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+See `backend/README.md` for profiles, Flyway, security boundaries, configuration, and foundation endpoints.
 
 ## Branching
 
@@ -59,5 +80,8 @@ Create a branch for feature, maintenance, and documentation work. Do not commit 
 - `src/components/` contains the application views, navigation, cards, and modal components.
 - `src/data/mockData.ts` supplies creators, posts, stories, conversations, notifications, wallet transactions, KYC requests, reports, reviews, and live sessions.
 - `src/types.ts` defines the shared frontend models.
+- `backend/` contains the Java 21 / Spring Boot 4.1.1 modular-monolith foundation.
+- `compose.yaml` provides local PostgreSQL with a healthcheck and persistent volume.
+- `contracts/openapi/fanscale-api-v1.yaml` remains the canonical `/api/v1` product contract.
 
-Important product flows currently rely on mock data and client-side state. They must be integrated with authenticated production services in a later phase; this repository does not currently contain a backend, database, payment gateway integration, or secure media service.
+Important product flows still rely on mock data and client-side state. They must be integrated with authenticated production services in later phases; the new backend foundation does not yet implement business APIs, payment gateways, KYC storage, ledger accounting, or secure media delivery.
