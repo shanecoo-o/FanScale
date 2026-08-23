@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   Wallet, 
   ArrowUpRight, 
@@ -315,11 +316,11 @@ export const WalletView: React.FC<WalletViewProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-5xl min-w-0 space-y-6 px-3 py-4 sm:space-y-8 sm:px-6 sm:py-6 lg:px-8">
+    <PageContainer width="standard" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
       
       {/* Toast Notification */}
       {exportFeedbackToast && (
-        <div className="fixed top-20 right-4 sm:right-8 z-50 rounded-2xl bg-stone-900 px-4 py-3 text-xs font-bold text-white shadow-2xl border border-pink-500/30 flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="app-toast flex items-center gap-2 rounded-2xl border border-pink-500/30 bg-stone-900 px-4 py-3 text-xs font-bold text-white shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
           <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
           <span>{exportFeedbackToast}</span>
         </div>
@@ -1221,6 +1222,6 @@ export const WalletView: React.FC<WalletViewProps> = ({
         </ResponsiveDialog>
       )}
 
-    </div>
+    </PageContainer>
   );
 };

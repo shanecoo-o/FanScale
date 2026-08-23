@@ -375,7 +375,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
 
   if (presentation === 'page') {
     return (
-      <section aria-labelledby="kyc-page-title" className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-6 sm:py-8 lg:px-8">
+      <section aria-labelledby="kyc-page-title" className="page-container page-container--form py-4 sm:py-8">
         <div className="space-y-5 rounded-3xl border border-pink-100 bg-white p-4 shadow-sm sm:p-7">
           {content}
         </div>

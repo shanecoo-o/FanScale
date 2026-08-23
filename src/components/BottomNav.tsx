@@ -15,7 +15,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   profileUsername,
 }) => {
   return (
-    <nav aria-label="Navegação principal móvel" className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t border-pink-100 bg-white/95 backdrop-blur-md px-1 lg:hidden">
+    <nav aria-label="Navegação principal móvel" className="mobile-bottom-nav fixed bottom-0 left-0 right-0 flex items-center justify-around border-t border-pink-100 bg-white/95 px-1 backdrop-blur-md lg:hidden">
       
       {/* Início */}
       <NavLink

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { StoriesReel } from './StoriesReel';
 import { PostCard } from './PostCard';
 import { Post, Story, CreatorProfile, AuthUser } from '../types';
@@ -71,7 +72,7 @@ export const Feed: React.FC<FeedProps> = ({
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <PageContainer width="wide" className="py-4 sm:py-6">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         
         {/* Main Feed Column (8 cols on desktop) */}
@@ -326,6 +327,6 @@ export const Feed: React.FC<FeedProps> = ({
         </div>
 
       </div>
-    </div>
+    </PageContainer>
   );
 };

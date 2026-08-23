@@ -1,25 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --fanscale-page-gutter: 1rem;
+  --fanscale-page-gutter: 0.75rem;
+  --fanscale-shell-max: 96rem;
   --fanscale-content-wide: 80rem;
+  --fanscale-content-standard: 64rem;
+  --fanscale-content-messages: 72rem;
+  --fanscale-content-form: 56rem;
   --fanscale-content-reading: 48rem;
   --fanscale-header-height: 4rem;
   --fanscale-bottom-nav-height: 4rem;
+  --fanscale-sidebar-width: 16rem;
+  --fanscale-compact-sidebar-width: 4.5rem;
+  --fanscale-safe-top: env(safe-area-inset-top, 0px);
+  --fanscale-safe-right: env(safe-area-inset-right, 0px);
+  --fanscale-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --fanscale-safe-left: env(safe-area-inset-left, 0px);
+  --fanscale-mobile-content-inset: calc(var(--fanscale-bottom-nav-height) + var(--fanscale-safe-bottom));
   --fanscale-dialog-gutter: 1rem;
   --fanscale-touch-target: 2.75rem;
   --fanscale-focus: #db2777;
+  --fanscale-z-sticky: 20;
+  --fanscale-z-header: 40;
+  --fanscale-z-popover: 50;
+  --fanscale-z-modal: 60;
+  --fanscale-z-toast: 70;
+  --fanscale-z-critical: 100;
 }
 
 @layer base {
   html {
-    min-width: 320px;
     background: #fafaf9;
+    overflow-x: clip;
   }
 
   body {
-    min-width: 320px;
     margin: 0;
+    overflow-x: clip;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   }
 
@@ -44,15 +61,98 @@
 .app-shell {
   min-height: 100vh;
   min-height: 100dvh;
+  min-width: 0;
 }
 
 .app-main {
+  width: 100%;
+  max-width: var(--fanscale-shell-max);
   min-width: 0;
-  padding-bottom: calc(var(--fanscale-bottom-nav-height) + env(safe-area-inset-bottom) + 1rem);
+  margin-inline: auto;
+  padding-bottom: calc(var(--fanscale-mobile-content-inset) + 1rem);
 }
 
 .app-main.public-main {
+  max-width: none;
   padding-bottom: 0;
+}
+
+.app-main--local-scroll {
+  padding-bottom: 0;
+}
+
+.app-header {
+  z-index: var(--fanscale-z-header);
+  padding-top: var(--fanscale-safe-top);
+}
+
+.app-header-inner {
+  width: 100%;
+  max-width: var(--fanscale-shell-max);
+  min-width: 0;
+  height: var(--fanscale-header-height);
+  margin-inline: auto;
+  padding-inline:
+    max(var(--fanscale-page-gutter), var(--fanscale-safe-left))
+    max(var(--fanscale-page-gutter), var(--fanscale-safe-right));
+}
+
+.page-container {
+  width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+  padding-inline:
+    max(var(--fanscale-page-gutter), var(--fanscale-safe-left))
+    max(var(--fanscale-page-gutter), var(--fanscale-safe-right));
+}
+
+.page-container--reading {
+  max-width: var(--fanscale-content-reading);
+}
+
+.page-container--standard {
+  max-width: var(--fanscale-content-standard);
+}
+
+.page-container--messages {
+  max-width: var(--fanscale-content-messages);
+}
+
+.page-container--form {
+  max-width: var(--fanscale-content-form);
+}
+
+.page-container--wide {
+  max-width: var(--fanscale-content-wide);
+}
+
+@media (max-width: 639px) {
+  .page-container--bleed-mobile {
+    padding-inline: 0;
+  }
+}
+
+.app-popover {
+  z-index: var(--fanscale-z-popover);
+}
+
+.app-toast {
+  position: fixed;
+  left: max(var(--fanscale-page-gutter), var(--fanscale-safe-left));
+  right: max(var(--fanscale-page-gutter), var(--fanscale-safe-right));
+  top: calc(var(--fanscale-safe-top) + var(--fanscale-header-height) + 0.75rem);
+  z-index: var(--fanscale-z-toast);
+  max-width: min(32rem, calc(100% - (var(--fanscale-page-gutter) * 2)));
+  margin-inline: auto;
+}
+
+.critical-dialog {
+  z-index: var(--fanscale-z-critical);
+}
+
+.public-auth-shell {
+  min-height: calc(100vh - var(--fanscale-safe-top) - var(--fanscale-header-height));
+  min-height: calc(100dvh - var(--fanscale-safe-top) - var(--fanscale-header-height));
 }
 
 .skip-link {
@@ -76,17 +176,17 @@
 .responsive-dialog-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: var(--fanscale-z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding:
-    max(var(--fanscale-dialog-gutter), env(safe-area-inset-top))
-    max(var(--fanscale-dialog-gutter), env(safe-area-inset-right))
-    max(var(--fanscale-dialog-gutter), env(safe-area-inset-bottom))
-    max(var(--fanscale-dialog-gutter), env(safe-area-inset-left));
+    max(var(--fanscale-dialog-gutter), var(--fanscale-safe-top))
+    max(var(--fanscale-dialog-gutter), var(--fanscale-safe-right))
+    max(var(--fanscale-dialog-gutter), var(--fanscale-safe-bottom))
+    max(var(--fanscale-dialog-gutter), var(--fanscale-safe-left));
   background: rgb(12 10 9 / 0.72);
   backdrop-filter: blur(6px);
 }
@@ -94,7 +194,7 @@
 .responsive-dialog-panel {
   width: 100%;
   max-height: calc(100vh - (var(--fanscale-dialog-gutter) * 2));
-  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - (var(--fanscale-dialog-gutter) * 2));
+  max-height: calc(100dvh - var(--fanscale-safe-top) - var(--fanscale-safe-bottom) - (var(--fanscale-dialog-gutter) * 2));
   min-width: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -111,14 +211,23 @@
 
 .mobile-bottom-nav {
   min-height: var(--fanscale-bottom-nav-height);
-  height: calc(var(--fanscale-bottom-nav-height) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
+  height: var(--fanscale-mobile-content-inset);
+  padding-right: var(--fanscale-safe-right);
+  padding-bottom: var(--fanscale-safe-bottom);
+  padding-left: var(--fanscale-safe-left);
+  z-index: var(--fanscale-z-header);
 }
 
 .messages-shell {
-  height: calc(100vh - var(--fanscale-header-height) - var(--fanscale-bottom-nav-height) - env(safe-area-inset-bottom));
-  height: calc(100dvh - var(--fanscale-header-height) - var(--fanscale-bottom-nav-height) - env(safe-area-inset-bottom));
+  height: calc(100vh - var(--fanscale-safe-top) - var(--fanscale-header-height) - var(--fanscale-mobile-content-inset));
+  height: calc(100dvh - var(--fanscale-safe-top) - var(--fanscale-header-height) - var(--fanscale-mobile-content-inset));
   min-height: 0;
+}
+
+@media (min-width: 360px) {
+  :root {
+    --fanscale-page-gutter: 1rem;
+  }
 }
 
 @media (min-width: 640px) {
@@ -151,6 +260,13 @@
 
   .app-main {
     padding-bottom: 2.5rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .app-toast {
+    width: max-content;
+    min-width: min(20rem, calc(100vw - (var(--fanscale-page-gutter) * 2)));
   }
 }
 

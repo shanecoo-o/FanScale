@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   Search, 
   Sparkles, 
@@ -81,7 +82,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 space-y-8">
+    <PageContainer width="wide" className="space-y-8 py-4 sm:py-6">
       
       {/* Search Header Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-6 sm:p-10 text-white shadow-xl shadow-pink-500/20">
@@ -622,6 +623,6 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
         </ResponsiveDialog>
       )}
 
-    </div>
+    </PageContainer>
   );
 };

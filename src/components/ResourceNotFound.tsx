@@ -15,7 +15,7 @@ export const ResourceNotFound: React.FC<ResourceNotFoundProps> = ({
   actionLabel,
   actionTo,
 }) => (
-  <section className="mx-auto flex min-h-[50dvh] max-w-xl items-center px-4 py-12 text-center sm:px-6">
+  <section className="page-container page-container--reading flex min-h-[50dvh] items-center py-12 text-center">
     <div className="w-full space-y-4 rounded-3xl border border-stone-200 bg-white p-7 shadow-sm">
       <SearchX className="mx-auto h-10 w-10 text-pink-600" />
       <div className="space-y-1.5">

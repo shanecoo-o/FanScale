@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   TrendingUp, 
   Users, 
@@ -115,7 +116,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-7xl min-w-0 space-y-6 px-3 py-4 sm:space-y-8 sm:px-6 sm:py-6 lg:px-8">
+    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
       
       {/* Studio Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-3xl bg-stone-900 p-6 sm:p-8 text-white shadow-xl">
@@ -881,6 +882,6 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
         </ResponsiveDialog>
       )}
 
-    </div>
+    </PageContainer>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   Send, 
   Image as ImageIcon, 
@@ -57,7 +58,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-0 py-0 sm:px-6 sm:py-6 lg:px-8">
+    <PageContainer width="messages" className="page-container--bleed-mobile py-0 sm:py-6">
       <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border md:grid-cols-12">
         
         {/* Left: Conversations List (4 cols) */}
@@ -307,6 +308,6 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
         )}
 
       </div>
-    </div>
+    </PageContainer>
   );
 };

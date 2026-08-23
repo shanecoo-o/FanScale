@@ -261,7 +261,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
   };
 
   return (
-    <div className={`relative w-full ${isModal ? 'max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white border border-pink-100' : 'flex min-h-[calc(100dvh-4rem)] items-center justify-center bg-gradient-to-b from-pink-50/40 via-white to-stone-50 p-3 sm:p-6 lg:p-8'}`}>
+    <div className={`relative w-full ${isModal ? 'max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white border border-pink-100' : 'public-auth-shell flex items-center justify-center bg-gradient-to-b from-pink-50/40 via-white to-stone-50 p-3 sm:p-6 lg:p-8'}`}>
       
       {/* Close button if Modal */}
       {isModal && onClose && (

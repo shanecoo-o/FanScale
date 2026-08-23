@@ -20,7 +20,7 @@ export const AgeGateModal: React.FC<AgeGateModalProps> = ({
       ariaLabel="Confirmação de maioridade"
       dismissible={false}
       role="alertdialog"
-      overlayClassName="z-[100] bg-black/90"
+      overlayClassName="critical-dialog bg-black/90"
       panelClassName="max-w-md rounded-3xl bg-stone-900 border border-pink-500/30 p-6 sm:p-8 text-white shadow-2xl text-center space-y-6"
     >
         {/* 18+ Badge Icon */}

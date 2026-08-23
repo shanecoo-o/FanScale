@@ -771,7 +771,7 @@ export default function App() {
   return (
     <>
       {toastMessage && (
-        <div role="status" aria-live="polite" className="fixed left-4 right-4 top-[max(5rem,calc(env(safe-area-inset-top)+4.5rem))] z-[70] flex items-center justify-center gap-2 rounded-2xl border border-stone-800 bg-stone-900/95 px-5 py-2.5 text-center text-xs font-bold text-white shadow-2xl backdrop-blur-md sm:left-1/2 sm:right-auto sm:-translate-x-1/2 sm:rounded-full">
+        <div role="status" aria-live="polite" className="app-toast flex items-center justify-center gap-2 rounded-2xl border border-stone-800 bg-stone-900/95 px-5 py-2.5 text-center text-xs font-bold text-white shadow-2xl backdrop-blur-md sm:rounded-full">
           <span>{toastMessage}</span>
         </div>
       )}

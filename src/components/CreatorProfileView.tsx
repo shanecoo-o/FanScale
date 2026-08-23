@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   CheckCircle, 
   MapPin, 
@@ -101,7 +102,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
   });
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
+    <PageContainer width="standard" className="space-y-6 py-4 sm:py-6">
       
       {/* Back button */}
       <button
@@ -841,7 +842,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
         )
       )}
 
-    </div>
+    </PageContainer>
   );
 };
 

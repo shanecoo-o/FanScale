@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   Bell, 
   Heart, 
@@ -33,7 +34,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
   });
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+    <PageContainer width="reading" className="space-y-6 py-4 sm:py-6">
       
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -159,6 +160,6 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
         )}
       </div>
 
-    </div>
+    </PageContainer>
   );
 };

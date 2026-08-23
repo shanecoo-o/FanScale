@@ -35,7 +35,7 @@ interface FanScaleRoutesProps {
 }
 
 const RouteLoading = () => (
-  <div role="status" aria-live="polite" className="mx-auto flex min-h-[40dvh] max-w-6xl items-center justify-center px-4 py-16 text-center">
+  <div role="status" aria-live="polite" className="page-container page-container--messages flex min-h-[40dvh] items-center justify-center py-16 text-center">
     <div className="space-y-3">
       <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-pink-100 text-pink-700">
         <Flame className="h-5 w-5 animate-pulse fill-current" />
@@ -63,7 +63,7 @@ const AuthRoute = ({ mode, render }: { mode: 'login' | 'register' | 'forgot' | '
 };
 
 const NotFoundPage = () => (
-  <section className="mx-auto flex min-h-[60dvh] max-w-xl items-center px-4 py-16 text-center sm:px-6">
+  <section className="page-container page-container--reading flex min-h-[60dvh] items-center py-16 text-center">
     <div className="w-full space-y-5 rounded-3xl border border-pink-100 bg-white p-7 shadow-sm sm:p-10">
       <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-100 text-pink-700">
         <Flame className="h-6 w-6 fill-current" />
