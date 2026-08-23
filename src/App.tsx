@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { useNavigate } from 'react-router-dom';
-import { 
-  MOCK_CREATORS, 
-  MOCK_POSTS, 
+import {
   MOCK_STORIES, 
-  MOCK_CONVERSATIONS, 
   MOCK_NOTIFICATIONS, 
-  MOCK_WALLET_TRANSACTIONS,
   MOCK_ADMIN_REPORTS,
   MOCK_KYC_REQUESTS,
   MOCK_REVIEWS,
@@ -44,6 +40,7 @@ import { LogoutConfirmModal } from './components/LogoutConfirmModal';
 import { ResourceNotFound } from './components/ResourceNotFound';
 import { FanScaleRoutes } from './app/router';
 import { routes } from './app/routes';
+import { fanScaleDataService } from './services';
 
 const Feed = React.lazy(() => import('./components/Feed').then((module) => ({ default: module.Feed })));
 const ExplorePage = React.lazy(() => import('./components/ExplorePage').then((module) => ({ default: module.ExplorePage })));
@@ -78,17 +75,48 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Core Data State
-  const [creators, setCreators] = useState<CreatorProfile[]>(MOCK_CREATORS);
-  const [posts, setPosts] = useState<Post[]>(MOCK_POSTS);
+  const [creators, setCreators] = useState<CreatorProfile[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [stories, setStories] = useState<Story[]>(MOCK_STORIES);
-  const [conversations, setConversations] = useState<Conversation[]>(MOCK_CONVERSATIONS);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>(MOCK_NOTIFICATIONS);
-  const [transactions, setTransactions] = useState<WalletTransaction[]>(MOCK_WALLET_TRANSACTIONS);
-  const [walletBalanceMT, setWalletBalanceMT] = useState<number>(2500);
+  const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
+  const [walletBalanceMT, setWalletBalanceMT] = useState<number>(0);
+  const [coreDataStatus, setCoreDataStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [coreDataError, setCoreDataError] = useState<string | null>(null);
   const [reports, setReports] = useState<AdminReport[]>(MOCK_ADMIN_REPORTS);
   const [kycRequests, setKycRequests] = useState<KycRequest[]>(MOCK_KYC_REQUESTS);
   const [reviews, setReviews] = useState<CreatorReview[]>(MOCK_REVIEWS);
   const [liveSessions, setLiveSessions] = useState<LiveSession[]>(MOCK_LIVE_SESSIONS);
+
+  useEffect(() => {
+    let active = true;
+
+    Promise.all([
+      fanScaleDataService.getFeed(),
+      fanScaleDataService.getCreators(),
+      fanScaleDataService.getConversations(),
+      fanScaleDataService.getWallet(),
+    ])
+      .then(([feed, creatorList, conversationList, wallet]) => {
+        if (!active) return;
+        setPosts(feed);
+        setCreators(creatorList);
+        setConversations(conversationList);
+        setTransactions(wallet.transactions);
+        setWalletBalanceMT(wallet.balanceMT);
+        setCoreDataStatus('ready');
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setCoreDataError(error instanceof Error ? error.message : 'Não foi possível carregar os dados FanScale.');
+        setCoreDataStatus('error');
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Modal States
   const [activeStoryIndex, setActiveStoryIndex] = useState<number | null>(null);
@@ -306,7 +334,7 @@ export default function App() {
   // Current logged in creator view (for studio/profile when role is creator)
   const currentCreatorProfile = creators.find(
     (creator) => creator.id === currentUser?.id || creator.username === currentUser?.username,
-  ) || creators[0];
+  ) || creators[0]!;
 
   // ----------------------------------------------------
   // Interactions: Like, Save, Comment, Tip
@@ -767,6 +795,22 @@ export default function App() {
     setKycRequests((prev) => [newKyc, ...prev]);
     showToast('Documentos 18+ e KYC enviados para conformidade FanScale.');
   };
+
+  if (coreDataStatus !== 'ready') {
+    return (
+      <main id="main-content" className="flex min-h-dvh items-center justify-center bg-stone-50 px-6" tabIndex={-1}>
+        <div className="max-w-md text-center" role={coreDataStatus === 'error' ? 'alert' : 'status'}>
+          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-pink-100 border-t-pink-600" aria-hidden="true" />
+          <h1 className="text-xl font-black text-stone-900">
+            {coreDataStatus === 'error' ? 'Não foi possível iniciar a FanScale' : 'A preparar a FanScale'}
+          </h1>
+          <p className="mt-2 text-sm leading-6 text-stone-600">
+            {coreDataError ?? 'A carregar o feed, criadores, conversas e carteira…'}
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>

@@ -1,0 +1,739 @@
+openapi: 3.1.0
+info:
+  title: FanScale API
+  version: 1.0.0
+  description: |
+    Initial contract for the FanScale React client and future Spring Boot modular monolith.
+    The server is authoritative for identity, authorization, money, KYC, moderation,
+    entitlements, and protected media access. Money is represented as integer minor units.
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development
+tags:
+  - name: Auth
+  - name: Users
+  - name: Creators
+  - name: Feed
+  - name: Posts
+  - name: KYC
+  - name: Subscriptions
+  - name: Entitlements
+  - name: Payments
+  - name: Wallet
+  - name: Payouts
+  - name: Moderation
+  - name: Provider webhooks
+paths:
+  /auth/register:
+    post:
+      tags: [Auth]
+      operationId: registerAccount
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+      responses:
+        '201':
+          description: Account and session created
+          headers: { X-Correlation-ID: { $ref: '#/components/headers/CorrelationId' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/AuthSession' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '409': { $ref: '#/components/responses/ConflictError' }
+  /auth/login:
+    post:
+      tags: [Auth]
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } }
+      responses:
+        '200':
+          description: Authenticated session
+          content: { application/json: { schema: { $ref: '#/components/schemas/AuthSession' } } }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+        '429': { $ref: '#/components/responses/RateLimitError' }
+  /auth/logout:
+    post:
+      tags: [Auth]
+      operationId: logout
+      responses:
+        '204': { description: Current session revoked }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /auth/logout-all:
+    post:
+      tags: [Auth]
+      operationId: logoutAllSessions
+      responses:
+        '204': { description: All sessions revoked }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      operationId: refreshSession
+      security: []
+      requestBody:
+        content: { application/json: { schema: { $ref: '#/components/schemas/RefreshSessionRequest' } } }
+      responses:
+        '200':
+          description: Rotated session
+          content: { application/json: { schema: { $ref: '#/components/schemas/AuthSession' } } }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /auth/contact-verification:
+    post:
+      tags: [Auth]
+      operationId: verifyContact
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/VerifyContactRequest' } } }
+      responses:
+        '204': { description: Contact verified }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '429': { $ref: '#/components/responses/RateLimitError' }
+  /auth/password-recovery:
+    post:
+      tags: [Auth]
+      operationId: requestPasswordRecovery
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/PasswordRecoveryRequest' } } }
+      responses:
+        '202': { description: Recovery request accepted without confirming account existence }
+        '429': { $ref: '#/components/responses/RateLimitError' }
+  /auth/sessions:
+    get:
+      tags: [Auth]
+      operationId: listSessionDevices
+      responses:
+        '200':
+          description: Active session devices
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/SessionDevice' } }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /auth/sessions/{sessionId}:
+    delete:
+      tags: [Auth]
+      operationId: revokeSessionDevice
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '204': { description: Session device revoked }
+        '404': { $ref: '#/components/responses/NotFoundError' }
+  /me:
+    get:
+      tags: [Users]
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Current server-authenticated user
+          content: { application/json: { schema: { $ref: '#/components/schemas/CurrentUser' } } }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /feed:
+    get:
+      tags: [Feed]
+      operationId: getFeed
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Viewer-specific feed page
+          content: { application/json: { schema: { $ref: '#/components/schemas/FeedResponse' } } }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /creators/{username}:
+    get:
+      tags: [Creators]
+      operationId: getCreatorByUsername
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      responses:
+        '200':
+          description: Public creator projection
+          content: { application/json: { schema: { $ref: '#/components/schemas/CreatorPublicProfile' } } }
+        '404': { $ref: '#/components/responses/NotFoundError' }
+  /posts:
+    post:
+      tags: [Posts]
+      operationId: createPost
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreatePostRequest' } } }
+      responses:
+        '201':
+          description: Post created; publication may await media processing
+          content: { application/json: { schema: { $ref: '#/components/schemas/PostDetail' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '403': { $ref: '#/components/responses/ForbiddenError' }
+  /posts/{postId}:
+    get:
+      tags: [Posts]
+      operationId: getPost
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '200':
+          description: Viewer-specific post detail
+          content: { application/json: { schema: { $ref: '#/components/schemas/PostDetail' } } }
+        '404': { $ref: '#/components/responses/NotFoundError' }
+    patch:
+      tags: [Posts]
+      operationId: updatePost
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/UpdatePostRequest' } } }
+      responses:
+        '200':
+          description: Updated post
+          content: { application/json: { schema: { $ref: '#/components/schemas/PostDetail' } } }
+        '409': { $ref: '#/components/responses/ConflictError' }
+  /posts/{postId}/likes:
+    post:
+      tags: [Posts]
+      operationId: likePost
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '200':
+          description: Canonical like projection
+          content: { application/json: { schema: { $ref: '#/components/schemas/LikeResponse' } } }
+    delete:
+      tags: [Posts]
+      operationId: unlikePost
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '204': { description: Like removed }
+  /creator-onboarding/kyc:
+    get:
+      tags: [KYC]
+      operationId: getOwnKycStatus
+      responses:
+        '200':
+          description: Minimal applicant-visible KYC status
+          content: { application/json: { schema: { $ref: '#/components/schemas/KycStatus' } } }
+    post:
+      tags: [KYC]
+      operationId: submitKyc
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/KycSubmissionRequest' } } }
+      responses:
+        '202':
+          description: KYC submission accepted for review; never implies approval
+          content: { application/json: { schema: { $ref: '#/components/schemas/KycStatus' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '409': { $ref: '#/components/responses/ConflictError' }
+  /creators/{creatorId}/subscriptions:
+    post:
+      tags: [Subscriptions]
+      operationId: createSubscriptionCheckout
+      parameters:
+        - $ref: '#/components/parameters/CreatorId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateSubscriptionCheckoutRequest' } } }
+      responses:
+        '202':
+          description: Checkout initiated; access is not yet guaranteed
+          content: { application/json: { schema: { $ref: '#/components/schemas/SubscriptionCheckoutResponse' } } }
+        '409': { $ref: '#/components/responses/ConflictError' }
+  /content/{contentId}/unlock:
+    post:
+      tags: [Entitlements]
+      operationId: createPpvUnlock
+      parameters:
+        - $ref: '#/components/parameters/ContentId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/PPVUnlockRequest' } } }
+      responses:
+        '202':
+          description: Purchase initiated; protected media is returned only after entitlement confirmation
+          content: { application/json: { schema: { $ref: '#/components/schemas/PPVUnlockResponse' } } }
+        '409': { $ref: '#/components/responses/ConflictError' }
+  /payment-intents:
+    post:
+      tags: [Payments]
+      operationId: createPaymentIntent
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreatePaymentIntentRequest' } } }
+      responses:
+        '201':
+          description: Provider payment intent; the browser cannot mark it successful
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentIntent' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+  /tips:
+    post:
+      tags: [Payments]
+      operationId: createTipIntent
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/TipIntentRequest' } } }
+      responses:
+        '202':
+          description: Tip payment initiated
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentIntent' } } }
+  /wallet:
+    get:
+      tags: [Wallet]
+      operationId: getWallet
+      responses:
+        '200':
+          description: Ledger-derived wallet projection
+          content: { application/json: { schema: { $ref: '#/components/schemas/WalletSummary' } } }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+  /wallet/transactions:
+    get:
+      tags: [Wallet]
+      operationId: listWalletTransactions
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Cursor-paginated ledger projection
+          content: { application/json: { schema: { $ref: '#/components/schemas/WalletTransactionPage' } } }
+  /payouts:
+    post:
+      tags: [Payouts]
+      operationId: requestPayout
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/PayoutRequest' } } }
+      responses:
+        '202':
+          description: Payout requested; funds and status remain server-controlled
+          content: { application/json: { schema: { $ref: '#/components/schemas/Payout' } } }
+        '403': { $ref: '#/components/responses/ForbiddenError' }
+        '409': { $ref: '#/components/responses/ConflictError' }
+  /reports:
+    post:
+      tags: [Moderation]
+      operationId: createReport
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateReportRequest' } } }
+      responses:
+        '201':
+          description: Durable report accepted; no moderation decision implied
+          content: { application/json: { schema: { $ref: '#/components/schemas/Report' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+  /webhooks/payments/{provider}:
+    post:
+      tags: [Provider webhooks]
+      operationId: receivePaymentWebhook
+      description: Provider-facing endpoint. Browser clients must never call this operation.
+      security:
+        - ProviderWebhookSignature: []
+      x-fanscale-browser-callable: false
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema: { type: string, enum: [mpesa, emola, mkesh, card] }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, additionalProperties: true } } }
+      responses:
+        '202': { description: Authenticated provider event persisted for idempotent processing }
+        '401': { $ref: '#/components/responses/UnauthorizedError' }
+components:
+  securitySchemes:
+    SessionAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque-session-token
+      description: Placeholder transport scheme; final browser session strategy is decided in the backend phase.
+    ProviderWebhookSignature:
+      type: apiKey
+      in: header
+      name: X-Provider-Signature
+  headers:
+    CorrelationId:
+      description: Request correlation identifier safe to share with support.
+      schema: { type: string }
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      schema: { type: string }
+      description: Opaque continuation cursor.
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: { type: string, minLength: 16, maxLength: 128 }
+      description: Stable key for one logical financial command; preserve it across retries.
+    Username:
+      name: username
+      in: path
+      required: true
+      schema: { type: string, minLength: 1, maxLength: 64 }
+    SessionId: { name: sessionId, in: path, required: true, schema: { $ref: '#/components/schemas/OpaqueId' } }
+    CreatorId: { name: creatorId, in: path, required: true, schema: { $ref: '#/components/schemas/OpaqueId' } }
+    PostId: { name: postId, in: path, required: true, schema: { $ref: '#/components/schemas/OpaqueId' } }
+    ContentId: { name: contentId, in: path, required: true, schema: { $ref: '#/components/schemas/OpaqueId' } }
+  responses:
+    ValidationError:
+      description: Request validation failed
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    UnauthorizedError:
+      description: Authentication failed or is required
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    ForbiddenError:
+      description: Authenticated principal is not authorized
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    NotFoundError:
+      description: Resource was not found or is not visible to this principal
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    ConflictError:
+      description: Resource state, version, offer, or idempotency conflict
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    RateLimitError:
+      description: Request rate exceeded
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+  schemas:
+    OpaqueId: { type: string, minLength: 8, maxLength: 128, description: Backend-generated opaque identifier. }
+    UtcTimestamp: { type: string, format: date-time, description: ISO-8601 UTC timestamp. }
+    Money:
+      type: object
+      required: [currency, minorUnits]
+      properties:
+        currency: { type: string, enum: [MZN] }
+        minorUnits: { type: integer, format: int64, description: Integer centavos; never a binary floating-point amount. }
+    ApiFieldError:
+      type: object
+      required: [field, code, message]
+      properties:
+        field: { type: string }
+        code: { type: string }
+        message: { type: string }
+    ApiError:
+      type: object
+      required: [code, message, correlationId]
+      properties:
+        code: { type: string }
+        message: { type: string, description: Safe user-facing message without internal details. }
+        correlationId: { type: string }
+        fieldErrors: { type: array, items: { $ref: '#/components/schemas/ApiFieldError' } }
+    RegisterRequest:
+      type: object
+      required: [displayName, username, password, requestedAccountType]
+      properties:
+        displayName: { type: string, minLength: 1, maxLength: 100 }
+        username: { type: string, minLength: 3, maxLength: 64 }
+        email: { type: string, format: email }
+        phone: { type: string }
+        password: { type: string, format: password, minLength: 10, writeOnly: true }
+        requestedAccountType: { type: string, enum: [fan, creator], description: A request, never an authoritative role grant. }
+    LoginRequest:
+      type: object
+      required: [identifier, password]
+      properties:
+        identifier: { type: string }
+        password: { type: string, format: password, writeOnly: true }
+    RefreshSessionRequest:
+      type: object
+      properties:
+        refreshToken: { type: string, writeOnly: true, description: Optional pending final cookie/token strategy. }
+    VerifyContactRequest:
+      type: object
+      required: [challengeId, code]
+      properties:
+        challengeId: { $ref: '#/components/schemas/OpaqueId' }
+        code: { type: string, writeOnly: true }
+    PasswordRecoveryRequest:
+      type: object
+      required: [identifier]
+      properties: { identifier: { type: string } }
+    UserSummary:
+      type: object
+      required: [id, displayName, username]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        displayName: { type: string }
+        username: { type: string }
+        avatarUrl: { type: [string, 'null'], format: uri }
+    CurrentUser:
+      allOf:
+        - $ref: '#/components/schemas/UserSummary'
+        - type: object
+          required: [roles, contactVerified, accountStatus, createdAt]
+          properties:
+            roles: { type: array, items: { type: string, enum: [fan, creator, admin] } }
+            contactVerified: { type: boolean }
+            accountStatus: { type: string, enum: [active, restricted, suspended] }
+            bio: { type: [string, 'null'] }
+            location: { type: [string, 'null'] }
+            createdAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    AuthSession:
+      type: object
+      required: [id, user, expiresAt, assuranceLevel]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        user: { $ref: '#/components/schemas/CurrentUser' }
+        expiresAt: { $ref: '#/components/schemas/UtcTimestamp' }
+        assuranceLevel: { type: string, enum: [standard, step_up] }
+    SessionDevice:
+      type: object
+      required: [id, label, current, createdAt, lastSeenAt]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        label: { type: string }
+        current: { type: boolean }
+        createdAt: { $ref: '#/components/schemas/UtcTimestamp' }
+        lastSeenAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    CreatorSummary:
+      allOf:
+        - $ref: '#/components/schemas/UserSummary'
+        - type: object
+          required: [category, verified, followersCount, subscriberCount, viewerFollows, viewerSubscribes]
+          properties:
+            category: { type: string }
+            verified: { type: boolean, description: Server-issued public verification projection. }
+            followersCount: { type: integer, minimum: 0 }
+            subscriberCount: { type: integer, minimum: 0 }
+            viewerFollows: { type: boolean }
+            viewerSubscribes: { type: boolean }
+    CreatorPublicProfile:
+      allOf:
+        - $ref: '#/components/schemas/CreatorSummary'
+        - type: object
+          required: [postCount, pricing]
+          properties:
+            coverUrl: { type: [string, 'null'], format: uri }
+            bio: { type: [string, 'null'] }
+            location: { type: [string, 'null'] }
+            postCount: { type: integer, minimum: 0 }
+            pricing: { $ref: '#/components/schemas/CreatorPricing' }
+    CreatorPricing:
+      type: object
+      required: [monthlySubscription, quarterlySubscription, offerVersion]
+      properties:
+        monthlySubscription: { $ref: '#/components/schemas/Money' }
+        quarterlySubscription: { $ref: '#/components/schemas/Money' }
+        offerVersion: { type: string }
+    MediaPreview:
+      type: object
+      required: [assetId, url]
+      properties:
+        assetId: { $ref: '#/components/schemas/OpaqueId' }
+        url: { type: string, format: uri, description: Safe public or blurred preview only. }
+        width: { type: integer, minimum: 1 }
+        height: { type: integer, minimum: 1 }
+    ContentAccessDecision:
+      type: object
+      required: [allowed, state, reasonCode]
+      properties:
+        allowed: { type: boolean }
+        state: { type: string, enum: [not_entitled, pending, active, expired, revoked] }
+        reasonCode: { type: string }
+        expiresAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    PostSummary:
+      type: object
+      required: [id, creator, caption, visibility, publicationState, access, mediaPreviews, likeCount, commentCount, viewerLiked, viewerSaved, createdAt]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        creator: { $ref: '#/components/schemas/CreatorSummary' }
+        caption: { type: string }
+        visibility: { type: string, enum: [public, followers, subscribers, ppv] }
+        publicationState: { type: string, enum: [draft, processing, published, archived] }
+        access: { $ref: '#/components/schemas/ContentAccessDecision' }
+        mediaPreviews: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        ppvPrice: { $ref: '#/components/schemas/Money' }
+        likeCount: { type: integer, minimum: 0 }
+        commentCount: { type: integer, minimum: 0 }
+        viewerLiked: { type: boolean }
+        viewerSaved: { type: boolean }
+        createdAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    PostDetail:
+      allOf:
+        - $ref: '#/components/schemas/PostSummary'
+        - type: object
+          required: [hashtags, shareCount, viewCount]
+          properties:
+            hashtags: { type: array, items: { type: string } }
+            shareCount: { type: integer, minimum: 0 }
+            viewCount: { type: integer, minimum: 0 }
+    FeedResponse:
+      type: object
+      required: [items, nextCursor, hasMore]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/PostSummary' } }
+        nextCursor: { type: [string, 'null'] }
+        hasMore: { type: boolean }
+    CreatePostRequest:
+      type: object
+      required: [caption, visibility, mediaAssetIds, hashtags]
+      properties:
+        caption: { type: string, maxLength: 5000 }
+        visibility: { type: string, enum: [public, followers, subscribers, ppv] }
+        mediaAssetIds: { type: array, items: { $ref: '#/components/schemas/OpaqueId' }, minItems: 1 }
+        ppvOfferId: { $ref: '#/components/schemas/OpaqueId' }
+        hashtags: { type: array, items: { type: string }, maxItems: 30 }
+    UpdatePostRequest:
+      type: object
+      required: [version]
+      properties:
+        version: { type: integer, minimum: 0 }
+        caption: { type: string, maxLength: 5000 }
+        visibility: { type: string, enum: [public, followers, subscribers, ppv] }
+        ppvOfferId: { $ref: '#/components/schemas/OpaqueId' }
+    LikeResponse:
+      type: object
+      required: [postId, liked, likeCount]
+      properties:
+        postId: { $ref: '#/components/schemas/OpaqueId' }
+        liked: { type: boolean }
+        likeCount: { type: integer, minimum: 0 }
+    KycStatus:
+      type: object
+      required: [caseId, state]
+      properties:
+        caseId: { $ref: '#/components/schemas/OpaqueId' }
+        state: { type: string, enum: [not_started, pending, approved, rejected] }
+        submittedAt: { $ref: '#/components/schemas/UtcTimestamp' }
+        safeReasonCode: { type: string }
+    KycSubmissionRequest:
+      type: object
+      required: [legalName, dateOfBirth, documentType, documentAssetIds, selfieAssetId, consentVersion, consentAccepted]
+      properties:
+        legalName: { type: string }
+        dateOfBirth: { type: string, format: date }
+        documentType: { type: string, enum: [national_id, passport, residence_permit] }
+        documentAssetIds: { type: array, items: { $ref: '#/components/schemas/OpaqueId' }, minItems: 1 }
+        selfieAssetId: { $ref: '#/components/schemas/OpaqueId' }
+        consentVersion: { type: string }
+        consentAccepted: { type: boolean, const: true }
+    CreateSubscriptionCheckoutRequest:
+      type: object
+      required: [planId, planVersion]
+      properties:
+        planId: { $ref: '#/components/schemas/OpaqueId' }
+        planVersion: { type: string }
+    SubscriptionCheckoutResponse:
+      type: object
+      required: [subscriptionId, status, paymentIntentId]
+      properties:
+        subscriptionId: { $ref: '#/components/schemas/OpaqueId' }
+        status: { type: string, enum: [pending, active, past_due, cancelled, expired, refunded] }
+        paymentIntentId: { $ref: '#/components/schemas/OpaqueId' }
+    PPVUnlockRequest:
+      type: object
+      required: [offerId, offerVersion]
+      properties:
+        offerId: { $ref: '#/components/schemas/OpaqueId' }
+        offerVersion: { type: string }
+    PPVUnlockResponse:
+      type: object
+      required: [paymentIntentId, entitlementState]
+      properties:
+        paymentIntentId: { $ref: '#/components/schemas/OpaqueId' }
+        entitlementState: { type: string, enum: [not_entitled, pending, active, expired, revoked] }
+    CreatePaymentIntentRequest:
+      type: object
+      required: [purpose, provider]
+      properties:
+        purpose: { type: string, enum: [wallet_deposit, subscription, ppv, tip] }
+        resourceId: { $ref: '#/components/schemas/OpaqueId' }
+        offerId: { $ref: '#/components/schemas/OpaqueId' }
+        provider: { type: string, enum: [mpesa, emola, mkesh, card] }
+    PaymentIntent:
+      type: object
+      required: [id, amount, purpose, status, provider, expiresAt]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        amount: { $ref: '#/components/schemas/Money' }
+        purpose: { type: string, enum: [wallet_deposit, subscription, ppv, tip] }
+        status: { type: string, enum: [requires_action, pending, processing, succeeded, failed, cancelled, refunded] }
+        provider: { type: string, enum: [mpesa, emola, mkesh, card] }
+        expiresAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    TipIntentRequest:
+      type: object
+      required: [creatorId, amount, provider]
+      properties:
+        creatorId: { $ref: '#/components/schemas/OpaqueId' }
+        amount: { $ref: '#/components/schemas/Money' }
+        provider: { type: string, enum: [mpesa, emola, mkesh, card] }
+        message: { type: string, maxLength: 500 }
+    WalletSummary:
+      type: object
+      required: [accountId, available, pending, reserved, paid, asOf]
+      properties:
+        accountId: { $ref: '#/components/schemas/OpaqueId' }
+        available: { $ref: '#/components/schemas/Money' }
+        pending: { $ref: '#/components/schemas/Money' }
+        reserved: { $ref: '#/components/schemas/Money' }
+        paid: { $ref: '#/components/schemas/Money' }
+        asOf: { $ref: '#/components/schemas/UtcTimestamp' }
+    WalletTransactionSummary:
+      type: object
+      required: [id, type, direction, amount, status, occurredAt]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        type: { type: string }
+        direction: { type: string, enum: [credit, debit] }
+        amount: { $ref: '#/components/schemas/Money' }
+        status: { type: string, enum: [pending, posted, reversed, failed] }
+        occurredAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    WalletTransactionPage:
+      type: object
+      required: [items, nextCursor, hasMore]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/WalletTransactionSummary' } }
+        nextCursor: { type: [string, 'null'] }
+        hasMore: { type: boolean }
+    PayoutRequest:
+      type: object
+      required: [amount, destinationId]
+      properties:
+        amount: { $ref: '#/components/schemas/Money' }
+        destinationId: { $ref: '#/components/schemas/OpaqueId' }
+    Payout:
+      type: object
+      required: [id, amount, status, requestedAt]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        amount: { $ref: '#/components/schemas/Money' }
+        status: { type: string, enum: [pending, review, processing, paid, failed, rejected] }
+        requestedAt: { $ref: '#/components/schemas/UtcTimestamp' }
+    CreateReportRequest:
+      type: object
+      required: [subjectType, subjectId, reasonCode]
+      properties:
+        subjectType: { type: string, enum: [post, creator, message, live] }
+        subjectId: { $ref: '#/components/schemas/OpaqueId' }
+        reasonCode: { type: string }
+        details: { type: string, maxLength: 2000 }
+    Report:
+      type: object
+      required: [id, subjectType, subjectId, status, createdAt]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        subjectType: { type: string, enum: [post, creator, message, live] }
+        subjectId: { $ref: '#/components/schemas/OpaqueId' }
+        status: { type: string, enum: [submitted, under_review, resolved] }
+        createdAt: { $ref: '#/components/schemas/UtcTimestamp' }
+security:
+  - SessionAuth: []
