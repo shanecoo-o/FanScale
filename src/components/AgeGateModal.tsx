@@ -21,7 +21,7 @@ export const AgeGateModal: React.FC<AgeGateModalProps> = ({
       dismissible={false}
       role="alertdialog"
       overlayClassName="critical-dialog bg-black/90"
-      panelClassName="max-w-md rounded-3xl bg-stone-900 border border-pink-500/30 p-6 sm:p-8 text-white shadow-2xl text-center space-y-6"
+      panelClassName="max-w-md rounded-2xl bg-stone-900 border border-pink-500/30 p-4 min-[390px]:p-5 sm:rounded-3xl sm:p-8 text-white shadow-2xl text-center space-y-4 sm:space-y-6"
     >
         {/* 18+ Badge Icon */}
         <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-pink-600 to-rose-500 text-white shadow-lg shadow-pink-500/40">

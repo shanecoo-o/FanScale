@@ -82,16 +82,16 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
   });
 
   return (
-    <PageContainer width="wide" className="space-y-8 py-4 sm:py-6">
+    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
       
       {/* Search Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-6 sm:p-10 text-white shadow-xl shadow-pink-500/20">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-4 text-white shadow-xl shadow-pink-500/20 sm:rounded-3xl sm:p-10">
         <div className="relative z-10 max-w-2xl space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white backdrop-blur-md">
             <Compass className="h-3.5 w-3.5" />
             <span>Descobre Moçambique 🇲🇿</span>
           </div>
-          <h1 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="font-display text-xl font-extrabold tracking-tight text-white min-[390px]:text-2xl sm:text-4xl">
             Explora os Melhores Criadores Moçambicanos
           </h1>
           <p className="text-xs sm:text-sm text-white/90">
@@ -106,7 +106,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Pesquisar por nome, categoria, marrabenta, capulana..."
-              className="w-full rounded-2xl border-none bg-white py-3 pl-11 pr-4 text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-4 focus:ring-white/30 shadow-lg"
+              className="min-h-11 w-full rounded-2xl border-none bg-white py-3 pl-11 pr-4 text-xs text-stone-900 shadow-lg placeholder:text-stone-400 focus:outline-none focus:ring-4 focus:ring-white/30 sm:text-sm"
             />
           </div>
         </div>
@@ -127,12 +127,12 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="flex snap-x snap-mandatory items-center gap-2 overflow-x-auto overscroll-x-contain pb-2 scrollbar-none">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`rounded-full px-4 py-2 text-xs font-bold transition-all whitespace-nowrap ${
+              className={`min-h-11 shrink-0 snap-start rounded-full px-4 py-2 text-xs font-bold transition-all whitespace-nowrap ${
                 selectedCategory === cat
                   ? 'bg-pink-600 text-white shadow-md shadow-pink-500/20 scale-105'
                   : 'border border-pink-100 bg-white text-stone-600 hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700'
@@ -165,11 +165,11 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
             {liveSessions.map((session) => (
               <div
                 key={session.id}
-                className="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm hover:shadow-lg hover:border-pink-200 transition-all flex flex-col justify-between"
+                className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition-all hover:border-pink-200 hover:shadow-lg sm:rounded-3xl"
               >
                 <div className="relative h-44 w-full bg-stone-950 overflow-hidden">
                   <img

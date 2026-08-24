@@ -17,7 +17,7 @@
   --fanscale-safe-bottom: env(safe-area-inset-bottom, 0px);
   --fanscale-safe-left: env(safe-area-inset-left, 0px);
   --fanscale-mobile-content-inset: calc(var(--fanscale-bottom-nav-height) + var(--fanscale-safe-bottom));
-  --fanscale-dialog-gutter: 1rem;
+  --fanscale-dialog-gutter: 0.75rem;
   --fanscale-touch-target: 2.75rem;
   --fanscale-focus: #db2777;
   --fanscale-z-sticky: 20;
@@ -227,6 +227,7 @@
 @media (min-width: 360px) {
   :root {
     --fanscale-page-gutter: 1rem;
+    --fanscale-dialog-gutter: 1rem;
   }
 }
 

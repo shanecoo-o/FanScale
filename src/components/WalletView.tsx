@@ -345,10 +345,10 @@ export const WalletView: React.FC<WalletViewProps> = ({
         </div>
 
         {/* Fan / Creator Wallet Tabs */}
-        <div className="flex items-center rounded-full bg-stone-100 p-1 border border-stone-200 shadow-inner self-start sm:self-auto">
+        <div className="grid w-full grid-cols-2 rounded-full border border-stone-200 bg-stone-100 p-1 shadow-inner sm:w-auto">
           <button
             onClick={() => setActiveWalletMode('fan')}
-            className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+            className={`min-h-11 rounded-full px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
               activeWalletMode === 'fan'
                 ? 'bg-white text-stone-900 shadow-sm'
                 : 'text-stone-500 hover:text-stone-900'
@@ -358,7 +358,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
           </button>
           <button
             onClick={() => setActiveWalletMode('creator')}
-            className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+            className={`min-h-11 rounded-full px-3 py-2 text-xs font-bold transition-all sm:px-4 ${
               activeWalletMode === 'creator'
                 ? 'bg-pink-600 text-white shadow-sm'
                 : 'text-stone-500 hover:text-stone-900'
@@ -370,7 +370,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
       </div>
 
       {/* Main Balance Card */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-6 sm:p-8 text-white shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-4 text-white shadow-xl sm:rounded-3xl sm:p-8">
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -548,18 +548,18 @@ export const WalletView: React.FC<WalletViewProps> = ({
           </div>
 
           {/* Quick Flow Pills (Credit / Debit) (5 cols) */}
-          <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-stone-200 bg-stone-100 p-1 sm:justify-end lg:col-span-5">
+          <div className="grid grid-cols-3 gap-1 rounded-2xl border border-stone-200 bg-stone-100 p-1 lg:col-span-5">
             <button
               onClick={() => setFilterFlow('all')}
-              className={`flex-1 sm:flex-none rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+              className={`min-h-11 rounded-xl px-1.5 py-2 text-[11px] font-bold transition-all min-[390px]:px-3 min-[390px]:text-xs ${
                 filterFlow === 'all' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              Todos os Fluxos
+              <span className="min-[390px]:hidden">Todos</span><span className="hidden min-[390px]:inline">Todos os Fluxos</span>
             </button>
             <button
               onClick={() => setFilterFlow('credit')}
-              className={`flex-1 sm:flex-none rounded-xl px-3 py-1.5 text-xs font-bold transition-all flex items-center justify-center gap-1 ${
+              className={`flex min-h-11 items-center justify-center gap-1 rounded-xl px-1.5 py-2 text-[11px] font-bold transition-all min-[390px]:px-3 min-[390px]:text-xs ${
                 filterFlow === 'credit' ? 'bg-emerald-600 text-white shadow-sm' : 'text-emerald-700 hover:bg-emerald-50'
               }`}
             >
@@ -902,7 +902,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                 type="button"
                 key={tx.id} 
                 onClick={() => setSelectedTransaction(tx)}
-                className="group flex w-full min-w-0 flex-col items-stretch gap-3 rounded-2xl px-2.5 py-3.5 text-left transition-colors hover:bg-pink-50/40 min-[430px]:flex-row min-[430px]:items-center min-[430px]:justify-between min-[430px]:gap-4"
+                className="group flex w-full min-w-0 flex-col items-stretch gap-3 rounded-2xl px-2.5 py-3.5 text-left transition-colors hover:bg-pink-50/40 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div
@@ -935,7 +935,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                   </div>
                 </div>
 
-                <div className="flex flex-shrink-0 items-end justify-between gap-3 pl-14 text-left min-[430px]:block min-[430px]:space-y-0.5 min-[430px]:pl-0 min-[430px]:text-right">
+                <div className="flex flex-shrink-0 items-end justify-between gap-3 pl-14 text-left sm:block sm:space-y-0.5 sm:pl-0 sm:text-right">
                   <span
                     className={`font-display text-sm sm:text-base font-black block ${
                       tx.isCredit ? 'text-emerald-600' : 'text-stone-900'

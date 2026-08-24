@@ -80,13 +80,13 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
 
   const content = (
     <>
-        <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
-          <div className="flex items-center gap-3">
+        <div className="flex items-start justify-between gap-2 border-b border-stone-100 pb-3.5">
+          <div className="flex min-w-0 items-start gap-2.5 sm:items-center sm:gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white shadow-md shadow-pink-500/20">
               <ShieldCheck className="h-5 w-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="flex flex-col items-start gap-1 min-[390px]:flex-row min-[390px]:items-center min-[390px]:gap-2">
                 <h1 id="kyc-page-title" className="font-display text-base font-bold text-stone-900">
                   Verificação de Criador 18+ (KYC)
                 </h1>
@@ -119,10 +119,10 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 text-xs text-stone-800">
-            <ol aria-label="Progresso da verificação" className="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-stone-500">
-              <li aria-current="step" className="rounded-full bg-pink-100 px-3 py-1 text-pink-700">1. Identidade</li>
-              <li className="rounded-full bg-stone-100 px-3 py-1">2. Documentos</li>
-              <li className="rounded-full bg-stone-100 px-3 py-1">3. Pagamento e consentimento</li>
+            <ol aria-label="Progresso da verificação" className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-semibold text-stone-500 min-[390px]:text-[11px]">
+              <li aria-current="step" className="flex min-h-11 items-center justify-center rounded-xl bg-pink-100 px-1.5 py-1 text-pink-700">1. Identidade</li>
+              <li className="flex min-h-11 items-center justify-center rounded-xl bg-stone-100 px-1.5 py-1">2. Documentos</li>
+              <li className="flex min-h-11 items-center justify-center rounded-xl bg-stone-100 px-1.5 py-1">3. Pagamento</li>
             </ol>
             
             {/* Privacy Badge */}
@@ -227,10 +227,10 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
               <label className="block font-bold text-stone-700">
                 Fotos do Documento & Selfie de Validação Facial
               </label>
-              <div className="grid grid-cols-1 gap-2 min-[480px]:grid-cols-3">
+              <div className="grid grid-cols-3 gap-1.5 min-[390px]:gap-2">
                 <div 
                   onClick={() => setDocFrontUploaded(!docFrontUploaded)}
-                  className={`cursor-pointer rounded-2xl border p-3 text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
+                  className={`flex min-h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border p-2 text-center transition-all min-[390px]:gap-1.5 sm:rounded-2xl sm:p-3 ${
                     docFrontUploaded ? 'border-emerald-300 bg-emerald-50/70 text-emerald-800' : 'border-dashed border-stone-300 bg-stone-50 text-stone-600'
                   }`}
                 >
@@ -245,7 +245,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
 
                 <div 
                   onClick={() => setDocBackUploaded(!docBackUploaded)}
-                  className={`cursor-pointer rounded-2xl border p-3 text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
+                  className={`flex min-h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border p-2 text-center transition-all min-[390px]:gap-1.5 sm:rounded-2xl sm:p-3 ${
                     docBackUploaded ? 'border-emerald-300 bg-emerald-50/70 text-emerald-800' : 'border-dashed border-stone-300 bg-stone-50 text-stone-600'
                   }`}
                 >
@@ -260,7 +260,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
 
                 <div 
                   onClick={() => setSelfieUploaded(!selfieUploaded)}
-                  className={`cursor-pointer rounded-2xl border p-3 text-center transition-all flex flex-col items-center justify-center gap-1.5 ${
+                  className={`flex min-h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border p-2 text-center transition-all min-[390px]:gap-1.5 sm:rounded-2xl sm:p-3 ${
                     selfieUploaded ? 'border-pink-300 bg-pink-50/70 text-pink-800' : 'border-dashed border-stone-300 bg-stone-50 text-stone-600'
                   }`}
                 >
@@ -288,11 +288,11 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
                   className="w-full rounded-xl border border-stone-200 bg-stone-50 p-2.5 font-semibold text-stone-900 focus:border-pink-500 focus:bg-white focus:outline-none"
                 />
 
-                <div className="grid grid-cols-1 gap-1.5 min-[480px]:grid-cols-3">
+                <div className="grid grid-cols-3 gap-1.5">
                   <button
                     type="button"
                     onClick={() => setPayoutMethod('mpesa')}
-                    className={`py-2 px-1 rounded-xl border text-[11px] font-bold transition-all ${
+                    className={`min-h-11 py-2 px-1 rounded-xl border text-[11px] font-bold transition-all ${
                       payoutMethod === 'mpesa' ? 'border-pink-600 bg-pink-50 text-pink-700 shadow-sm' : 'border-stone-200 bg-stone-50 text-stone-600'
                     }`}
                   >
@@ -301,7 +301,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
                   <button
                     type="button"
                     onClick={() => setPayoutMethod('emola')}
-                    className={`py-2 px-1 rounded-xl border text-[11px] font-bold transition-all ${
+                    className={`min-h-11 py-2 px-1 rounded-xl border text-[11px] font-bold transition-all ${
                       payoutMethod === 'emola' ? 'border-pink-600 bg-pink-50 text-pink-700 shadow-sm' : 'border-stone-200 bg-stone-50 text-stone-600'
                     }`}
                   >
@@ -310,7 +310,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
                   <button
                     type="button"
                     onClick={() => setPayoutMethod('bank')}
-                    className={`py-2 px-1 rounded-xl border text-[11px] font-bold transition-all ${
+                    className={`min-h-11 py-2 px-1 rounded-xl border text-[11px] font-bold transition-all ${
                       payoutMethod === 'bank' ? 'border-pink-600 bg-pink-50 text-pink-700 shadow-sm' : 'border-stone-200 bg-stone-50 text-stone-600'
                     }`}
                   >
@@ -376,7 +376,7 @@ export const KycModal: React.FC<KycModalProps> = ({ onClose, onSubmitKyc, presen
   if (presentation === 'page') {
     return (
       <section aria-labelledby="kyc-page-title" className="page-container page-container--form py-4 sm:py-8">
-        <div className="space-y-5 rounded-3xl border border-pink-100 bg-white p-4 shadow-sm sm:p-7">
+        <div className="space-y-5 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-7">
           {content}
         </div>
       </section>

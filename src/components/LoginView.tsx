@@ -268,7 +268,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
         <button
           id="close-login-modal-btn"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-900 transition-colors"
+          aria-label="Fechar autenticação"
+          className="absolute right-3 top-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-stone-100 text-stone-600 transition-colors hover:bg-stone-200 hover:text-stone-900 sm:right-4 sm:top-4"
         >
           <X className="h-5 w-5" />
         </button>
@@ -366,11 +367,11 @@ export const LoginView: React.FC<LoginViewProps> = ({
         </div>
 
         {/* Right Side: Interactive Login / Register Form */}
-        <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-white">
+        <div className="flex flex-col justify-between bg-white p-4 min-[390px]:p-5 sm:p-8 lg:col-span-7 lg:p-10">
           
           <div>
             {/* Header Mobile Brand (only when not desktop) */}
-            <div className="flex items-center justify-between lg:hidden mb-6">
+            <div className="mb-5 flex min-w-0 items-center justify-between gap-2 lg:hidden sm:mb-6">
               <div className="flex items-center gap-2">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-pink-600 via-rose-500 to-pink-400 text-white shadow-md shadow-pink-500/20">
                   <Flame className="h-5 w-5 fill-white stroke-none" />
@@ -379,7 +380,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   Fan<span className="text-pink-600">Scale</span> MZ
                 </span>
               </div>
-              <span className="rounded-full bg-pink-50 px-2.5 py-1 text-[11px] font-bold text-pink-700 border border-pink-200">
+              <span className="shrink-0 rounded-full border border-pink-200 bg-pink-50 px-2 py-1 text-[10px] font-bold text-pink-700 min-[390px]:px-2.5 min-[390px]:text-[11px]">
                 Moçambique 🇲🇿
               </span>
             </div>
@@ -390,7 +391,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 <button
                   type="button"
                   onClick={() => selectAuthMode('login')}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-pink-600 mb-6 transition-colors"
+                  className="mb-5 flex min-h-11 items-center gap-1.5 text-xs font-semibold text-stone-600 transition-colors hover:text-pink-600 sm:mb-6"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   <span>Voltar para o Login</span>
@@ -410,7 +411,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 </div>
 
                 {/* 6 Digit Inputs */}
-                <div className="flex justify-center gap-2 sm:gap-3 mb-6">
+                <div className="mb-6 grid grid-cols-6 gap-1.5 sm:gap-3">
                   {otpDigits.map((digit, idx) => (
                     <input
                       key={idx}
@@ -421,7 +422,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       value={digit}
                       onChange={(e) => handleOtpChange(idx, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                      className="h-12 w-10 sm:h-14 sm:w-12 rounded-xl border-2 border-stone-200 bg-stone-50 text-center font-display text-xl font-black text-stone-900 focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-pink-500/10 transition-all"
+                      className="h-12 min-w-0 w-full rounded-xl border-2 border-stone-200 bg-stone-50 text-center font-display text-lg font-black text-stone-900 transition-all focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-pink-500/10 sm:h-14 sm:text-xl"
                     />
                   ))}
                 </div>

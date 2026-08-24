@@ -75,13 +75,13 @@ export const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <article className="overflow-hidden rounded-3xl border border-pink-100/80 bg-white shadow-sm hover:shadow-md transition-shadow">
+    <article className="overflow-hidden rounded-2xl border border-pink-100/80 bg-white shadow-sm transition-shadow hover:shadow-md sm:rounded-3xl">
       
       {/* Top Bar: Creator Info & Options */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between gap-2 p-3 sm:p-4">
         <div 
           onClick={() => onSelectCreatorProfile(post.creatorId)}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="group flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 sm:gap-3"
         >
           <div className="relative">
             <img
@@ -94,19 +94,19 @@ export const PostCard: React.FC<PostCardProps> = ({
             )}
           </div>
 
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-display font-bold text-xs text-stone-900 group-hover:text-pink-600 transition-colors">
+          <div className="min-w-0">
+            <div className="flex min-w-0 items-center gap-1.5">
+              <span className="truncate font-display text-xs font-bold text-stone-900 transition-colors group-hover:text-pink-600">
                 {post.creator.name}
               </span>
-              <span className="text-[11px] font-medium text-stone-400">
+              <span className="hidden truncate text-[11px] font-medium text-stone-400 min-[390px]:inline">
                 @{post.creator.username}
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] text-stone-400">
+            <div className="flex min-w-0 items-center gap-1.5 text-[11px] text-stone-400">
               {post.locationTag && (
-                <span className="flex items-center gap-0.5 text-stone-500">
+                <span className="flex min-w-0 items-center gap-0.5 truncate text-stone-500">
                   <MapPin className="h-3 w-3 text-pink-500" />
                   {post.locationTag}
                 </span>
@@ -118,11 +118,11 @@ export const PostCard: React.FC<PostCardProps> = ({
         </div>
 
         {/* Top Right: Badges & Menu */}
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1">
           {post.visibility === 'subscriber' && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-pink-50 px-2.5 py-1 text-[10px] font-bold text-pink-700 border border-pink-200/60">
+            <span aria-label="Apenas subscritores VIP" className="inline-flex items-center gap-1 rounded-full border border-pink-200/60 bg-pink-50 p-2 text-[10px] font-bold text-pink-700 min-[390px]:px-2.5 min-[390px]:py-1">
               <Lock className="h-3 w-3 text-pink-600" />
-              Subscritores VIP
+              <span className="hidden min-[390px]:inline">Subscritores VIP</span>
             </span>
           )}
 
@@ -136,7 +136,8 @@ export const PostCard: React.FC<PostCardProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
+              aria-label="Mais opções"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-700"
             >
               <MoreHorizontal className="h-4 w-4" />
             </button>
@@ -210,7 +211,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
         {/* Locked Overlay for Subscribers / PPV */}
         {isLocked && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-black/55 backdrop-blur-md text-white">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/55 p-4 text-center text-white backdrop-blur-md sm:p-6">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 shadow-xl shadow-pink-500/30 mb-3 animate-pulse-subtle">
               <Lock className="h-7 w-7 text-white" />
             </div>
@@ -225,7 +226,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 : 'Conteúdo Exclusivo para Subscritores'}
             </h3>
 
-            <p className="text-xs text-white/80 max-w-sm mb-4">
+            <p className="mb-3 max-w-sm text-[11px] leading-snug text-white/80 sm:mb-4 sm:text-xs">
               {post.visibility === 'ppv'
                 ? `Desbloqueia esta publicação privada por apenas ${post.priceMT} MT com M-Pesa, e-Mola ou a tua Carteira FanScale.`
                 : `Junta-te aos subscritores VIP de @${post.creator.username} por ${post.creator.subscriptionPriceMonthly} MT/mês e desbloqueia todas as publicações privadas.`}
@@ -234,7 +235,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {post.visibility === 'ppv' ? (
               <button
                 onClick={() => onOpenPpvUnlockModal(post)}
-                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-pink-500/30 hover:from-pink-700 hover:to-rose-600 transition-all hover:scale-105 active:scale-95"
+                className="flex min-h-11 max-w-full items-center gap-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-pink-500/30 transition-all hover:from-pink-700 hover:to-rose-600 active:scale-95 sm:px-6"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Desbloquear Conteúdo ({post.priceMT} MT)</span>
@@ -242,7 +243,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             ) : (
               <button
                 onClick={() => onOpenSubscribeModal(post.creatorId)}
-                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-pink-500/30 hover:from-pink-700 hover:to-rose-600 transition-all hover:scale-105 active:scale-95"
+                className="flex min-h-11 max-w-full items-center gap-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-pink-500/30 transition-all hover:from-pink-700 hover:to-rose-600 active:scale-95 sm:px-6"
               >
                 <Lock className="h-4 w-4" />
                 <span>Subscrever por {post.creator.subscriptionPriceMonthly} MT/mês</span>
@@ -253,16 +254,16 @@ export const PostCard: React.FC<PostCardProps> = ({
       </div>
 
       {/* Action Bar */}
-      <div className="p-4 space-y-3">
+      <div className="space-y-3 p-3 sm:p-4">
         <div className="flex items-center justify-between">
           
           {/* Left: Like, Comment, Share, Tip */}
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex min-w-0 items-center gap-0.5 sm:gap-2">
             
             {/* Gostar */}
             <button
               onClick={handleLikeClick}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex min-h-11 items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold transition-all sm:px-3 ${
                 post.isLiked
                   ? 'bg-pink-50 text-pink-600'
                   : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
@@ -275,7 +276,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Comentar */}
             <button
               onClick={() => setShowComments(!showComments)}
-              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors"
+              className="flex min-h-11 items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-100 hover:text-stone-900 sm:px-3"
             >
               <MessageCircle className="h-4 w-4" />
               <span>{post.commentsCount}</span>
@@ -284,7 +285,8 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Partilhar */}
             <button
               onClick={handleShare}
-              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors relative"
+              aria-label="Partilhar post"
+              className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-100 hover:text-stone-900"
             >
               <Share2 className="h-4 w-4" />
               {copiedShare && (
@@ -297,7 +299,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Dar Gorjeta (Tip) */}
             <button
               onClick={() => onOpenTipModal(post.creatorId, post.creator.name)}
-              className="flex items-center gap-1.5 rounded-full bg-pink-50 border border-pink-200/70 px-3 py-1.5 text-xs font-bold text-pink-700 hover:bg-pink-100 transition-colors"
+              className="flex min-h-11 items-center gap-1 rounded-full border border-pink-200/70 bg-pink-50 px-2.5 py-2 text-xs font-bold text-pink-700 transition-colors hover:bg-pink-100 sm:gap-1.5 sm:px-3"
               title="Dar Gorjeta via M-Pesa ou Carteira"
             >
               <Coins className="h-3.5 w-3.5 text-pink-600" />
@@ -309,7 +311,8 @@ export const PostCard: React.FC<PostCardProps> = ({
           <div className="flex items-center gap-2 text-stone-400">
             <button
               onClick={() => onSave(post.id)}
-              className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              aria-label="Guardar post"
+              className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
                 post.isSaved
                   ? 'text-pink-600 bg-pink-50'
                   : 'text-stone-500 hover:bg-stone-100'
@@ -323,7 +326,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
         {/* Gorjetas e Visualizações Bar */}
         {post.tipsTotalMT > 0 && (
-          <div className="flex items-center justify-between rounded-xl bg-pink-50/70 px-3 py-1.5 text-[11px] font-semibold text-pink-800 border border-pink-100">
+          <div className="flex flex-col items-start gap-1 rounded-xl border border-pink-100 bg-pink-50/70 px-3 py-2 text-[11px] font-semibold text-pink-800 min-[390px]:flex-row min-[390px]:items-center min-[390px]:justify-between">
             <span className="flex items-center gap-1.5">
               <Flame className="h-3.5 w-3.5 text-pink-600 fill-pink-600" />
               Fãs apoiaram este post com <strong>{post.tipsTotalMT} MT</strong> em gorjetas
@@ -403,12 +406,13 @@ export const PostCard: React.FC<PostCardProps> = ({
                 value={commentInput}
                 onChange={(e) => setCommentInput(e.target.value)}
                 placeholder="Escreve um comentário de apoio..."
-                className="flex-1 rounded-full border border-stone-200 bg-stone-50 px-4 py-2 text-xs text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-500/20"
+                className="min-h-11 min-w-0 flex-1 rounded-full border border-stone-200 bg-stone-50 px-4 py-2 text-xs text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-500/20"
               />
               <button
                 type="submit"
                 disabled={!commentInput.trim()}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-pink-600 text-white disabled:opacity-40 hover:bg-pink-700 transition-all"
+                aria-label="Enviar comentário"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pink-600 text-white transition-all hover:bg-pink-700 disabled:opacity-40"
               >
                 <Send className="h-3.5 w-3.5" />
               </button>

@@ -14,13 +14,13 @@ export const StoriesReel: React.FC<StoriesReelProps> = ({
   onOpenCreateStory,
 }) => {
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-pink-100 bg-white p-3.5 shadow-sm">
-      <div className="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-none">
+    <div className="w-full overflow-hidden rounded-2xl border border-pink-100 bg-white p-3 shadow-sm sm:p-3.5">
+      <div className="flex snap-x snap-mandatory items-center gap-3 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none">
         
         {/* Your Story button */}
         <button
           type="button"
-          className="flex flex-shrink-0 flex-col items-center gap-1.5 rounded-xl"
+          className="flex min-h-11 flex-shrink-0 snap-start flex-col items-center gap-1.5 rounded-xl"
           onClick={onOpenCreateStory}
           aria-label="Criar story"
         >
@@ -44,7 +44,7 @@ export const StoriesReel: React.FC<StoriesReelProps> = ({
           <button
             key={story.id}
             onClick={() => onSelectStory(index)}
-            className="flex flex-col items-center gap-1.5 flex-shrink-0 focus:outline-none group text-left"
+            className="group flex min-h-11 flex-shrink-0 snap-start flex-col items-center gap-1.5 text-left focus:outline-none"
           >
             <div
               className={`relative flex h-16 w-16 items-center justify-center rounded-full p-0.5 transition-transform group-hover:scale-105 ${

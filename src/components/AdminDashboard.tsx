@@ -64,7 +64,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-3xl bg-stone-900 p-6 sm:p-8 text-white shadow-xl">
+      <div className="flex flex-col justify-between gap-4 rounded-2xl bg-stone-900 p-4 text-white shadow-xl sm:flex-row sm:items-center sm:rounded-3xl sm:p-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-6 w-6 text-pink-500" />
@@ -99,10 +99,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       </div>
 
       {/* Admin KPI Stats Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         
         {/* GMV */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-1">
+        <div className="space-y-1 rounded-2xl border border-pink-100 bg-white p-3.5 shadow-sm sm:rounded-3xl sm:p-5">
           <span className="text-xs text-stone-500 font-medium">Volume Total Transacionado (GMV)</span>
           <div className="font-display text-2xl font-black text-stone-900">
             {(stats.gmvMT / 1000000).toFixed(2)}M <span className="text-pink-600 text-sm">MT</span>
@@ -111,7 +111,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         {/* Platform Revenue */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-1">
+        <div className="space-y-1 rounded-2xl border border-pink-100 bg-white p-3.5 shadow-sm sm:rounded-3xl sm:p-5">
           <span className="text-xs text-stone-500 font-medium">Receita FanScale (15%)</span>
           <div className="font-display text-2xl font-black text-pink-600">
             {(stats.platformRevenueMT / 1000000).toFixed(2)}M <span className="text-stone-900 text-sm">MT</span>
@@ -120,7 +120,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         {/* Subscriptions */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-1">
+        <div className="space-y-1 rounded-2xl border border-pink-100 bg-white p-3.5 shadow-sm sm:rounded-3xl sm:p-5">
           <span className="text-xs text-stone-500 font-medium">Subscrições VIP Ativas</span>
           <div className="font-display text-2xl font-black text-stone-900">
             {stats.activeSubscriptions.toLocaleString('pt-MZ')}
@@ -129,7 +129,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         {/* Pending Moderation */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-1">
+        <div className="space-y-1 rounded-2xl border border-pink-100 bg-white p-3.5 shadow-sm sm:rounded-3xl sm:p-5">
           <span className="text-xs text-stone-500 font-medium">Itens Pendentes de Revisão</span>
           <div className="font-display text-2xl font-black text-amber-600">
             {stats.pendingReportsCount + stats.pendingKycCount}
@@ -146,7 +146,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <button
           onClick={() => selectAdminTab('metrics')}
           aria-current={adminTab === 'metrics' ? 'page' : undefined}
-          className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`min-h-11 shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             adminTab === 'metrics'
               ? 'bg-pink-600 text-white shadow-sm'
               : 'text-stone-600 hover:bg-pink-50'
@@ -158,7 +158,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <button
           onClick={() => selectAdminTab('kyc')}
           aria-current={adminTab === 'kyc' ? 'page' : undefined}
-          className={`relative shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`relative min-h-11 shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             adminTab === 'kyc'
               ? 'bg-pink-600 text-white shadow-sm'
               : 'text-stone-600 hover:bg-pink-50'
@@ -175,7 +175,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <button
           onClick={() => selectAdminTab('reports')}
           aria-current={adminTab === 'reports' ? 'page' : undefined}
-          className={`relative shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`relative min-h-11 shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             adminTab === 'reports'
               ? 'bg-pink-600 text-white shadow-sm'
               : 'text-stone-600 hover:bg-pink-50'
@@ -242,13 +242,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
                     <button
                       onClick={() => onResolveKyc(req.id, 'approve')}
-                      className="rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
+                      className="min-h-11 rounded-full bg-emerald-600 px-3 py-2 text-xs font-bold text-white hover:bg-emerald-700 sm:px-4"
                     >
                       Aprovar Criador
                     </button>
                     <button
                       onClick={() => onResolveKyc(req.id, 'reject')}
-                      className="rounded-full border border-red-200 bg-red-50 px-4 py-1.5 text-xs font-bold text-red-700 hover:bg-red-100"
+                      className="min-h-11 rounded-full border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-100 sm:px-4"
                     >
                       Recusar
                     </button>
@@ -300,13 +300,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
                     <button
                       onClick={() => onResolveReport(rep.id, 'keep')}
-                      className="rounded-full bg-stone-100 px-4 py-1.5 text-xs font-bold text-stone-700 hover:bg-stone-200"
+                      className="min-h-11 rounded-full bg-stone-100 px-3 py-2 text-xs font-bold text-stone-700 hover:bg-stone-200 sm:px-4"
                     >
                       Manter Post
                     </button>
                     <button
                       onClick={() => onResolveReport(rep.id, 'remove')}
-                      className="rounded-full bg-red-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-red-700"
+                      className="min-h-11 rounded-full bg-red-600 px-3 py-2 text-xs font-bold text-white hover:bg-red-700 sm:px-4"
                     >
                       Remover Conteúdo
                     </button>

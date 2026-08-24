@@ -54,17 +54,17 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
 
         <button
           onClick={onMarkAllAsRead}
-          className="text-xs font-bold text-pink-600 hover:text-pink-700 transition-colors"
+          className="min-h-11 self-start rounded-full px-3 text-xs font-bold text-pink-600 transition-colors hover:bg-pink-50 hover:text-pink-700 sm:self-auto"
         >
           Marcar todas como lidas
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto border-b border-pink-100 pb-2 text-xs">
+      <div className="flex snap-x snap-mandatory items-center gap-2 overflow-x-auto overscroll-x-contain border-b border-pink-100 pb-2 text-xs">
         <button
           onClick={() => setFilter('all')}
-          className={`rounded-full px-4 py-1.5 font-bold transition-all ${
+          className={`min-h-11 shrink-0 snap-start rounded-full px-4 py-2 font-bold transition-all ${
             filter === 'all' ? 'bg-pink-600 text-white shadow-sm' : 'text-stone-600 hover:bg-pink-50'
           }`}
         >
@@ -72,7 +72,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
         </button>
         <button
           onClick={() => setFilter('subs')}
-          className={`rounded-full px-4 py-1.5 font-bold transition-all ${
+          className={`min-h-11 shrink-0 snap-start rounded-full px-4 py-2 font-bold transition-all ${
             filter === 'subs' ? 'bg-pink-600 text-white shadow-sm' : 'text-stone-600 hover:bg-pink-50'
           }`}
         >
@@ -80,7 +80,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
         </button>
         <button
           onClick={() => setFilter('tips')}
-          className={`rounded-full px-4 py-1.5 font-bold transition-all ${
+          className={`min-h-11 shrink-0 snap-start rounded-full px-4 py-2 font-bold transition-all ${
             filter === 'tips' ? 'bg-pink-600 text-white shadow-sm' : 'text-stone-600 hover:bg-pink-50'
           }`}
         >
@@ -88,7 +88,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
         </button>
         <button
           onClick={() => setFilter('social')}
-          className={`rounded-full px-4 py-1.5 font-bold transition-all ${
+          className={`min-h-11 shrink-0 snap-start rounded-full px-4 py-2 font-bold transition-all ${
             filter === 'social' ? 'bg-pink-600 text-white shadow-sm' : 'text-stone-600 hover:bg-pink-50'
           }`}
         >
@@ -107,11 +107,11 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
             <div
               key={notif.id}
               onClick={() => onSelectNotification(notif)}
-              className={`p-4 flex items-center justify-between gap-4 cursor-pointer transition-colors ${
+              className={`flex min-h-16 cursor-pointer items-start justify-between gap-3 p-3.5 transition-colors sm:items-center sm:gap-4 sm:p-4 ${
                 !notif.read ? 'bg-pink-50/50' : 'hover:bg-stone-50'
               }`}
             >
-              <div className="flex items-center gap-3.5">
+              <div className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-3.5">
                 
                 {/* Icon/Avatar badge */}
                 <div className="relative">
@@ -138,7 +138,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
                   </span>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs text-stone-800 leading-relaxed">
                     <strong className="text-stone-900 font-bold mr-1">
                       {notif.actorName}

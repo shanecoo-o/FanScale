@@ -12,6 +12,8 @@ This plan sequences responsive visual polish after the responsive-foundation and
 
 ## PATCH-02 Mobile 320–430
 
+- **Status:** Complete — implemented and validated on 2026-08-24.
+- **Dependencies:** PATCH-01 Global shell complete at `07c5ef2`; the shared page-container, safe-area, dialog, layer, and mobile-navigation contracts remain the foundation for this patch.
 - **Scope:** Compact composition, touch density, wrapping, short-height behaviour, and mobile-specific visual rhythm after the shell is stable.
 - **Main screens:** Feed, explore, creator profile, messages, wallet, authentication, Creator Studio, KYC, and admin summaries.
 - **Likely files:** Individual routed screen components, feed/story components, compact form and action-row styles, and responsive dialog consumers where needed.

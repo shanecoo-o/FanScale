@@ -107,7 +107,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
       {/* Back button */}
       <button
         onClick={onBack}
-        className="flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-pink-600 transition-colors"
+        className="flex min-h-11 items-center gap-1.5 text-xs font-bold text-stone-600 transition-colors hover:text-pink-600"
       >
         <ArrowLeft className="h-4 w-4" />
         <span>Voltar ao Feed</span>
@@ -117,7 +117,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
       <div className="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm sm:rounded-3xl">
         
         {/* Cover Photo */}
-        <div className="relative h-40 w-full bg-stone-200 sm:h-64">
+        <div className="relative h-32 w-full bg-stone-200 min-[390px]:h-40 sm:h-64">
           <img
             src={creator.coverImage}
             alt={creator.name}
@@ -171,16 +171,16 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Avaliar Criador Button */}
               <button
                 onClick={() => onOpenRateModal(creator)}
-                className="flex min-w-0 items-center justify-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-2.5 text-xs font-bold text-amber-900 hover:bg-amber-100 transition-colors shadow-sm sm:px-4"
+                className="flex min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-2.5 text-xs font-bold text-amber-900 shadow-sm transition-colors hover:bg-amber-100 sm:px-4"
               >
                 <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
-                <span>Avaliar com Estrelas</span>
+                <span className="min-[390px]:hidden">Avaliar</span><span className="hidden min-[390px]:inline">Avaliar com Estrelas</span>
               </button>
 
               {/* Seguir Button */}
               <button
                 onClick={() => onFollowToggle(creator.id)}
-                className={`rounded-full px-4 py-2.5 text-xs font-bold transition-colors sm:px-5 ${
+                className={`min-h-11 rounded-full px-4 py-2.5 text-xs font-bold transition-colors sm:px-5 ${
                   creator.isFollowing
                     ? 'border border-stone-300 bg-stone-100 text-stone-700 hover:bg-stone-200'
                     : 'border border-pink-500 bg-pink-50 text-pink-700 hover:bg-pink-100'
@@ -192,7 +192,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Mensagem Button */}
               <button
                 onClick={() => onOpenMessageWithCreator(creator.id)}
-                className="flex items-center justify-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-2.5 text-xs font-bold text-stone-700 hover:bg-stone-50 transition-colors sm:px-4"
+                className="flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-2.5 text-xs font-bold text-stone-700 transition-colors hover:bg-stone-50 sm:px-4"
               >
                 <Send className="h-3.5 w-3.5" />
                 <span>Mensagem</span>
@@ -201,7 +201,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Gorjeta Button */}
               <button
                 onClick={() => onOpenTipModal(creator.id, creator.name)}
-                className="flex items-center justify-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-3 py-2.5 text-xs font-bold text-pink-700 hover:bg-pink-100 transition-colors sm:px-4"
+                className="flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-3 py-2.5 text-xs font-bold text-pink-700 transition-colors hover:bg-pink-100 sm:px-4"
               >
                 <Coins className="h-3.5 w-3.5 text-pink-600" />
                 <span>Dar Gorjeta</span>
@@ -210,7 +210,7 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
               {/* Subscrever Button */}
               <button
                 onClick={() => onOpenSubscribeModal(creator.id)}
-                className="col-span-2 flex min-w-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 px-4 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-pink-500/30 transition-[background-color,transform] hover:from-pink-700 hover:to-rose-600 active:scale-95 sm:col-auto sm:px-6"
+                className="col-span-2 flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 px-4 py-2.5 text-center text-xs font-bold text-white shadow-lg shadow-pink-500/30 transition-[background-color,transform] hover:from-pink-700 hover:to-rose-600 active:scale-95 sm:col-auto sm:px-6"
               >
                 <Lock className="h-3.5 w-3.5" />
                 <span className="min-w-0 break-words">
@@ -612,15 +612,15 @@ export const CreatorProfileView: React.FC<CreatorProfileViewProps> = ({
                   className="rounded-3xl border border-stone-100 bg-white p-5 sm:p-6 shadow-sm space-y-3.5 hover:border-pink-200 transition-colors"
                 >
                   {/* Top: User info + Star rating */}
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-col items-start justify-between gap-3 min-[390px]:flex-row min-[390px]:gap-4">
+                    <div className="flex min-w-0 items-center gap-3">
                       <img
                         src={rev.userAvatar}
                         alt={rev.userName}
                         className="h-10 w-10 rounded-full object-cover border border-stone-200"
                       />
-                      <div>
-                        <div className="flex items-center gap-2">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
                           <span className="text-xs font-bold text-stone-900">{rev.userName}</span>
                           {rev.userBadge && (
                             <span className="rounded-full bg-pink-100 px-2 py-0.2 text-[10px] font-bold text-pink-700">

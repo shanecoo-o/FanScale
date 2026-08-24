@@ -73,10 +73,10 @@ export const Feed: React.FC<FeedProps> = ({
 
   return (
     <PageContainer width="wide" className="py-4 sm:py-6">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-12">
         
         {/* Main Feed Column (8 cols on desktop) */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="space-y-4 lg:col-span-8 sm:space-y-6">
           
           {/* Stories Bar */}
           <StoriesReel
@@ -87,10 +87,10 @@ export const Feed: React.FC<FeedProps> = ({
 
           {/* Feed Filter Tabs */}
           <div className="flex items-center justify-between border-b border-pink-100 pb-2">
-            <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
+            <div className="flex snap-x snap-mandatory items-center gap-1 overflow-x-auto overscroll-x-contain scrollbar-none sm:gap-2">
               <button
                 onClick={() => setFeedFilter('all')}
-                className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition-all ${
                   feedFilter === 'all'
                     ? 'bg-pink-600 text-white shadow-sm shadow-pink-500/20'
                     : 'bg-white text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -102,7 +102,7 @@ export const Feed: React.FC<FeedProps> = ({
 
               <button
                 onClick={() => setFeedFilter('exclusive')}
-                className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition-all ${
                   feedFilter === 'exclusive'
                     ? 'bg-pink-600 text-white shadow-sm shadow-pink-500/20'
                     : 'bg-white text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -114,7 +114,7 @@ export const Feed: React.FC<FeedProps> = ({
 
               <button
                 onClick={() => setFeedFilter('trending')}
-                className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition-all ${
                   feedFilter === 'trending'
                     ? 'bg-pink-600 text-white shadow-sm shadow-pink-500/20'
                     : 'bg-white text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -135,7 +135,7 @@ export const Feed: React.FC<FeedProps> = ({
           </div>
 
           {/* Posts List */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {filteredPosts.map((post) => (
               <PostCard
                 key={post.id}

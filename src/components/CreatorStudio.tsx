@@ -119,7 +119,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
     <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
       
       {/* Studio Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-3xl bg-stone-900 p-6 sm:p-8 text-white shadow-xl">
+      <div className="flex flex-col justify-between gap-4 rounded-2xl bg-stone-900 p-4 text-white shadow-xl sm:flex-row sm:items-center sm:rounded-3xl sm:p-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-pink-600 text-white text-xs font-black">
@@ -137,10 +137,10 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center">
           <button
             onClick={() => setShowPayoutModal(true)}
-            className="rounded-full bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-emerald-600/30 hover:bg-emerald-700 transition-all flex items-center gap-1.5"
+            className="flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-emerald-600 px-3 py-2.5 text-center text-xs font-bold text-white shadow-md shadow-emerald-600/30 transition-all hover:bg-emerald-700 sm:px-5"
           >
             <Download className="h-4 w-4" />
             <span>Levantar Dinheiro</span>
@@ -148,7 +148,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
           <button
             onClick={onOpenCreateModal}
-            className="rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-pink-500/30 hover:from-pink-700 hover:to-rose-600 transition-all flex items-center gap-1.5"
+            className="flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 px-3 py-2.5 text-center text-xs font-bold text-white shadow-md shadow-pink-500/30 transition-all hover:from-pink-700 hover:to-rose-600 sm:px-5"
           >
             <PlusCircle className="h-4 w-4" />
             <span>Novo Conteúdo</span>
@@ -157,7 +157,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
           {onLogout && (
             <button
               onClick={onLogout}
-              className="rounded-full border border-stone-700 bg-stone-800/90 px-4 py-2.5 text-xs font-bold text-stone-300 hover:bg-rose-950/60 hover:text-rose-400 hover:border-rose-800 transition-all flex items-center gap-1.5"
+              className="col-span-2 flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-stone-700 bg-stone-800/90 px-4 py-2.5 text-xs font-bold text-stone-300 transition-all hover:border-rose-800 hover:bg-rose-950/60 hover:text-rose-400 sm:col-span-1"
               title="Terminar sessão da conta de criador"
             >
               <LogOut className="h-4 w-4" />
@@ -171,7 +171,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
       <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         
         {/* Saldo Disponível */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-2">
+        <div className="space-y-2 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-5">
           <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
             <span>Saldo Disponível</span>
             <Wallet className="h-4 w-4 text-pink-600" />
@@ -186,7 +186,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
         </div>
 
         {/* Ganhos Este Mês */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-2">
+        <div className="space-y-2 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-5">
           <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
             <span>Ganhos Este Mês</span>
             <TrendingUp className="h-4 w-4 text-emerald-600" />
@@ -201,7 +201,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
         </div>
 
         {/* Subscritores Ativos */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-2">
+        <div className="space-y-2 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-5">
           <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
             <span>Subscritores Ativos</span>
             <Users className="h-4 w-4 text-pink-600" />
@@ -215,7 +215,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
         </div>
 
         {/* Ganhos Totais Acumulados */}
-        <div className="rounded-3xl border border-pink-100 bg-white p-5 shadow-sm space-y-2">
+        <div className="space-y-2 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-5">
           <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
             <span>Ganhos Totais FanScale</span>
             <Coins className="h-4 w-4 text-amber-500" />
@@ -231,10 +231,10 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
       </div>
 
       {/* Studio Nav Tabs */}
-      <div className="flex min-w-0 items-center gap-2 overflow-x-auto border-b border-pink-100 pb-2 scrollbar-none">
+      <div className="flex min-w-0 snap-x snap-mandatory items-center gap-2 overflow-x-auto overscroll-x-contain border-b border-pink-100 pb-2 scrollbar-none">
         <button
           onClick={() => setActiveStudioTab('overview')}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             activeStudioTab === 'overview'
               ? 'bg-pink-600 text-white shadow-md shadow-pink-500/20'
               : 'text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -246,7 +246,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
         <button
           onClick={() => setActiveStudioTab('reviews')}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             activeStudioTab === 'reviews'
               ? 'bg-amber-500 text-white shadow-md'
               : 'text-stone-600 hover:bg-amber-50 hover:text-amber-700'
@@ -258,7 +258,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
         <button
           onClick={() => setActiveStudioTab('pricing')}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             activeStudioTab === 'pricing'
               ? 'bg-pink-600 text-white shadow-md shadow-pink-500/20'
               : 'text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -270,7 +270,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
         <button
           onClick={() => setActiveStudioTab('content')}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             activeStudioTab === 'content'
               ? 'bg-pink-600 text-white shadow-md shadow-pink-500/20'
               : 'text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -282,7 +282,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
         <button
           onClick={() => setActiveStudioTab('affiliates')}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             activeStudioTab === 'affiliates'
               ? 'bg-pink-600 text-white shadow-md shadow-pink-500/20'
               : 'text-stone-600 hover:bg-pink-50 hover:text-pink-700'
@@ -294,7 +294,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
         <button
           onClick={() => setActiveStudioTab('ai_assistant')}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
+          className={`flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all ${
             activeStudioTab === 'ai_assistant'
               ? 'bg-stone-900 text-white shadow-md'
               : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
@@ -407,7 +407,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
         <div className="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-12 lg:gap-8">
           
           {/* Main Revenue Chart (8 cols) */}
-          <div className="min-w-0 space-y-4 overflow-hidden rounded-3xl border border-pink-100 bg-white p-4 shadow-sm sm:p-6 lg:col-span-8">
+          <div className="min-w-0 space-y-4 overflow-hidden rounded-2xl border border-pink-100 bg-white p-3 shadow-sm sm:rounded-3xl sm:p-6 lg:col-span-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <h3 className="font-display text-base font-bold text-stone-900">
@@ -436,8 +436,8 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
-                  <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} tickFormatter={(val) => `${val} MT`} />
+                  <XAxis dataKey="name" stroke="#94A3B8" fontSize={10} tickLine={false} />
+                  <YAxis width={42} stroke="#94A3B8" fontSize={10} tickLine={false} tickFormatter={(val) => `${val} MT`} />
                   <Tooltip 
                     formatter={(val: any) => [`${(Number(val) || 0).toLocaleString('pt-MZ')} MT`, 'Receita']}
                     contentStyle={{ backgroundColor: '#1E293B', borderRadius: '1rem', border: 'none', color: '#fff', fontSize: '12px' }}
@@ -449,7 +449,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
           </div>
 
           {/* Revenue Distribution Breakdown (4 cols) */}
-          <div className="lg:col-span-4 rounded-3xl border border-pink-100 bg-white p-6 shadow-sm space-y-5">
+          <div className="space-y-5 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6 lg:col-span-4">
             <h3 className="font-display text-base font-bold text-stone-900">
               Fontes de Rendimento
             </h3>
