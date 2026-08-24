@@ -261,7 +261,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
   };
 
   return (
-    <div className={`relative w-full ${isModal ? 'max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white border border-pink-100' : 'public-auth-shell flex items-center justify-center bg-gradient-to-b from-pink-50/40 via-white to-stone-50 p-3 sm:p-6 lg:p-8'}`}>
+    <div className={`relative w-full ${isModal ? 'max-w-2xl lg:max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white border border-pink-100' : 'public-auth-shell flex items-center justify-center bg-gradient-to-b from-pink-50/40 via-white to-stone-50 p-3 sm:p-6 lg:p-8'}`}>
       
       {/* Close button if Modal */}
       {isModal && onClose && (
@@ -275,7 +275,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         </button>
       )}
 
-      <div className={`grid w-full grid-cols-1 overflow-hidden lg:grid-cols-12 ${isModal ? '' : 'max-w-5xl rounded-3xl border border-pink-100 bg-white shadow-sm'}`}>
+      <div className={`grid w-full grid-cols-1 overflow-hidden lg:grid-cols-12 ${isModal ? '' : 'max-w-xl rounded-3xl border border-pink-100 bg-white shadow-sm lg:max-w-5xl'}`}>
         
         {/* Left Side: Brand Value & Mozambique Proof Showcase (Desktop) */}
         <div className="relative hidden lg:flex lg:col-span-5 flex-col justify-between bg-gradient-to-br from-stone-950 via-stone-900 to-pink-950 p-8 text-white">

@@ -204,7 +204,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <div className="divide-y divide-stone-100">
             {kycRequests.map((req) => (
-              <div key={req.id} className="flex flex-col justify-between gap-4 py-4 lg:flex-row lg:items-center">
+              <div key={req.id} className="grid gap-4 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
                 <div className="flex min-w-0 items-start gap-3">
                   <img
                     src={req.creatorAvatar}
@@ -278,7 +278,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <div className="divide-y divide-stone-100">
             {reports.map((rep) => (
-              <div key={rep.id} className="flex flex-col justify-between gap-4 py-4 lg:flex-row lg:items-center">
+              <div key={rep.id} className="grid gap-4 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
                 <div className="min-w-0 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-700">

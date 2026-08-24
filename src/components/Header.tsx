@@ -309,7 +309,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => navigate(routes.messages())}
                 aria-current={activeDestination === 'messages' ? 'page' : undefined}
                 aria-label={`Mensagens${unreadMessagesCount > 0 ? `, ${unreadMessagesCount} não lidas` : ''}`}
-                className={`relative hidden h-11 w-11 items-center justify-center rounded-full transition-colors lg:flex ${
+                className={`relative hidden h-11 w-11 items-center justify-center rounded-full transition-colors md:flex ${
                   activeDestination === 'messages'
                     ? 'bg-pink-100 text-pink-700'
                     : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'

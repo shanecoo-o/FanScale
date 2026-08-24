@@ -15,7 +15,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   profileUsername,
 }) => {
   return (
-    <nav aria-label="Navegação principal móvel" className="mobile-bottom-nav fixed bottom-0 left-0 right-0 flex items-center justify-around border-t border-pink-100 bg-white/95 px-1 backdrop-blur-md lg:hidden">
+    <nav aria-label="Navegação principal móvel" className="mobile-bottom-nav fixed bottom-0 left-0 right-0 border-t border-pink-100 bg-white/95 backdrop-blur-md lg:hidden">
+      <div className="mx-auto flex h-full w-full max-w-2xl items-center justify-around px-1 md:max-w-xl">
       
       {/* Início */}
       <NavLink
@@ -79,6 +80,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         <User className="h-5 w-5" />
         <span className="text-[10px]">Perfil</span>
       </NavLink>
+      </div>
     </nav>
   );
 };

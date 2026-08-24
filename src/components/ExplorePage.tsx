@@ -237,7 +237,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
                   <div className="pt-2 border-t border-stone-100 flex items-center gap-2">
                     <button
                       onClick={() => onOpenLiveRoom && onOpenLiveRoom(session)}
-                      className="flex-1 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 py-2 text-xs font-bold text-white shadow hover:scale-[1.02] transition-all text-center"
+                      className="min-h-11 flex-1 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 py-2 text-center text-xs font-bold text-white shadow transition-all hover:scale-[1.02]"
                     >
                       {session.isLive ? 'Assistir Agora 🔴' : 'Aceder à Sala'}
                     </button>
@@ -247,7 +247,8 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
                           const cr = creators.find(c => c.id === session.creatorId);
                           if (cr) onOpenRateModal(cr, session.id);
                         }}
-                        className="rounded-full border border-amber-300 bg-amber-50 p-2 text-amber-700 hover:bg-amber-100 transition-colors"
+                        aria-label="Avaliar esta transmissão"
+                        className="flex h-11 w-11 items-center justify-center rounded-full border border-amber-300 bg-amber-50 text-amber-700 transition-colors hover:bg-amber-100"
                         title="Avaliar esta Live com Estrelas"
                       >
                         <Star className="h-3.5 w-3.5 fill-amber-400" />
@@ -276,7 +277,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
             <span className="text-stone-400 mr-1 hidden sm:inline">Ordenar:</span>
             <button
               onClick={() => setSortBy('featured')}
-              className={`rounded-full px-3 py-1 font-bold transition-all ${
+              className={`min-h-11 shrink-0 rounded-full px-3 py-2 font-bold transition-all ${
                 sortBy === 'featured'
                   ? 'bg-pink-600 text-white shadow-sm'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
@@ -287,7 +288,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
             <button
               onClick={() => setSortBy('top_rated')}
-              className={`rounded-full px-3 py-1 font-bold transition-all flex items-center gap-1 ${
+              className={`flex min-h-11 shrink-0 items-center gap-1 rounded-full px-3 py-2 font-bold transition-all ${
                 sortBy === 'top_rated'
                   ? 'bg-amber-500 text-white shadow-sm'
                   : 'bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100'
@@ -299,7 +300,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
             <button
               onClick={() => setSortBy('subscribers')}
-              className={`rounded-full px-3 py-1 font-bold transition-all ${
+              className={`min-h-11 shrink-0 rounded-full px-3 py-2 font-bold transition-all ${
                 sortBy === 'subscribers'
                   ? 'bg-pink-600 text-white shadow-sm'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'

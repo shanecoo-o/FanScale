@@ -76,7 +76,7 @@ export const Feed: React.FC<FeedProps> = ({
       <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-12">
         
         {/* Main Feed Column (8 cols on desktop) */}
-        <div className="space-y-4 lg:col-span-8 sm:space-y-6">
+        <div className="mx-auto w-full max-w-[45rem] space-y-4 sm:space-y-6 lg:col-span-8 lg:mx-0 lg:max-w-none">
           
           {/* Stories Bar */}
           <StoriesReel
@@ -127,7 +127,7 @@ export const Feed: React.FC<FeedProps> = ({
 
             <button
               onClick={onOpenCreateModal}
-              className="hidden sm:flex items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50/70 px-3 py-1.5 text-xs font-bold text-pink-700 hover:bg-pink-100 transition-colors"
+              className="hidden min-h-11 items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50/70 px-3 py-2 text-xs font-bold text-pink-700 transition-colors hover:bg-pink-100 sm:flex"
             >
               <PlusCircle className="h-3.5 w-3.5" />
               <span>Publicar</span>

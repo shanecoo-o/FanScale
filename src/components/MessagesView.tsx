@@ -59,10 +59,10 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
   return (
     <PageContainer width="messages" className="page-container--bleed-mobile py-0 sm:py-6">
-      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border md:grid-cols-12">
+      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border min-[820px]:grid-cols-12">
         
         {/* Left: Conversations List (4 cols) */}
-        <div className={`${mobileThreadOpen ? 'hidden md:flex' : 'flex'} min-h-0 min-w-0 flex-col bg-stone-50/50 md:col-span-4 md:border-r md:border-stone-100`}>
+        <div className={`${mobileThreadOpen ? 'hidden min-[820px]:flex' : 'flex'} min-h-0 min-w-0 flex-col bg-stone-50/50 min-[820px]:col-span-4 min-[820px]:border-r min-[820px]:border-stone-100`}>
           <div className="flex items-center justify-between border-b border-stone-100 bg-white p-3.5 sm:p-4">
             <h2 className="font-display text-base font-bold text-stone-900">
               Mensagens Diretas
@@ -130,7 +130,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
         {/* Right: Active Chat Window (8 cols) */}
         {activeConversation ? (
-          <div className={`${mobileThreadOpen ? 'flex' : 'hidden md:flex'} min-h-0 min-w-0 flex-col bg-white md:col-span-8`}>
+          <div className={`${mobileThreadOpen ? 'flex' : 'hidden min-[820px]:flex'} min-h-0 min-w-0 flex-col bg-white min-[820px]:col-span-8`}>
             
             {/* Chat Top Bar */}
             <div className="z-10 flex items-center justify-between gap-2 border-b border-stone-100 bg-white p-2.5 sm:p-4">
@@ -139,7 +139,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
                   type="button"
                   onClick={onBackToList}
                   aria-label="Voltar à lista de conversas"
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-stone-600 transition-colors hover:bg-stone-100 md:hidden"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-stone-600 transition-colors hover:bg-stone-100 min-[820px]:hidden"
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </button>
@@ -303,7 +303,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
           </div>
         ) : (
-          <div className="md:col-span-8 flex items-center justify-center p-8 text-center text-stone-400">
+          <div className="flex items-center justify-center p-8 text-center text-stone-400 min-[820px]:col-span-8">
             Seleciona uma conversa para começar
           </div>
         )}
