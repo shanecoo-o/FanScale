@@ -61,10 +61,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   return (
-    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
+    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6 lg:space-y-6 min-[1440px]:space-y-8">
       
       {/* Header */}
-      <div className="flex flex-col justify-between gap-4 rounded-2xl bg-stone-900 p-4 text-white shadow-xl sm:flex-row sm:items-center sm:rounded-3xl sm:p-8">
+      <div className="flex flex-col justify-between gap-4 rounded-2xl bg-stone-900 p-4 text-white shadow-xl sm:flex-row sm:items-center sm:rounded-3xl sm:p-8 lg:p-6 min-[1440px]:p-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-6 w-6 text-pink-500" />

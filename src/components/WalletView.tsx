@@ -316,7 +316,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
   };
 
   return (
-    <PageContainer width="standard" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
+    <PageContainer width="standard" className="space-y-6 py-4 sm:space-y-8 sm:py-6 lg:space-y-6 min-[1440px]:space-y-8">
       
       {/* Toast Notification */}
       {exportFeedbackToast && (
@@ -370,7 +370,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
       </div>
 
       {/* Main Balance Card */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-4 text-white shadow-xl sm:rounded-3xl sm:p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-4 text-white shadow-xl sm:rounded-3xl sm:p-8 lg:p-6 min-[1440px]:p-8">
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">

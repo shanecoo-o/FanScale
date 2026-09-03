@@ -82,10 +82,10 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
   });
 
   return (
-    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
+    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6 lg:space-y-6 min-[1440px]:space-y-8">
       
       {/* Search Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-4 text-white shadow-xl shadow-pink-500/20 sm:rounded-3xl sm:p-10">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-4 text-white shadow-xl shadow-pink-500/20 sm:rounded-3xl sm:p-10 lg:p-7 min-[1440px]:p-10">
         <div className="relative z-10 max-w-2xl space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white backdrop-blur-md">
             <Compass className="h-3.5 w-3.5" />
@@ -165,7 +165,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 min-[1280px]:grid-cols-4">
             {liveSessions.map((session) => (
               <div
                 key={session.id}
@@ -311,7 +311,7 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 min-[1280px]:grid-cols-4">
           {filteredCreators.map((creator) => {
             const ratingAvg = creator.ratingAverage || 4.9;
             const ratingCount = creator.ratingCount || 140;

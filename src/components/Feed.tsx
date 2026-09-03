@@ -73,10 +73,10 @@ export const Feed: React.FC<FeedProps> = ({
 
   return (
     <PageContainer width="wide" className="py-4 sm:py-6">
-      <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-5 sm:gap-8 min-[1280px]:grid-cols-[minmax(0,42rem)_20rem] min-[1280px]:justify-center">
         
-        {/* Main Feed Column (8 cols on desktop) */}
-        <div className="mx-auto w-full max-w-[45rem] space-y-4 sm:space-y-6 lg:col-span-8 lg:mx-0 lg:max-w-none">
+        {/* Primary reading column */}
+        <div className="mx-auto w-full max-w-[42rem] space-y-4 sm:space-y-6 min-[1280px]:mx-0">
           
           {/* Stories Bar */}
           <StoriesReel
@@ -154,8 +154,8 @@ export const Feed: React.FC<FeedProps> = ({
 
         </div>
 
-        {/* Right Sidebar (4 cols on desktop) */}
-        <div className="hidden lg:block lg:col-span-4 space-y-6">
+        {/* Optional laptop context panel */}
+        <div className="hidden min-[1280px]:block space-y-6">
           
           {/* User Account Info Bar (if logged in) */}
           {currentUser && (

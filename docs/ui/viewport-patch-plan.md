@@ -32,6 +32,8 @@ This plan sequences responsive visual polish after the responsive-foundation and
 
 ## PATCH-04 Laptop 1024–1366
 
+- **Status:** Complete — implemented and validated on 2026-09-03.
+- **Dependencies:** PATCH-01 provides the bounded shell, 32px laptop gutters, desktop-header transition, page-width tiers, and layer contracts; PATCH-02 and PATCH-03 provide the compact wrapping, touch-target, and 820px Messages split-view baselines preserved by this patch. Feed context now enters at 1280px, after the primary 672px reading column is protected.
 - **Scope:** Compact desktop navigation, dashboard density, optional context regions, and content-width tuning for landscape tablet and common laptop widths.
 - **Main screens:** Feed, messages, wallet, Creator Studio, creator profile, and admin.
 - **Likely files:** Header/navigation variants, routed dashboard grids, context panels, and screen-level width constraints.

@@ -116,10 +116,10 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
   };
 
   return (
-    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6">
+    <PageContainer width="wide" className="space-y-6 py-4 sm:space-y-8 sm:py-6 lg:space-y-6 min-[1440px]:space-y-8">
       
       {/* Studio Header Banner */}
-      <div className="flex flex-col justify-between gap-4 rounded-2xl bg-stone-900 p-4 text-white shadow-xl sm:flex-row sm:items-center sm:rounded-3xl sm:p-8">
+      <div className="flex flex-col justify-between gap-4 rounded-2xl bg-stone-900 p-4 text-white shadow-xl sm:flex-row sm:items-center sm:rounded-3xl sm:p-8 lg:p-6 min-[1440px]:p-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-pink-600 text-white text-xs font-black">
@@ -168,7 +168,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:gap-4 min-[1280px]:grid-cols-4">
         
         {/* Saldo Disponível */}
         <div className="space-y-2 rounded-2xl border border-pink-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-5">

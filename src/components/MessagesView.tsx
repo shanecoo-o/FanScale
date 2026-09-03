@@ -59,10 +59,10 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
   return (
     <PageContainer width="messages" className="page-container--bleed-mobile py-0 sm:py-6">
-      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border min-[820px]:grid-cols-12">
+      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border min-[820px]:grid-cols-12 lg:grid-cols-[20rem_minmax(0,1fr)]">
         
-        {/* Left: Conversations List (4 cols) */}
-        <div className={`${mobileThreadOpen ? 'hidden min-[820px]:flex' : 'flex'} min-h-0 min-w-0 flex-col bg-stone-50/50 min-[820px]:col-span-4 min-[820px]:border-r min-[820px]:border-stone-100`}>
+        {/* Left: Conversations list */}
+        <div className={`${mobileThreadOpen ? 'hidden min-[820px]:flex' : 'flex'} min-h-0 min-w-0 flex-col bg-stone-50/50 min-[820px]:col-span-4 min-[820px]:border-r min-[820px]:border-stone-100 lg:col-span-1`}>
           <div className="flex items-center justify-between border-b border-stone-100 bg-white p-3.5 sm:p-4">
             <h2 className="font-display text-base font-bold text-stone-900">
               Mensagens Diretas
@@ -128,9 +128,9 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
           </div>
         </div>
 
-        {/* Right: Active Chat Window (8 cols) */}
+        {/* Right: Active chat window */}
         {activeConversation ? (
-          <div className={`${mobileThreadOpen ? 'flex' : 'hidden min-[820px]:flex'} min-h-0 min-w-0 flex-col bg-white min-[820px]:col-span-8`}>
+          <div className={`${mobileThreadOpen ? 'flex' : 'hidden min-[820px]:flex'} min-h-0 min-w-0 flex-col bg-white min-[820px]:col-span-8 lg:col-span-1`}>
             
             {/* Chat Top Bar */}
             <div className="z-10 flex items-center justify-between gap-2 border-b border-stone-100 bg-white p-2.5 sm:p-4">
@@ -303,7 +303,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
           </div>
         ) : (
-          <div className="flex items-center justify-center p-8 text-center text-stone-400 min-[820px]:col-span-8">
+          <div className="flex items-center justify-center p-8 text-center text-stone-400 min-[820px]:col-span-8 lg:col-span-1">
             Seleciona uma conversa para começar
           </div>
         )}
