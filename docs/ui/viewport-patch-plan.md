@@ -62,6 +62,8 @@ This plan sequences responsive visual polish after the responsive-foundation and
 
 ## PATCH-07 Cross-viewport polish
 
+- **Status:** Complete — implemented and validated on 2026-09-03.
+- **Dependencies:** PATCH-01 through PATCH-06 provide the shell, family-specific compositions, breakpoint thresholds, and wide containment retained by this consolidation pass.
 - **Scope:** Transition points, content reflow between master families, shared loading/empty/error geometry, and removal of isolated responsive inconsistencies.
 - **Main screens:** All routed screens and shared overlays.
 - **Likely files:** Shared components and the smallest set of screen-level responsive classes revealed by the completed viewport passes.
@@ -70,7 +72,7 @@ This plan sequences responsive visual polish after the responsive-foundation and
 
 ## PATCH-08 Accessibility + final QA
 
-- **Scope:** Keyboard and screen-reader regression checks, zoom/reflow, target sizes, contrast, reduced motion, route focus, modal behaviour, and final cross-browser/device QA.
+- **Scope:** Accessibility, final regression QA, final visual QA, remaining responsive defects, and release-readiness documentation.
 - **Main screens:** All routes, navigation, dialogs, transactional flows, and representative empty/error states.
 - **Likely files:** Only components with evidence-backed accessibility or final-QA defects, plus verification documentation.
 - **Risks:** Treating static inspection as conformance evidence and making late visual changes without rerunning the full matrix.

@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageContainer } from './ui/PageContainer';
 import { 
   Sparkles, 
   Wallet, 
@@ -33,10 +34,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
   onOpenRegister,
 }) => {
   return (
-    <div className="space-y-16 py-6">
+    <PageContainer width="wide" className="space-y-16 py-6">
       
       {/* 18+ Compliance Top Banner */}
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-stone-900 border border-pink-500/30 p-3.5 text-xs text-stone-300">
           <div className="flex items-center gap-2.5">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-pink-600 font-black text-white text-xs">
@@ -122,7 +123,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       </section>
 
       {/* How to Become a Creator - 6 Steps */}
-      <section className="max-w-6xl mx-auto px-4 space-y-8">
+      <section className="max-w-6xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-pink-50 text-pink-700 font-bold px-3 py-1 text-xs border border-pink-200">
             <Sparkles className="h-3.5 w-3.5 text-pink-600" />
@@ -214,7 +215,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       </section>
 
       {/* 3 Pillars / Feature Highlights */}
-      <section className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         
         <div className="rounded-3xl border border-pink-100 bg-white p-6 sm:p-8 space-y-3 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-100 text-pink-600">
@@ -255,7 +256,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       </section>
 
       {/* Trust & Safety 18+ Box */}
-      <section className="max-w-5xl mx-auto px-4">
+      <section className="max-w-5xl mx-auto">
         <div className="rounded-3xl bg-stone-900 border border-stone-800 p-8 sm:p-10 text-white space-y-6">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-pink-500/20 text-pink-400 border border-pink-500/30">
@@ -308,7 +309,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       </section>
 
       {/* FAQ Section */}
-      <section className="max-w-4xl mx-auto px-4 space-y-6">
+      <section className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-pink-600 uppercase tracking-wider">Perguntas Frequentes</span>
           <h2 className="font-display text-2xl font-bold text-stone-900">
@@ -358,7 +359,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       </section>
 
       {/* Bottom CTA Banner */}
-      <section className="max-w-5xl mx-auto px-4">
+      <section className="max-w-5xl mx-auto">
         <div className="rounded-3xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 p-8 sm:p-12 text-white text-center space-y-4 shadow-xl">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white backdrop-blur-sm">
             <span>FanScale Africa • 18+ Only</span>
@@ -387,6 +388,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
-    </div>
+    </PageContainer>
   );
 };
