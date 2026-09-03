@@ -44,7 +44,7 @@ export const StoriesReel: React.FC<StoriesReelProps> = ({
           <button
             key={story.id}
             onClick={() => onSelectStory(index)}
-            className="group flex min-h-11 flex-shrink-0 snap-start flex-col items-center gap-1.5 text-left focus:outline-none"
+            className="group flex min-h-11 flex-shrink-0 snap-start flex-col items-center gap-1.5 rounded-xl text-left"
           >
             <div
               className={`relative flex h-16 w-16 items-center justify-center rounded-full p-0.5 transition-transform group-hover:scale-105 ${

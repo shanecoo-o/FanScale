@@ -534,11 +534,13 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
               
               {/* Monthly price */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-stone-700">
+                <label htmlFor="studio-monthly-price" className="block text-xs font-bold text-stone-700">
                   Preço Mensal (MT / mês)
                 </label>
                 <div className="flex items-center rounded-2xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 focus-within:border-pink-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-pink-500/20">
                   <input
+                    id="studio-monthly-price"
+                    name="monthly-price"
                     type="number"
                     min="50"
                     step="10"
@@ -553,11 +555,13 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
 
               {/* Quarterly price */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-stone-700">
+                <label htmlFor="studio-quarterly-price" className="block text-xs font-bold text-stone-700">
                   Preço Trimestral (3 meses)
                 </label>
                 <div className="flex items-center rounded-2xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 focus-within:border-pink-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-pink-500/20">
                   <input
+                    id="studio-quarterly-price"
+                    name="quarterly-price"
                     type="number"
                     min="150"
                     step="10"
@@ -581,7 +585,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
             </button>
 
             {savedPricingFeedback && (
-              <p className="text-xs text-emerald-600 font-bold animate-fade-in">
+              <p role="status" aria-live="polite" className="text-xs text-emerald-600 font-bold animate-fade-in">
                 ✓ Preços atualizados com sucesso no teu perfil!
               </p>
             )}
@@ -607,11 +611,14 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
           </div>
 
           <div className="space-y-3">
-            <label className="block text-xs font-bold text-stone-300">
+            <label htmlFor="studio-ai-prompt" className="block text-xs font-bold text-stone-300">
               O que gostarias de criar ou planear hoje?
             </label>
             <div className="flex gap-2">
               <input
+                id="studio-ai-prompt"
+                name="ai-prompt"
+                autoComplete="off"
                 type="text"
                 value={aiPrompt}
                 onChange={(e) => setAiPrompt(e.target.value)}

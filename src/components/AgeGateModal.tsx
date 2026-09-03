@@ -18,6 +18,7 @@ export const AgeGateModal: React.FC<AgeGateModalProps> = ({
   return (
     <ResponsiveDialog
       ariaLabel="Confirmação de maioridade"
+      ariaDescribedBy="age-gate-description"
       dismissible={false}
       role="alertdialog"
       overlayClassName="critical-dialog bg-black/90"
@@ -40,7 +41,7 @@ export const AgeGateModal: React.FC<AgeGateModalProps> = ({
           <h2 className="font-display text-2xl font-black text-white tracking-tight">
             Confirmação de Maioridade
           </h2>
-          <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+          <p id="age-gate-description" className="text-xs sm:text-sm text-stone-300 leading-relaxed">
             O <strong className="text-pink-400">FanScale</strong> é uma plataforma destinada exclusivamente a pessoas com <strong className="text-white">idade igual ou superior a 18 anos</strong>.
           </p>
         </div>

@@ -72,6 +72,8 @@ This plan sequences responsive visual polish after the responsive-foundation and
 
 ## PATCH-08 Accessibility + final QA
 
+- **Status:** Complete — implemented and validated on 2026-09-03. This is the final viewport-polish patch; no PATCH-09 is planned.
+- **Dependencies:** PATCH-01 through PATCH-07 provide the responsive shell, viewport-family compositions, breakpoint continuity, and protected age-gate baseline retained by this final pass.
 - **Scope:** Accessibility, final regression QA, final visual QA, remaining responsive defects, and release-readiness documentation.
 - **Main screens:** All routes, navigation, dialogs, transactional flows, and representative empty/error states.
 - **Likely files:** Only components with evidence-backed accessibility or final-QA defects, plus verification documentation.

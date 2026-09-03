@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 
 interface ResponsiveDialogProps {
   ariaLabel: string;
+  ariaDescribedBy?: string;
   children: React.ReactNode;
   onClose?: () => void;
   closeOnBackdrop?: boolean;
@@ -23,6 +24,7 @@ const FOCUSABLE_SELECTOR = [
 
 export const ResponsiveDialog: React.FC<ResponsiveDialogProps> = ({
   ariaLabel,
+  ariaDescribedBy,
   children,
   onClose,
   closeOnBackdrop = false,
@@ -126,6 +128,7 @@ export const ResponsiveDialog: React.FC<ResponsiveDialogProps> = ({
         role={role}
         aria-modal="true"
         aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
         tabIndex={-1}
         className={`responsive-dialog-panel ${panelClassName}`}
       >

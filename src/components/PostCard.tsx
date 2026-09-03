@@ -263,6 +263,8 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Gostar */}
             <button
               onClick={handleLikeClick}
+              aria-label={`${post.isLiked ? 'Remover gosto de' : 'Gostar de'} post. ${post.likesCount} gostos`}
+              aria-pressed={post.isLiked}
               className={`flex min-h-11 items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold transition-all sm:px-3 ${
                 post.isLiked
                   ? 'bg-pink-50 text-pink-600'
@@ -276,6 +278,8 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Comentar */}
             <button
               onClick={() => setShowComments(!showComments)}
+              aria-label={`${showComments ? 'Ocultar' : 'Mostrar'} comentários. ${post.commentsCount} comentários`}
+              aria-expanded={showComments}
               className="flex min-h-11 items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-100 hover:text-stone-900 sm:px-3"
             >
               <MessageCircle className="h-4 w-4" />

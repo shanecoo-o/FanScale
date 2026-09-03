@@ -416,6 +416,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     <input
                       key={idx}
                       id={`otp-input-${idx}`}
+                      name={`otp-digit-${idx + 1}`}
+                      aria-label={`Dígito ${idx + 1} do código de verificação`}
+                      autoComplete={idx === 0 ? 'one-time-code' : 'off'}
+                      spellCheck={false}
                       type="text"
                       inputMode="numeric"
                       maxLength={1}
@@ -429,6 +433,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                 <button
                   id="submit-otp-verification-btn"
+                  aria-label={isLoading ? 'A verificar código' : 'Verificar e entrar'}
                   onClick={handleVerifyOtp}
                   disabled={isLoading}
                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 py-3.5 text-sm font-bold text-white shadow-lg shadow-pink-500/25 hover:from-pink-700 hover:to-rose-600 transition-all active:scale-[0.99] disabled:opacity-50"
@@ -488,12 +493,16 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                 <form onSubmit={handlePhoneSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                    <label htmlFor="recovery-identity-input" className="block text-xs font-bold text-stone-700 mb-1.5">
                       Número de Celular ou E-mail
                     </label>
                     <div className="relative">
                       <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
                       <input
+                        id="recovery-identity-input"
+                        name="recovery-identity"
+                        autoComplete="username"
+                        spellCheck={false}
                         type="text"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
@@ -649,7 +658,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   <form onSubmit={loginMethod === 'phone' ? handlePhoneSubmit : handleEmailLoginSubmit} className="space-y-4">
                     {loginMethod === 'phone' ? (
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                        <label htmlFor="login-phone-input" className="block text-xs font-bold text-stone-700 mb-1.5">
                           Número de Celular Moçambique
                         </label>
                         <div className="flex rounded-xl border border-stone-200 bg-stone-50 focus-within:border-pink-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-pink-500/20 transition-all overflow-hidden">
@@ -659,6 +668,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                           </div>
                           <input
                             id="login-phone-input"
+                            name="phone"
+                            autoComplete="tel"
                             type="tel"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -674,13 +685,16 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     ) : (
                       <>
                         <div>
-                          <label className="block text-xs font-bold text-stone-700 mb-1.5">
+                          <label htmlFor="login-email-input" className="block text-xs font-bold text-stone-700 mb-1.5">
                             E-mail de Registo
                           </label>
                           <div className="relative">
                             <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
                             <input
                               id="login-email-input"
+                              name="email"
+                              autoComplete="email"
+                              spellCheck={false}
                               type="email"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
@@ -693,7 +707,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                         <div>
                           <div className="flex items-center justify-between mb-1.5">
-                            <label className="text-xs font-bold text-stone-700">
+                            <label htmlFor="login-password-input" className="text-xs font-bold text-stone-700">
                               Palavra-passe
                             </label>
                             <button
@@ -708,6 +722,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                             <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
                             <input
                               id="login-password-input"
+                              name="password"
+                              autoComplete="current-password"
                               type={showPassword ? 'text' : 'password'}
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
@@ -718,7 +734,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                             <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                              aria-label={showPassword ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'}
+                              className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-stone-400 hover:text-stone-600"
                             >
                               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
@@ -782,11 +799,13 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                     <div className="grid grid-cols-1 gap-3 min-[760px]:grid-cols-2">
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                        <label htmlFor="reg-fullname-input" className="block text-xs font-bold text-stone-700 mb-1">
                           {selectedRole === 'creator' ? 'Nome Artístico / Criativo' : 'Nome Completo'}
                         </label>
                         <input
                           id="reg-fullname-input"
+                          name="full-name"
+                          autoComplete="name"
                           type="text"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
@@ -797,13 +816,16 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                        <label htmlFor="reg-username-input" className="block text-xs font-bold text-stone-700 mb-1">
                           Nome de Utilizador (@)
                         </label>
                         <div className="relative">
                           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400">@</span>
                           <input
                             id="reg-username-input"
+                            name="username"
+                            autoComplete="username"
+                            spellCheck={false}
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -819,10 +841,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     {selectedRole === 'creator' && (
                       <div className="grid grid-cols-1 gap-2.5 rounded-2xl border border-stone-200/80 bg-stone-50 p-3 min-[760px]:grid-cols-3">
                         <div>
-                          <label className="block text-[11px] font-bold text-stone-700 mb-1">
+                          <label htmlFor="reg-creator-category" className="block text-[11px] font-bold text-stone-700 mb-1">
                             Categoria
                           </label>
                           <select
+                            id="reg-creator-category"
+                            name="creator-category"
                             value={creatorCategory}
                             onChange={(e) => setCreatorCategory(e.target.value)}
                             className="w-full rounded-xl border border-stone-200 bg-white py-2 px-2.5 text-xs text-stone-900 focus:border-pink-500 focus:outline-none"
@@ -839,10 +863,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
                         </div>
 
                         <div>
-                          <label className="block text-[11px] font-bold text-stone-700 mb-1">
+                          <label htmlFor="reg-creator-province" className="block text-[11px] font-bold text-stone-700 mb-1">
                             Localização
                           </label>
                           <select
+                            id="reg-creator-province"
+                            name="creator-province"
                             value={creatorProvince}
                             onChange={(e) => setCreatorProvince(e.target.value)}
                             className="w-full rounded-xl border border-stone-200 bg-white py-2 px-2.5 text-xs text-stone-900 focus:border-pink-500 focus:outline-none"
@@ -862,10 +888,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
                         </div>
 
                         <div>
-                          <label className="block text-[11px] font-bold text-stone-700 mb-1">
+                          <label htmlFor="reg-creator-price" className="block text-[11px] font-bold text-stone-700 mb-1">
                             Preço Mensal (MT)
                           </label>
                           <select
+                            id="reg-creator-price"
+                            name="creator-price"
                             value={creatorPriceMonthly}
                             onChange={(e) => setCreatorPriceMonthly(Number(e.target.value))}
                             className="w-full rounded-xl border border-stone-200 bg-white py-2 px-2.5 text-xs text-stone-900 focus:border-pink-500 focus:outline-none font-bold text-pink-600"
@@ -883,7 +911,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                     {loginMethod === 'phone' ? (
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                        <label htmlFor="reg-phone-input" className="block text-xs font-bold text-stone-700 mb-1">
                           Número de Celular Moçambique (M-Pesa / e-Mola)
                         </label>
                         <div className="flex rounded-xl border border-stone-200 bg-stone-50 focus-within:border-pink-500 focus-within:bg-white transition-all overflow-hidden">
@@ -893,6 +921,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                           </div>
                           <input
                             id="reg-phone-input"
+                            name="phone"
+                            autoComplete="tel"
                             type="tel"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -907,11 +937,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       </div>
                     ) : (
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                        <label htmlFor="reg-email-input" className="block text-xs font-bold text-stone-700 mb-1">
                           E-mail
                         </label>
                         <input
                           id="reg-email-input"
+                          name="email"
+                          autoComplete="email"
+                          spellCheck={false}
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
@@ -924,12 +957,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                     <div className="grid grid-cols-1 gap-3 min-[760px]:grid-cols-2">
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                        <label htmlFor="reg-password-input" className="block text-xs font-bold text-stone-700 mb-1">
                           Palavra-passe
                         </label>
                         <div className="relative">
                           <input
                             id="reg-password-input"
+                            name="password"
+                            autoComplete="new-password"
                             type={showPassword ? 'text' : 'password'}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -940,7 +975,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400"
+                            aria-label={showPassword ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'}
+                            className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-stone-400"
                           >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </button>
@@ -948,11 +984,13 @@ export const LoginView: React.FC<LoginViewProps> = ({
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                        <label htmlFor="reg-confirm-password-input" className="block text-xs font-bold text-stone-700 mb-1">
                           Confirmar Palavra-passe
                         </label>
                         <input
                           id="reg-confirm-password-input"
+                          name="confirm-password"
+                          autoComplete="new-password"
                           type={showPassword ? 'text' : 'password'}
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}

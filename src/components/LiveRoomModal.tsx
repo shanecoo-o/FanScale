@@ -182,7 +182,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
 
             {/* In-Stream Interactive Live Rating Widget */}
             <div className="rounded-2xl bg-black/70 backdrop-blur-md p-3 border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col items-start gap-2 min-[430px]:flex-row min-[430px]:items-center">
                 <Award className="h-4 w-4 text-amber-400" />
                 <span className="text-xs font-bold text-stone-200">
                   {hasRatedLive ? 'A tua avaliação desta Live:' : 'Avalia esta Transmissão ao Vivo:'}
@@ -197,7 +197,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
                       type="button"
                       onClick={() => handleQuickStarSubmit(star)}
                       aria-label={`Avaliar live com ${star} ${star === 1 ? 'estrela' : 'estrelas'}`}
-                      className="p-1 hover:scale-125 transition-transform focus:outline-none"
+                      className="flex h-11 w-11 items-center justify-center rounded-full transition-transform hover:scale-110"
                     >
                       <Star
                         className={`h-5 w-5 ${
@@ -282,7 +282,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
               <button
                 type="submit"
                 aria-label="Enviar comentário"
-                className="rounded-full bg-pink-600 p-2 text-white hover:bg-pink-700 transition-colors"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pink-600 text-white transition-colors hover:bg-pink-700"
               >
                 <Send className="h-3.5 w-3.5" />
               </button>
@@ -290,7 +290,7 @@ export const LiveRoomModal: React.FC<LiveRoomModalProps> = ({
                 type="button"
                 onClick={handleSendHeart}
                 aria-label="Enviar coração"
-                className="rounded-full bg-rose-600/30 border border-rose-500/40 p-2 text-rose-400 hover:bg-rose-600 hover:text-white transition-all active:scale-125"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-rose-500/40 bg-rose-600/30 text-rose-400 transition-colors hover:bg-rose-600 hover:text-white active:scale-110"
                 title="Enviar Coração"
               >
                 <Heart className="h-3.5 w-3.5 fill-rose-500" />

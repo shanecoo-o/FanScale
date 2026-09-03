@@ -169,7 +169,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
             type="button"
             onClick={onClose} 
             aria-label="Fechar avaliação"
-            className="rounded-full p-2 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-700"
           >
             <X className="h-5 w-5" />
           </button>
@@ -214,11 +214,13 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
           {/* Live Selector if targetType === 'live' */}
           {targetType === 'live' && (
             <div className="space-y-1.5 rounded-2xl bg-rose-50/70 border border-rose-100 p-3.5">
-              <label className="block text-xs font-bold text-rose-900 flex items-center gap-1.5">
+              <label htmlFor="review-live-session" className="block text-xs font-bold text-rose-900 flex items-center gap-1.5">
                 <Video className="h-3.5 w-3.5 text-rose-600" />
                 Seleciona a Transmissão ao Vivo que assististe:
               </label>
               <select
+                id="review-live-session"
+                name="live-session"
                 value={chosenLiveId}
                 onChange={(e) => setChosenLiveId(e.target.value)}
                 className="w-full rounded-xl border border-rose-200 bg-white p-2.5 text-xs font-semibold text-stone-900 focus:border-rose-500 focus:outline-none"
@@ -248,7 +250,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                   onMouseLeave={() => setHoverRating(0)}
                   onClick={() => setRating(star)}
                   aria-label={`Dar ${star} ${star === 1 ? 'estrela' : 'estrelas'}`}
-                  className="p-1 transition-transform hover:scale-125 focus:outline-none"
+                  className="rounded-full p-1 transition-transform hover:scale-110"
                 >
                   <Star
                     className={`h-9 w-9 transition-colors ${
@@ -274,7 +276,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
             </h4>
 
             {/* Content Quality */}
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex flex-col items-start gap-1.5 text-xs sm:flex-row sm:items-center sm:justify-between">
               <span className="text-stone-600 font-medium">📸 Qualidade do Conteúdo / Fotos:</span>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((s) => (
@@ -283,7 +285,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     key={s}
                     onClick={() => setContentQuality(s)}
                     aria-label={`Qualidade do conteúdo: ${s} de 5`}
-                    className="p-0.5"
+                    className="flex h-11 w-11 items-center justify-center rounded-full"
                   >
                     <Star className={`h-4 w-4 ${contentQuality >= s ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
                   </button>
@@ -292,7 +294,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
             </div>
 
             {/* Interaction & Chat */}
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex flex-col items-start gap-1.5 text-xs sm:flex-row sm:items-center sm:justify-between">
               <span className="text-stone-600 font-medium">💬 Interação & Respostas a Mensagens:</span>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((s) => (
@@ -301,7 +303,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     key={s}
                     onClick={() => setInteraction(s)}
                     aria-label={`Interação: ${s} de 5`}
-                    className="p-0.5"
+                    className="flex h-11 w-11 items-center justify-center rounded-full"
                   >
                     <Star className={`h-4 w-4 ${interaction >= s ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
                   </button>
@@ -310,7 +312,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
             </div>
 
             {/* Live Performance */}
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex flex-col items-start gap-1.5 text-xs sm:flex-row sm:items-center sm:justify-between">
               <span className="text-stone-600 font-medium">🔴 Transmissões ao Vivo (Lives):</span>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((s) => (
@@ -319,7 +321,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     key={s}
                     onClick={() => setLivePerformance(s)}
                     aria-label={`Performance em live: ${s} de 5`}
-                    className="p-0.5"
+                    className="flex h-11 w-11 items-center justify-center rounded-full"
                   >
                     <Star className={`h-4 w-4 ${livePerformance >= s ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
                   </button>
@@ -330,9 +332,9 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
 
           {/* Quick Compliment Tags */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold text-stone-700">
+            <p className="block text-xs font-bold text-stone-700">
               Elogios Rápidos (Clica para selecionar)
-            </label>
+            </p>
             <div className="flex flex-wrap gap-1.5">
               {COMPLIMENT_TAGS.map((tag) => {
                 const isSelected = selectedTags.includes(tag);
@@ -341,7 +343,8 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
                     type="button"
                     key={tag}
                     onClick={() => handleTagToggle(tag)}
-                    className={`rounded-full px-3 py-1 text-[11px] font-bold transition-all ${
+                    aria-pressed={isSelected}
+                    className={`min-h-11 rounded-full px-3 py-2 text-[11px] font-bold transition-transform ${
                       isSelected
                         ? 'bg-pink-600 text-white shadow-sm shadow-pink-500/20 scale-105'
                         : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
@@ -356,10 +359,13 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
 
           {/* Review Title */}
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-stone-700">
+            <label htmlFor="review-title" className="block text-xs font-bold text-stone-700">
               Título da tua Avaliação
             </label>
             <input
+              id="review-title"
+              name="review-title"
+              autoComplete="off"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -370,10 +376,13 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
 
           {/* Review Comment */}
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-stone-700">
+            <label htmlFor="review-comment" className="block text-xs font-bold text-stone-700">
               Comentário Detalhado para a Comunidade
             </label>
             <textarea
+              id="review-comment"
+              name="review-comment"
+              autoComplete="off"
               rows={3}
               required
               value={comment}

@@ -103,9 +103,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           
           {/* Content Type Selector */}
           <div className="space-y-1.5">
-            <label className="block font-bold text-stone-700">
+            <p className="block font-bold text-stone-700">
               Tipo de Publicação
-            </label>
+            </p>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
               {[
                 { id: 'post', label: 'Publicação', icon: ImageIcon },
@@ -133,9 +133,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
           {/* Media Preview & Preset Picker */}
           <div className="space-y-2">
-            <label className="block font-bold text-stone-700">
+            <p className="block font-bold text-stone-700">
               Mídia da Publicação (Foto / Vídeo)
-            </label>
+            </p>
             <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-stone-100 border border-stone-200">
               <img
                 src={selectedMediaUrl}
@@ -150,24 +150,27 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             <div className="flex items-center gap-2 overflow-x-auto pt-1">
               <span className="text-[10px] font-bold text-stone-400 uppercase">Amostras:</span>
               {sampleMediaOptions.map((url, idx) => (
-                <img
+                <button
                   key={idx}
-                  src={url}
-                  alt={`Opção ${idx}`}
+                  type="button"
                   onClick={() => setSelectedMediaUrl(url)}
-                  className={`h-10 w-10 rounded-xl object-cover cursor-pointer border-2 transition-all flex-shrink-0 ${
+                  aria-label={`Selecionar amostra de mídia ${idx + 1}`}
+                  aria-pressed={selectedMediaUrl === url}
+                  className={`h-11 w-11 rounded-xl border-2 transition-transform flex-shrink-0 ${
                     selectedMediaUrl === url ? 'border-pink-600 scale-105 shadow-sm' : 'border-transparent opacity-70'
                   }`}
-                />
+                >
+                  <img src={url} alt="" className="h-full w-full rounded-[inherit] object-cover" />
+                </button>
               ))}
             </div>
           </div>
 
           {/* Audience / Visibility Selector ("Quem pode ver?") */}
           <div className="space-y-1.5">
-            <label className="block font-bold text-stone-700">
+            <p className="block font-bold text-stone-700">
               Quem pode ver este conteúdo?
-            </label>
+            </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <button
                 type="button"
@@ -211,12 +214,15 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           {/* If PPV: Price Input */}
           {visibility === 'ppv' && (
             <div className="rounded-2xl bg-amber-50 border border-amber-200 p-3.5 space-y-1.5">
-              <label className="block font-bold text-amber-900">
+              <label htmlFor="post-ppv-price" className="block font-bold text-amber-900">
                 Preço do Conteúdo Pago (Meticais MT)
               </label>
               <div className="flex items-center rounded-xl bg-white border border-amber-300 px-3 py-2">
                 <input
+                  id="post-ppv-price"
+                  name="ppv-price"
                   type="number"
+                  inputMode="numeric"
                   min="20"
                   step="10"
                   value={ppvPrice}
@@ -233,10 +239,12 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
           {/* Caption */}
           <div className="space-y-1">
-            <label className="block font-bold text-stone-700">
+            <label htmlFor="post-caption" className="block font-bold text-stone-700">
               Legenda e Descrição
             </label>
             <textarea
+              id="post-caption"
+              name="caption"
               rows={3}
               required
               value={caption}
@@ -248,11 +256,13 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
           {/* Location in Mozambique */}
           <div className="space-y-1">
-            <label className="block font-bold text-stone-700 flex items-center gap-1">
+            <label htmlFor="post-location" className="block font-bold text-stone-700 flex items-center gap-1">
               <MapPin className="h-3.5 w-3.5 text-pink-500" />
               <span>Localização em Moçambique</span>
             </label>
             <select
+              id="post-location"
+              name="location"
               value={locationTag}
               onChange={(e) => setLocationTag(e.target.value)}
               className="w-full rounded-2xl border border-stone-200 bg-stone-50 p-2.5 font-medium text-stone-900 focus:border-pink-500 focus:outline-none"
