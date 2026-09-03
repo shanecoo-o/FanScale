@@ -59,7 +59,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({
 
   return (
     <PageContainer width="messages" className="page-container--bleed-mobile py-0 sm:py-6">
-      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border min-[820px]:grid-cols-12 lg:grid-cols-[20rem_minmax(0,1fr)]">
+      <div className="messages-shell grid min-w-0 grid-cols-1 overflow-hidden border-pink-100 bg-white shadow-sm sm:rounded-3xl sm:border min-[820px]:grid-cols-12 lg:grid-cols-[20rem_minmax(0,1fr)] min-[1440px]:grid-cols-[22rem_minmax(0,1fr)]">
         
         {/* Left: Conversations list */}
         <div className={`${mobileThreadOpen ? 'hidden min-[820px]:flex' : 'flex'} min-h-0 min-w-0 flex-col bg-stone-50/50 min-[820px]:col-span-4 min-[820px]:border-r min-[820px]:border-stone-100 lg:col-span-1`}>

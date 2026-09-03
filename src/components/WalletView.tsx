@@ -316,7 +316,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
   };
 
   return (
-    <PageContainer width="standard" className="space-y-6 py-4 sm:space-y-8 sm:py-6 lg:space-y-6 min-[1440px]:space-y-8">
+    <PageContainer width="standard" className="page-container--desktop-wide space-y-6 py-4 sm:space-y-8 sm:py-6 lg:space-y-6 min-[1440px]:space-y-8">
       
       {/* Toast Notification */}
       {exportFeedbackToast && (
@@ -369,8 +369,9 @@ export const WalletView: React.FC<WalletViewProps> = ({
         </div>
       </div>
 
-      {/* Main Balance Card */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-4 text-white shadow-xl sm:rounded-3xl sm:p-8 lg:p-6 min-[1440px]:p-8">
+      <div className="grid gap-6 sm:gap-8 lg:gap-6 min-[1440px]:grid-cols-[minmax(0,2fr)_minmax(20rem,1fr)] min-[1440px]:items-stretch min-[1440px]:gap-8">
+        {/* Main Balance Card */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-stone-900 via-stone-800 to-stone-900 p-4 text-white shadow-xl sm:rounded-3xl sm:p-8 lg:p-6 min-[1440px]:p-8">
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -426,10 +427,10 @@ export const WalletView: React.FC<WalletViewProps> = ({
 
         {/* Decorative Circles */}
         <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-pink-600/20 blur-2xl pointer-events-none" />
-      </div>
+        </div>
 
-      {/* Payment Methods Supported Grid */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        {/* Payment Methods Supported Grid */}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 min-[1440px]:grid-cols-2">
         <div className="rounded-2xl border border-pink-100 bg-white p-3.5 text-center space-y-1 shadow-sm">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white font-black text-xs mx-auto">
             M
@@ -460,6 +461,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
           </div>
           <span className="font-bold text-xs text-stone-900 block">Cartões Bancários</span>
           <span className="text-[10px] text-stone-400">Visa, Mastercard, SIMO MZ</span>
+        </div>
         </div>
       </div>
 

@@ -264,6 +264,16 @@
   }
 }
 
+@media (min-width: 1440px) {
+  :root {
+    --fanscale-content-messages: var(--fanscale-content-wide);
+  }
+
+  .page-container--desktop-wide {
+    max-width: var(--fanscale-content-wide);
+  }
+}
+
 @media (min-width: 640px) {
   .app-toast {
     width: max-content;

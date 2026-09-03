@@ -200,7 +200,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Center: Search Bar */}
         {!isPublicRoute && (
-          <div className="mx-4 hidden max-w-xs flex-1 min-[1440px]:flex">
+          <div className="mx-3 hidden max-w-64 flex-1 min-[1440px]:flex min-[1536px]:mx-4 min-[1536px]:max-w-xs">
             <div className="relative w-full">
               <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 transition-colors ${
                 isSearchFocused ? 'text-pink-600' : 'text-stone-400'
@@ -233,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({
         )}
 
         {/* Right: Actions & Navigation Buttons */}
-        <div className="flex shrink-0 items-center gap-1 sm:gap-2 xl:gap-3">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2 min-[1536px]:gap-3">
           
           {isPublicRoute ? (
             <div className="flex items-center gap-2">

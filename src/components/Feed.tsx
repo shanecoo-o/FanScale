@@ -73,7 +73,7 @@ export const Feed: React.FC<FeedProps> = ({
 
   return (
     <PageContainer width="wide" className="py-4 sm:py-6">
-      <div className="grid grid-cols-1 gap-5 sm:gap-8 min-[1280px]:grid-cols-[minmax(0,42rem)_20rem] min-[1280px]:justify-center">
+      <div className="grid grid-cols-1 gap-5 sm:gap-8 min-[1280px]:grid-cols-[minmax(0,42rem)_20rem] min-[1280px]:justify-center min-[1440px]:grid-cols-[minmax(0,42rem)_22rem] min-[1440px]:gap-10">
         
         {/* Primary reading column */}
         <div className="mx-auto w-full max-w-[42rem] space-y-4 sm:space-y-6 min-[1280px]:mx-0">
