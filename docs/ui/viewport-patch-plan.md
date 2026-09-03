@@ -52,6 +52,8 @@ This plan sequences responsive visual polish after the responsive-foundation and
 
 ## PATCH-06 Wide 1920–2560
 
+- **Status:** Complete — implemented and validated on 2026-09-03.
+- **Dependencies:** PATCH-01 provides the centred 1536px application shell and 1280px functional content tiers retained as the final wide geometry; PATCH-05 provides the full header, 672px/352px Feed composition, 1280px Messages workspace, and structured Wallet summary preserved without further scaling.
 - **Scope:** Wide-display centring, background treatment, maximum widths, and proportional whitespace without increasing text line length.
 - **Main screens:** Landing, feed, explore, creator profile, messages, wallet, Creator Studio, and admin.
 - **Likely files:** Shell/container tokens, selected full-bleed section wrappers, and existing contextual-region layouts.
